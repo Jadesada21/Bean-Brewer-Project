@@ -7,7 +7,10 @@ import {
     toggleRewardActive
 } from '../../controller/reward/reward.controller'
 
+import imageRewardRoute from './imageReward.route'
+
 import { authorize } from '../../middleware/authorize'
+
 
 
 const router = Router()
@@ -19,5 +22,10 @@ router.route('/')
 router.route('/:id')
     .get(getRewardById)
     .patch(authorize('admin'), toggleRewardActive)
+
+
+// ************************ Image_product
+
+router.use('/:product_id/images', imageRewardRoute)
 
 export default router
