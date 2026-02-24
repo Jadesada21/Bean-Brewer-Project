@@ -166,26 +166,26 @@ export const updateStatusOrderService = async (
 
         const order = orderResult.rows[0]
 
+
+        if (order.status === newStatus) {
+            throw new AppError("Status already set", 400)
+        }
+
+        // อัพเดทสถานะได้ ก็ต่อเมื่อ สถานะ = pending
+        if (order.status !== 'pending') {
+            throw new AppError("Order already processed", 400)
+        }
+
+        // เปลี่ยนได้เฉพาะ 2 สถานะ
+        if (!['completed', 'cancelled'].includes(newStatus)) {
+            throw new AppError("Invalid status transition", 400)
+        }
+
         if (user.role !== 'admin') {
 
             // ต้องเป็น order ของตัวเอง
             if (order.user_id !== user.id) {
                 throw new AppError("Unauthorized", 403)
-            }
-
-
-            if (order.status === newStatus) {
-                throw new AppError("Status already set", 400)
-            }
-
-            // อัพเดทสถานะได้ ก็ต่อเมื่อ สถานะ = pending
-            if (order.status !== 'pending') {
-                throw new AppError("Order already processed", 400)
-            }
-
-            // เปลี่ยนได้เฉพาะ 2 สถานะ
-            if (!['completed', 'cancelled'].includes(newStatus)) {
-                throw new AppError("Invalid status transition", 400)
             }
         }
 
@@ -203,11 +203,11 @@ export const updateStatusOrderService = async (
         if (newStatus === 'completed' && order.earned_points > 0) {
             await client.query(`
                 insert into collect_point_history
-                (user_id , order_id , points)
-                values($1,$2,$3)
+                (user_id , order_id , points ,source )
+                values($1,$2,$3,$4)
                 returning *
                 `,
-                [order.user_id, orderId, order.earned_points]
+                [order.user_id, orderId, order.earned_points, 'order']
             )
 
             await client.query(`
