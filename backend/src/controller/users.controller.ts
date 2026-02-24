@@ -30,9 +30,6 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
 }
 
 
-
-
-
 export const getUsersById = async (req: Request, res: Response, next: NextFunction) => {
     try {
 

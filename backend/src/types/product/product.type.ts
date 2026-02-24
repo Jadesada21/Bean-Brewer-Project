@@ -20,6 +20,7 @@ export interface CreateProductInput {
     short_description: string
     price: number
     stock: number
+    reward_points: number
     category_id: number
     roast_level: RoastLevel
 }

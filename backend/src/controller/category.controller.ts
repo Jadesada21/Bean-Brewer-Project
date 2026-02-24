@@ -65,7 +65,6 @@ export const getCategoryProductsById = async (req: Request, res: Response, next:
 }
 
 
-
 export const getCategoryRewardsById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = Number(req.params.id)

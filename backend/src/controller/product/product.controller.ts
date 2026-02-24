@@ -19,7 +19,6 @@ export const getAllProduct = async (req: Request, res: Response, next: NextFunct
     try {
 
         const role = req.user?.role
-
         const product = await getAllProductService(role)
         return res.status(200).json({ status: "Success", data: product })
     } catch (err) {
@@ -29,7 +28,7 @@ export const getAllProduct = async (req: Request, res: Response, next: NextFunct
 
 export const createProduct = async (req: Request<{}, {}, CreateProductInput>, res: Response, next: NextFunction) => {
     try {
-        const { name, description, short_description, price, stock, category_id, roast_level } = req.body
+        const { name, description, short_description, price, stock, reward_points, category_id, roast_level } = req.body
 
         if (
             !name ||
@@ -37,6 +36,7 @@ export const createProduct = async (req: Request<{}, {}, CreateProductInput>, re
             !description ||
             price === undefined ||
             stock === undefined ||
+            reward_points ||
             category_id === undefined ||
             roast_level === undefined
         ) {

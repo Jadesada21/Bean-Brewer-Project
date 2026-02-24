@@ -9,17 +9,11 @@ import {
     deleteRewardImagesByIdService
 } from '../../service/reward/image.Service'
 
-import {
-    UploadImageBody,
-} from '../../types/reward/image.type'
-
 
 export const uploadImageByRewardId = async (
     req: Request<{ reward_id: string }, {}, { imageMeta?: string }>,
     res: Response,
     next: NextFunction) => {
-    console.log("PARAM:", req.params.reward_id)
-    console.log("NUMBER:", Number(req.params.reward_id))
     try {
         const reward_id = Number(req.params.reward_id)
 

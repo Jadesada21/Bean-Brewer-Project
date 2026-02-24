@@ -9,17 +9,11 @@ import {
     deleteProductImagesByIdService
 } from '../../service/product/image.Service'
 
-import {
-    UploadImageBody,
-} from '../../types/product/image.type'
-
 
 export const uploadImageByProductId = async (
     req: Request<{ product_id: string }, {}, { imageMeta?: string }>,
     res: Response,
     next: NextFunction) => {
-    console.log("PARAM:", req.params.product_id)
-    console.log("NUMBER:", Number(req.params.product_id))
     try {
         const product_id = Number(req.params.product_id)
 
@@ -111,7 +105,7 @@ export const deleteProductImagesByProductId = async (req: Request<{ product_id: 
     try {
         const product_id = parseInt(req.params.product_id, 10)
 
-        if (!isNaN(product_id)) {
+        if (isNaN(product_id)) {
             return res.status(400).json({ status: "Failed", message: "Invalid product_id" })
         }
 

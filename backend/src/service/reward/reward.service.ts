@@ -19,12 +19,16 @@ export const getAllRewardService = async (role?: string) => {
         r.is_active,
         r.created_at,
         r.updated_at,
-        count(ri.id) as total_images
-        from rewards p 
-        left join reward_images ri
-        on ri.product_id = r.id 
-        group by r.id
-        order by r.created_at desc 
+        coalesce(img.total_images , 0) as total_images
+    from rewards r
+    left join (
+        select
+            reward_id,
+            count(*) as total_images
+        fron reward_images
+        group by reward_id
+    ) img on img.reward_id = r.id
+    order by r.created_at desc
         `
         const response = await pool.query(sql)
         return response.rows
@@ -52,6 +56,12 @@ export const createRewardService = async (
 ): Promise<RewardResponse> => {
 
     const { name, description, short_description, stock, points_required, category_id } = body
+
+    const checkCategory = await pool.query(`
+        select id from categories where id = $1
+        `,
+        [category_id]
+    )
 
     const response = await pool.query(`
         insert into rewards 
