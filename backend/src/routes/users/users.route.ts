@@ -3,7 +3,7 @@ import {
     getAllUsers,
     getUsersById,
     updateUsersById,
-} from '../controller/users.controller'
+} from '../../controller/users.controller'
 
 
 
@@ -12,7 +12,6 @@ const router = Router();
 
 router.route('/')
     .get(getAllUsers)
-
 
 
 router.route('/:id')

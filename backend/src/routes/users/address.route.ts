@@ -4,7 +4,7 @@ import {
     addUsersAddressById,
     getAllUsersAddress,
     updateAddressUsersById,
-} from '../controller/users.controller'
+} from '../../controller/users.controller'
 
 const router = Router();
 

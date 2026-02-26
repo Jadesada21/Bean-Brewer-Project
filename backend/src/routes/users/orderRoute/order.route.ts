@@ -1,30 +1,30 @@
 import { Router } from 'express'
 
 import {
-    getAllOrder,
     createOrder,
     updateStatusOrder,
-    getOrderById,
     getOrderByUserId
-} from '../controller/order.controller'
+} from '../../controller/order.controller'
 
-import { authorize } from '../middleware/authorize'
+import orderItemRoute from './orderItems.route'
 
 
 const router = Router()
 
-
 router.route('/')
-    .get(authorize('admin'), getAllOrder)
     .post(createOrder)
 
 router.route('/me')
     .get(getOrderByUserId)
 
 router.route('/:id')
-    .get(authorize('admin'), getOrderById)
 
 router.route('/:id/status')
     .patch(updateStatusOrder)
+
+
+// ******************** order_items
+router.use('/:orderId/items', orderItemRoute)
+
 
 export default router

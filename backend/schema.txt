@@ -55,11 +55,13 @@ create table collect_point_history (
     source source not null,
     order_id int,
     promo_id int,
+    reward_id int,
     created_at timestamp default current_timestamp not null,
 
     foreign key (user_id) references users(id) on delete restrict,
     foreign key (order_id) references orders(id) on delete set null,
-    foreign key (promo_id) references promotions(id) on delete set null
+    foreign key (promo_id) references promo_code(id) on delete set null
+    foreign key (reward_id) references reward(id) on delete set null
 );
 
 
@@ -210,6 +212,9 @@ create index idx_redeem_user on redeem_history(user_id);
 create index idx_promo_usage_user on promo_code_usage(user_id);
 create index idx_product_images_product_id on product_images(product_id);
 create index idx_reward_images_reward_id on reward_images(reward_id);
+create index idx_points_user on points_history(user_id);
+create index idx_points_history_user_created on points_history(user_id, created_at desc);
+
 
 สร้างฟังชั่นสำหรับทำ trigger
 

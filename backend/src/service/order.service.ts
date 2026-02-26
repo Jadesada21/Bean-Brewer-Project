@@ -104,6 +104,24 @@ export const createOrderService = async (
 
         const order = orderResult.rows[0]
 
+        // double check stock
+        for (const [productId, totalQty] of quantityMap.entries()) {
+
+            const result = await client.query(`
+                update products
+                set stock = stock - $1
+                where id = $2
+                and stock >= $1
+                returning id
+                `,
+                [totalQty, productId]
+            )
+
+            if (result.rowCount === 0) {
+                throw new AppError("Instufficient stock", 400)
+            }
+        }
+
         // insert order_items
         for (const item of items) {
             const product = productMap.get(item.product_id)
@@ -120,14 +138,6 @@ export const createOrderService = async (
                     product.price,
                     product.reward_points
                 ]
-            )
-
-            await client.query(`
-                update products 
-                set stock = stock - $1
-                where id = $2
-                `,
-                [item.quantity, item.product_id]
             )
         }
 
@@ -266,6 +276,7 @@ export const getOrderByUserIdService = async (userId: number) => {
             o.status,
             o.total_price,
             o.created_at,
+        coalesce(
             json_agg(
                 json_build_object(
                     'product_id', p.id,
@@ -273,10 +284,12 @@ export const getOrderByUserIdService = async (userId: number) => {
                     'quantity', oi.quantity,
                     'price', oi.price
                 )
-            ) as items
+            ) filter (where oi.id is not null),
+             '[]'
+        ) as items
         from orders o 
-        join order_items oi on oi.order_id = o.id
-        join products p on p.id = oi.product_id
+        left join order_items oi on oi.order_id = o.id
+        left join products p on p.id = oi.product_id
         where o.user_id = $1
         group by o.id, o.status, o.total_price, o.created_at
         order by o.created_at desc

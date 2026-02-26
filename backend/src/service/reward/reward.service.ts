@@ -100,3 +100,4 @@ export const toggleRewardActiveService = async (id: number) => {
 
     return response.rows[0]
 }
+
