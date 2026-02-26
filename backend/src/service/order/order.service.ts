@@ -1,11 +1,11 @@
-import { pool } from '../db/connectPostgre.repository'
-import { AppError } from '../util/AppError'
+import { pool } from '../../db/connectPostgre.repository'
+import { AppError } from '../../util/AppError'
 
 import {
     OrderResponse,
     CreateOrderInput,
     Status
-} from '../types/order.type'
+} from '../../types/order.type'
 
 export const getAllOrderService = async () => {
     const sql = `select 

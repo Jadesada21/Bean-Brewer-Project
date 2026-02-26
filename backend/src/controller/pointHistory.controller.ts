@@ -6,6 +6,7 @@ import {
     getPointsHistoryByUserIdService
 } from '../service/pointHistory.service'
 
+
 export const getAllPointsHistory = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userId = req.params.userId
@@ -34,13 +35,13 @@ export const getAllPointsHistory = async (req: Request, res: Response, next: Nex
 
 export const getPointsHistoryByUserId = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = Number(req.params.userId)
+        const targetUserId = Number(req.params.userId)
 
         const limit = req.query.limit
             ? Number(req.query.limit)
             : 10
 
-        if (isNaN(userId)) {
+        if (isNaN(targetUserId)) {
             throw new AppError("Invalid UserId", 400)
         }
 
@@ -48,8 +49,32 @@ export const getPointsHistoryByUserId = async (req: Request, res: Response, next
             throw new AppError("Invalid limit", 400)
         }
 
-        const data = await getPointsHistoryByUserIdService(userId, limit)
+        if (!req.user) {
+            throw new AppError("Unauthorized", 400)
+        }
+
+        const loginUserId = Number(req.user.id)
+
+        if (isNaN(loginUserId)) {
+            throw new AppError("Invalid login user id", 400)
+        }
+
+        const role = req.user.role
+
+
+        const data = await getPointsHistoryByUserIdService(targetUserId, limit, loginUserId, role)
         return res.status(200).json({ status: "Success", total: data.length, data })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const getMyPointsHistory = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const loginUserId = Number(req.user!.id)
+
+        const data = await getPointsHistoryByUserIdService(loginUserId, 10, loginUserId, req.user!.role)
+        return res.status(200).json({ status: "Success", data: data })
     } catch (err) {
         next(err)
     }

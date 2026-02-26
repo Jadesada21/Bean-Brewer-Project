@@ -1,15 +1,14 @@
 import { Router } from 'express'
 
 import {
-    getPointsHistoryByUserId
+    getMyPointsHistory
 } from '../../controller/pointHistory.controller'
 
 import { authorize } from '../../middleware/authorize'
 
 const router = Router()
 
-router.route('/users/:userId')
-    .get(authorize('admin', 'customer'), getPointsHistoryByUserId)
-
+router.route('/users/me')
+    .get(authorize(['admin', 'customer']), getMyPointsHistory)
 
 export default router

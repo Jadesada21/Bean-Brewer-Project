@@ -1,4 +1,6 @@
 import { pool } from '../db/connectPostgre.repository'
+import { Role } from '../types/users.type'
+import { AppError } from '../util/AppError'
 
 
 export const getAllPointsHistoryService = async (userId?: number, limit = 20) => {
@@ -29,21 +31,25 @@ export const getAllPointsHistoryService = async (userId?: number, limit = 20) =>
 }
 
 
-export const getPointsHistoryByUserIdService = async (userId: number, limit = 10) => {
+export const getPointsHistoryByUserIdService = async (
+    targetUserId: number,
+    limit: number,
+    loginUserId: number,
+    role: Role) => {
+
+    if (role !== 'admin' && loginUserId !== targetUserId) {
+        throw new AppError("Forbidden", 403)
+    }
+
     const response = await pool.query(`
-        select
-        id,
-        points,
-        source,
-        reference_type,
-        reference_id,
-        created_at
+        select *
         from points_history
         where user_id = $1
         order by created_at desc
         limit $2
-        `,
-        [userId, limit]
-    )
+    `, [targetUserId, limit])
+
     return response.rows
 }
+
+
