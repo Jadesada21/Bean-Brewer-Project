@@ -10,6 +10,8 @@ create type roast_level as enum ('light','medium','dark');
 
 create type stock_type as enum ('in','out');
 
+create type payment_status as enum ('pending' , 'paid' , 'failed');
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY, 
     username VARCHAR(255) not null unique ,
@@ -157,7 +159,9 @@ id serial primary key,
 order_id int unique not null,
 amount int not null check(amount >=0),
 transaction_ref varchar(100) unique not null,
+status payment_status not null default 'pending'
 paid_at timestamp default current_timestamp not null,
+payment_provider varchar(20) default 'mock' not null,
 created_at timestamp default current_timestamp not null,
 foreign key (order_id) references orders(id) on delete cascade
 );
@@ -286,6 +290,9 @@ create unique index uniq_primary_image_per_reward
 on reward_images(reward_id)
 where is_primary = true;
 
+CREATE UNIQUE INDEX unique_pending_payment 
+ON payment(order_id) 
+WHERE status = 'pending';
 
 // 1 id สามารถมี sort_order 1 เลขได้แค่ตัวเดียวเท่านั้น เลขซ้ำไม่ได้
 
