@@ -7,7 +7,7 @@ import {
     updatePrimaryImagesByIdService,
     updateSortOrderByIdService,
     deleteRewardImagesByIdService
-} from '../../service/reward/image.Service'
+} from '../../service/reward/image.reward.service'
 
 
 export const uploadImageByRewardId = async (
@@ -105,7 +105,7 @@ export const deleteRewardImagesByRewardId = async (req: Request<{ reward_id: str
     try {
         const reward_id = parseInt(req.params.reward_id, 10)
 
-        if (!isNaN(reward_id)) {
+        if (isNaN(reward_id)) {
             return res.status(400).json({ status: "Failed", message: "Invalid reward_id" })
         }
 

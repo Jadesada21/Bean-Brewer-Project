@@ -7,7 +7,7 @@ import {
     updatePrimaryImagesByIdService,
     updateSortOrderByIdService,
     deleteProductImagesByIdService
-} from '../../service/product/image.Service'
+} from '../../service/product/image.product.service'
 
 
 export const uploadImageByProductId = async (

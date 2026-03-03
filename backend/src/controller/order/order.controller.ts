@@ -9,7 +9,7 @@ import {
     getOrderByUserIdService
 } from '../../service/order/order.service'
 
-import { CreateOrderInput } from '../../types/order.type'
+
 import { Status } from '../../types/order.type'
 
 
@@ -40,7 +40,6 @@ export const updateStatusOrder = async (req: Request<{ id: string }, {}, { statu
     try {
         const orderId = Number(req.params.id)
         const { status } = req.body
-
 
         if (Number.isNaN(orderId)) {
             throw new AppError("Invalid orderid", 400)

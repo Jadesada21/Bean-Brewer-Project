@@ -31,14 +31,14 @@ export const createProduct = async (req: Request<{}, {}, CreateProductInput>, re
         const { name, description, short_description, price, stock, reward_points, category_id, roast_level } = req.body
 
         if (
-            name === undefined ||
-            description === undefined ||
-            short_description === undefined ||
-            price === undefined ||
-            stock === undefined ||
-            reward_points === undefined ||
-            category_id === undefined ||
-            roast_level === undefined
+            name == null ||
+            description == null ||
+            short_description == null ||
+            price == null ||
+            stock == null ||
+            reward_points == null ||
+            category_id == null ||
+            roast_level == null
         ) {
             throw new AppError("Missing required field", 400)
         }
@@ -47,10 +47,10 @@ export const createProduct = async (req: Request<{}, {}, CreateProductInput>, re
             typeof name !== "string" || name.trim() === "" ||
             typeof short_description !== "string" || short_description.trim() === "" ||
             typeof description !== "string" || description.trim() === "" ||
-            typeof price !== "number" || Number.isInteger(price) || price <= 0 ||
-            typeof stock !== "number" || Number.isInteger(stock) || stock < 0 ||
-            typeof reward_points !== "number" || Number.isInteger(reward_points) || reward_points < 0 ||
-            typeof category_id !== "number" || Number.isInteger(category_id) ||
+            typeof price !== "number" || price <= 0 ||
+            typeof stock !== "number" || !Number.isInteger(stock) || stock < 0 ||
+            typeof reward_points !== "number" || !Number.isInteger(reward_points) || reward_points <= 0 ||
+            typeof category_id !== "number" || !Number.isInteger(category_id) || category_id <= 0
         ) {
             throw new AppError("Invalid input", 400)
         }
@@ -70,12 +70,14 @@ export const createProduct = async (req: Request<{}, {}, CreateProductInput>, re
 
 export const getProductById = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const role = req.user?.role ?? 'guest'
+
         const id = Number(req.params.id)
         if (Number.isNaN(id)) {
             throw new AppError("Invalid product ID", 400)
         }
 
-        const data = await getProductByIdService(id)
+        const data = await getProductByIdService(id, role)
         return res.status(200).json({ status: "Success", data: data })
 
     } catch (err) {

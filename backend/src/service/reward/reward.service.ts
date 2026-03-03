@@ -25,7 +25,7 @@ export const getAllRewardService = async (role?: string) => {
         select
             reward_id,
             count(*) as total_images
-        fron reward_images
+        from reward_images
         group by reward_id
     ) img on img.reward_id = r.id
     order by r.created_at desc
@@ -39,9 +39,9 @@ export const getAllRewardService = async (role?: string) => {
         r.name,
         r.points_required,
         ri.image_url
-        from rewards p
+        from rewards r
         left join reward_images ri 
-        on ri.product_id = r.id 
+        on rid.reward_id = r.id 
         and ri.is_primary = true
         where r.is_active = true
         order by r.created_at desc`
@@ -75,15 +75,55 @@ export const createRewardService = async (
 }
 
 
-export const getRewardByIdService = async (id: number) => {
-    const response = await pool.query(
-        `select * from rewards where id = $1`,
-        [id]
-    )
-    if (response.rowCount === 0) {
-        throw new AppError("reward not found", 404)
+export const getRewardByIdService = async (id: number, role?: string) => {
+    if (role === 'admin') {
+        const sql = ` select 
+        r.id,
+        r.name,
+        r.description,
+        r.short_description,
+        r.points_required,
+        r.stock,
+        r.category_id,
+        r.is_active,
+        r.created_at,
+        r.updated_at,
+        coalesce(img.total_images , 0) as total_images
+    from rewards r
+    left join (
+        select
+            reward_id,
+            count(*) as total_images
+        from reward_images
+        group by reward_id
+    ) img on img.reward_id = r.id
+     where r.id = $1
+        `
+        const response = await pool.query(sql, [id])
+        if (response.rowCount === 0) {
+            throw new AppError("Reward not found", 404)
+        }
+        return response.rows[0]
+    } else {
+        const sql = `
+        select
+        r.id,
+        r.name,
+        r.points_required,
+        ri.image_url
+        from rewards r
+        left join reward_images ri
+        on ri.reward_id = r.id 
+        and ri.is_primary = true
+        where r.id = $1
+        and r.is_active = true`
+        const response = await pool.query(sql, [id])
+
+        if (response.rowCount === 0) {
+            throw new AppError("Reward not found", 404)
+        }
+        return response.rows[0]
     }
-    return response.rows[0]
 }
 
 

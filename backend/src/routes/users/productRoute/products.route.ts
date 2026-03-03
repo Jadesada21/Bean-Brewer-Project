@@ -7,11 +7,13 @@ import {
 
 import imageProductRoute from './imageProduct.route'
 
+import { optionalAuthenticate } from '../../../middleware/optionalAuthenticate'
+
 
 const router = Router()
 
 router.route('/')
-    .get(getAllProduct)
+    .get(optionalAuthenticate, getAllProduct)
 
 
 router.route('/:id')

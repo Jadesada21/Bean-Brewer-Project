@@ -94,7 +94,7 @@ export const createOrderService = async (
             insert into orders
              (user_id, order_number, total_price, earned_points, status)
         values($1,
-        'ORD-' || lpad(nextval('order_number_seq')::text, 6 , '0'),
+        'ORD-' || lpad(nextval('order_number')::text, 6 , '0'),
         $2,
         $3,
         'pending'

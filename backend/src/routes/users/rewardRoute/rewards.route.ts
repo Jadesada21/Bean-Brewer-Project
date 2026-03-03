@@ -6,6 +6,7 @@ import {
 } from '../../../controller/reward/reward.controller'
 
 import imageRewardRoute from './imageReward.route'
+import { optionalAuthenticate } from '../../../middleware/optionalAuthenticate'
 
 
 
@@ -13,7 +14,7 @@ import imageRewardRoute from './imageReward.route'
 const router = Router()
 
 router.route('/')
-    .get(getAllReward)
+    .get(optionalAuthenticate, getAllReward)
 
 
 router.route('/:id')

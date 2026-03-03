@@ -81,16 +81,62 @@ export const createProductService = async (
 }
 
 
-export const getProductByIdService = async (id: number) => {
-    const response = await pool.query(
-        `select * from products where id = $1`,
-        [id]
-    )
-    if (response.rowCount === 0) {
-        throw new AppError("Product not found", 404)
+export const getProductByIdService = async (id: number, role?: Role | 'guest') => {
+    if (role === 'admin') {
+        const sql = ` select 
+        p.id,
+        p.name,
+        p.description,
+        p.short_description,
+        p.price,
+        p.stock,
+        p.reward_points,
+        p.roast_level,
+        p.category_id,
+        p.is_active,
+        p.created_at,
+        p.updated_at,
+        coalesce(img.total_images , 0) as total_images
+    from products p 
+    left join (
+        select 
+            product_id,
+            count(*) as total_images
+        from product_images
+        group by product_id 
+    ) img on img.product_id = p.id
+     where p.id = $1
+        `
+        const response = await pool.query(sql, [id])
+        if (response.rowCount === 0) {
+            throw new AppError("Product not found", 404)
+        }
+        return response.rows[0]
+    } else {
+        const sql = `
+        select  
+        p.id,
+        p.name,
+        p.short_description,
+        p.price,
+        pi.image_url
+    from products p
+    left join product_images pi 
+        on pi.product_id = p.id 
+        and pi.is_primary = true
+        where p.id = $1
+        and p.is_active = true
+        `
+        const response = await pool.query(sql, [id])
+        if (response.rowCount === 0) {
+            throw new AppError("Product not found", 404)
+        }
+        return response.rows[0]
     }
-    return response.rows[0]
+
 }
+
+
 
 
 export const toggleProductActiveService = async (id: number) => {

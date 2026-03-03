@@ -6,7 +6,7 @@ import {
 } from '../../service/order/orderItems.service'
 
 
-export const getOrderItemByUserId = async (req: Request, res: Response, next: NextFunction) => {
+export const getOrderItemByOrderIdandUserId = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const orderId = Number(req.params.orderId)
 

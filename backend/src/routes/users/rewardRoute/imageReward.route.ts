@@ -2,12 +2,8 @@ import { Router } from 'express'
 const router = Router({ mergeParams: true })
 
 import {
-    getImageById,
-    uploadImageByRewardId,
-    updatePrimaryImagesByRewardId,
-    deleteRewardImagesByRewardId,
-    updateSortOrderByRewardId
-} from '../../controller/reward/image.controller'
+    getImageById
+} from '../../../controller/reward/image.controller'
 
 
 

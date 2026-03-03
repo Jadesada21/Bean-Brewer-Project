@@ -8,7 +8,7 @@ const app: Application = express()
 
 app.use(cookieParser())
 app.use(cors({
-    origin: true,
+    origin: ['http://localhost:6060', 'https://yourproduction.com'],
     credentials: true
 }))
 app.use(express.json({ limit: "50mb" }))

@@ -24,7 +24,7 @@ export const createPromoCodeService = async (body: PromoCodeTypeInput): Promise<
     try {
         const response = await pool.query(`
         insert into promo_code 
-        (code , points , max_usage)
+        (code , bonus_points , max_usage)
         values($1,$2,$3)
         returning *
         `, [normalizedCode, bonus_points, max_usage])

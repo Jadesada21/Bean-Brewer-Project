@@ -10,16 +10,13 @@ export const getAllCategoryService = async () => {
     id , 
     name ,
     parent_id,
-    type,
-    created_at,
-    updated_at
+    type
     from categories 
     order by id desc
     `
     const response = await pool.query(sql)
     return response.rows
 }
-
 
 export const createCategoryService = async (body: CreateCategoryInput) => {
     const { name, parent_id, type } = body
@@ -99,4 +96,13 @@ export const getCategoryRewardsByIdService = async (id: number) => {
         ...categorieResult.rows[0],
         rewards: rewardsResult.rows
     }
+}
+
+export const admingetAllCategoryService = async () => {
+    const response = await pool.query(`
+    select * from categories
+    order by id desc
+        `)
+
+    return response.rows
 }

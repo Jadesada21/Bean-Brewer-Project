@@ -17,7 +17,7 @@ import { AppError } from '../../util/AppError'
 
 export const getAllReward = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const role = req.user?.role
+        const role = req.user?.role ?? 'guest'
 
         const data = await getAllRewardService(role)
         return res.status(200).json({ status: "Success", data: data })
@@ -31,12 +31,12 @@ export const createReward = async (req: Request<{}, {}, CreateRewardInput>, res:
         const { name, short_description, description, stock, points_required, category_id } = req.body
 
         if (
-            name === undefined ||
-            short_description === undefined ||
-            description === undefined ||
-            points_required === undefined ||
-            stock === undefined ||
-            category_id === undefined
+            name == null ||
+            short_description == null ||
+            description == null ||
+            points_required == null ||
+            stock == null ||
+            category_id == null
         ) {
             throw new AppError("Missing required field", 400)
         }
@@ -45,9 +45,9 @@ export const createReward = async (req: Request<{}, {}, CreateRewardInput>, res:
             typeof name !== "string" || name.trim() === "" ||
             typeof short_description !== "string" || short_description.trim() === "" ||
             typeof description !== "string" || description.trim() === "" ||
-            typeof points_required !== "number" || Number.isInteger(points_required) || points_required <= 0 ||
-            typeof stock !== "number" || Number.isInteger(stock) || stock < 0 ||
-            typeof category_id !== "number" || Number.isInteger(category_id)
+            typeof points_required !== "number" || !Number.isInteger(points_required) || points_required <= 0 ||
+            typeof stock !== "number" || !Number.isInteger(stock) || stock < 0 ||
+            typeof category_id !== "number" || !Number.isInteger(category_id) || category_id <= 0
         ) {
             throw new AppError("Invalid input ", 400)
         }
@@ -62,12 +62,14 @@ export const createReward = async (req: Request<{}, {}, CreateRewardInput>, res:
 
 export const getRewardById = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const role = req.user?.role ?? 'guest'
+
         const id = Number(req.params.id)
         if (isNaN(id)) {
             throw new AppError("Invalid reward ID", 400)
         }
 
-        const data = await getRewardByIdService(id)
+        const data = await getRewardByIdService(id, role)
         return res.status(200).json({ status: "Success", data: data })
 
     } catch (err) {

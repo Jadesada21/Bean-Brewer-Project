@@ -25,12 +25,12 @@ export const getAllPromoCode = async (req: Request, res: Response, next: NextFun
 
 export const createPromoCode = async (req: Request<{}, {}, PromoCodeTypeInput>, res: Response, next: NextFunction) => {
     try {
-        const { code, points, max_usage } = req.body
+        const { code, bonus_points, max_usage } = req.body
 
         if (
-            code === undefined ||
-            points === undefined ||
-            max_usage === undefined
+            code == null ||
+            bonus_points == null ||
+            max_usage == null
         ) {
             throw new AppError("Missing required field", 400)
         }
@@ -39,10 +39,10 @@ export const createPromoCode = async (req: Request<{}, {}, PromoCodeTypeInput>, 
             typeof code !== "string" ||
             code.trim() === "" ||
 
-            typeof points !== "number" || Number.isInteger(points) ||
-            points <= 0 ||
+            typeof bonus_points !== "number" || !Number.isInteger(bonus_points) ||
+            bonus_points <= 0 ||
 
-            typeof max_usage !== "number" || Number.isInteger(max_usage) ||
+            typeof max_usage !== "number" || !Number.isInteger(max_usage) ||
             max_usage <= 0
         ) {
             throw new AppError("Invalid input", 400)

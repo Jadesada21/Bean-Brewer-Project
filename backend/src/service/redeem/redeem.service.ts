@@ -342,12 +342,14 @@ export const updateStatusRedeemService = async (
 
 export const getRedeemByIdService = async (
     redeemId: number,
+    loginUserId: number
 ) => {
     const response = await pool.query(
         `select * 
         from redeems
-        where id =$1
-        `, [redeemId]
+        where id = $1
+        and user_id = $2
+        `, [redeemId, loginUserId]
     )
 
     if (response.rowCount === 0) {

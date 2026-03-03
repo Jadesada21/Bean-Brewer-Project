@@ -1,7 +1,7 @@
 import { Router } from 'express'
 
 import {
-    getOrderItemByOrderId
+    getOrderItemByOrderIdandUserId
 } from '../../../controller/order/orderItem.Controller'
 
 import { authorize } from '../../../middleware/authorize'
@@ -9,7 +9,7 @@ import { authorize } from '../../../middleware/authorize'
 const router = Router()
 
 router.route('/')
-    .get(authorize(['admin', 'customer']), getOrderItemByOrderId)
+    .get(authorize(['admin', 'customer']), getOrderItemByOrderIdandUserId)
 
 
 export default router

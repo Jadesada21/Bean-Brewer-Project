@@ -5,13 +5,15 @@ import {
     createCategoryService,
     getCategoryByIdService,
     getCategoryProductsByIdService,
-    getCategoryRewardsByIdService
+    getCategoryRewardsByIdService,
+    admingetAllCategoryService
 } from '../service/category.service'
 
 import {
     CreateCategoryInput
 } from '../types/category.type'
 import { AppError } from '../util/AppError'
+
 
 export const getAllCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -75,6 +77,15 @@ export const getCategoryRewardsById = async (req: Request, res: Response, next: 
 
         const data = await getCategoryRewardsByIdService(id)
 
+        return res.status(200).json({ status: "Success", data: data })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const admingetAllCategory = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const data = await admingetAllCategoryService()
         return res.status(200).json({ status: "Success", data: data })
     } catch (err) {
         next(err)

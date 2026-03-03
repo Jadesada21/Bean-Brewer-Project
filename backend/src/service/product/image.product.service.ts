@@ -208,7 +208,7 @@ export const updateSortOrderByIdService = async (product_id: number, body: setSo
         )
 
         if (checkProduct.rowCount === 0) {
-            throw new AppError("Product not fount ", 400)
+            throw new AppError("Product not fou ", 400)
         }
 
         const checkImage = await client.query(`
