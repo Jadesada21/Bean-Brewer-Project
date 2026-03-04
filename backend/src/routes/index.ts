@@ -1,16 +1,15 @@
 import { Router } from 'express'
 
-import loginRoute from './login-out-RegisRoute/login.route'
-import registerRoute from './login-out-RegisRoute/register.route'
-
+import loginRoute from './public-route/login-out-RegisRoute/login.route'
+import registerRoute from './public-route/login-out-RegisRoute/register.route'
+import logoutRoute from './public-route/login-out-RegisRoute/logout.route'
 
 import userRoute from './users/users.route'
 import categoryRoute from './users/category.route'
-import productsRoute from './users/productRoute/products.route'
+import productsRoute from './users/productroute/products.route'
 import addressRoute from './users/address.route'
-import logoutRoute from './login-out-RegisRoute/logout.route'
 import rewardsRoute from './users/rewardRoute/rewards.route'
-import orderRoute from './users/orderRoute/order.route'
+import orderRoute from './users/orderroute/order.route'
 import pointHistoryRoute from './users/pointHistory.route'
 import paymentRoute from './users/payment.route'
 import redeemRoute from './users/redeemRoute/redeem.route'

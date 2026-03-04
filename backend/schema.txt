@@ -10,9 +10,11 @@ create type roast_level as enum ('light','medium','dark');
 
 create type stock_type_new as enum ('order','redeem' , 'cancel' , 'restock' , 'adjustment');
 
-create type payment_status as enum ('pending' , 'paid' , 'failed');
+create type payment_status_new as enum ('pending' , 'completed' , 'failed');
 
 create type status_redeem as enum ('pending' , 'confirm' , 'cancelled')
+
+CREATE TYPE order_status AS ENUM ('pending', 'completed', 'cancelled');
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY, 
@@ -110,7 +112,7 @@ create table orders (
     user_id int not null,
     total_price int not null check (total_price >= 0),
     earned_points int not null default 0,
-    status varchar(20) not null default 'pending',
+    status order_status default 'pending' not null,
     created_at timestamp not null default now(),
     updated_at timestamp not null default now(),
     foreign key (user_id) references users(id) on delete restrict
@@ -173,8 +175,8 @@ id serial primary key,
 order_id int unique not null,
 amount int not null check(amount >=0),
 transaction_ref varchar(100) unique not null,
-status payment_status not null default 'pending'
-paid_at timestamp default current_timestamp not null,
+status payment_status_new default 'pending' not null,
+paid_at timestamp null,
 payment_provider varchar(20) default 'mock' not null,
 created_at timestamp default current_timestamp not null,
 foreign key (order_id) references orders(id) on delete cascade

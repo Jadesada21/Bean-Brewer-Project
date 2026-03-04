@@ -2,8 +2,7 @@ import { Router } from 'express'
 
 import {
     createPayment,
-    comfirmPayment,
-    cancelledPayment,
+    updatePaymentStatus,
     getPaymentById
 } from '../../controller/payment.controller'
 
@@ -19,10 +18,8 @@ router.route('/:orderId')
 router.route('/:paymentId/')
     .get(authorize(['admin', 'customer']), getPaymentById)
 
-router.route('/:paymentId/confirm')
-    .post(authorize(['customer']), comfirmPayment)
+router.route('/:paymentId/status')
+    .patch(authorize(['customer']), updatePaymentStatus)
 
-router.route('/:paymentId/cancel')
-    .post(authorize(['customer']), cancelledPayment)
 
 export default router

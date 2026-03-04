@@ -101,24 +101,6 @@ export const createOrderService = async (
 
         const order = orderResult.rows[0]
 
-        // double check stock
-        for (const [productId, totalQty] of quantityMap.entries()) {
-
-            const result = await client.query(`
-                update products
-                set stock = stock - $1
-                where id = $2
-                and stock >= $1
-                returning id
-                `,
-                [totalQty, productId]
-            )
-
-            if (result.rowCount === 0) {
-                throw new AppError("Insufficient stock", 400)
-            }
-        }
-
         // insert order_items
         for (const [productId, totalQty] of quantityMap.entries()) {
             const product = productMap.get(productId)
@@ -151,9 +133,8 @@ export const createOrderService = async (
 }
 
 
-export const updateStatusOrderService = async (
+export const cancelOrderService = async (
     orderId: number,
-    newStatus: Status,
     user: any
 ) => {
 
@@ -186,127 +167,16 @@ export const updateStatusOrderService = async (
             throw new AppError("Order already processed", 400)
         }
 
-        // เปลี่ยนได้เฉพาะ 2 สถานะ
-        if (!['completed', 'cancelled'].includes(newStatus)) {
-            throw new AppError("Invalid status transition", 400)
-        }
-
-        if (order.status === newStatus) {
-            throw new AppError("Status already set", 400)
-        }
-
-        const itemsResult = await client.query(`
-            select product_id , quantity
-            from order_items
-            where order_id = $1
-            `, [orderId]
-        )
-
-        const items = itemsResult.rows
-
-
-        // Order ที่จบแล้ว update points
-        if (newStatus === 'completed') {
-
-            for (const item of items) {
-
-                const productResult = await client.query(`
-                    select stock
-                    from products
-                    where id =$1
-                    for update
-                    `, [item.product_id])
-
-                const product = productResult.rows[0]
-
-                if (product.stock < item.quantity) {
-                    throw new AppError("Insufficient stock ", 400)
-                }
-
-                // decrease stock
-                await client.query(`
-                    update products
-                    set stock = stock - $1
-                    where id = $2
-                    `, [item.quantity, item.product_id])
-
-
-                // stock movement out
-                await client.query(`
-                        insert into stock_movements
-                        (
-                        item_type,
-                        item_id,
-                        quantity,
-                        movement_type,
-                        reference_type,
-                        reference_id
-                        )
-                        values($1,$2,$3,$4,$5,$6)
-                        `, [
-                    'product',
-                    item.product_id,
-                    -item.quantity,
-                    'order',
-                    'order',
-                    orderId
-                ])
-            }
-
-            // get points
-            if (order.earned_points > 0) {
-                await client.query(`
-                      insert into point_histories
-                (user_id , points , source , reference_type , reference_id )
-                values($1,$2,'order_earn','order',$3)
-                returning *
-                `,
-                    [order.user_id, order.earned_points, orderId]
-                )
-
-                await client.query(`
-                    update users
-                    set points = points + $1
-                    where id = $2
-            `,
-                    [order.earned_points, order.user_id]
-                )
-            }
-        }
-
-        if (newStatus === 'cancelled') {
-
-            for (const item of items) {
-
-                // restore stock
-                await client.query(`
-                    update products
-                    set stock = stock + $1
-                    where id =$2
-                    `, [item.quantity, item.product_id])
-
-
-                // stock movement return
-                await client.query(`
-               insert into stock_movements
-               (item_type, item_id,quantity,movement_type , reference_type , reference_id)
-               values('product' , $1 , $2 ,'cancel' , 'order' , $3)
-                `,
-                    [item.product_id, item.quantity, orderId]
-                )
-            }
-
-            // update order (list)
-
-            await client.query(`
+        // cancelled order
+        await client.query(`
                     update orders
-                    set status = $1,
+                    set status = 'cancelled',
                         updated_at = now()
-                        where id = $2
-                    `, [newStatus, orderId])
-        }
+                        where id = $1
+                    `, [orderId])
+
         await client.query("COMMIT")
-        return { orderId: orderId, status: newStatus }
+        return { orderId }
     } catch (err) {
         await client.query("ROLLBACK")
         throw err

@@ -2,7 +2,7 @@ import { Router } from 'express'
 
 import {
     logout
-} from '../controller/logoutController'
+} from '../../../controller/logout.controller'
 
 const router = Router()
 

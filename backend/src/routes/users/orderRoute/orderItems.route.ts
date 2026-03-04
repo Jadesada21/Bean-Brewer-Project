@@ -3,7 +3,7 @@ const router = Router({ mergeParams: true })
 
 import {
     getOrderItemByOrderIdandUserId
-} from '../../../controller/order/orderItem.Controller'
+} from '../../../controller/order/orderItem.controller'
 
 import { authorize } from '../../../middleware/authorize'
 

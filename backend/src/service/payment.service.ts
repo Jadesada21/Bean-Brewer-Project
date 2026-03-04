@@ -1,4 +1,5 @@
 import { pool } from '../db/connectPostgre.repository'
+import { PaymentUpdateStatus } from '../types/payment.type'
 import { Role } from '../types/users.type'
 import { AppError } from '../util/AppError'
 
@@ -90,128 +91,155 @@ export const createPaymentService = async (order_id: number, userId: number) => 
 
 }
 
-export const comfirmPaymentService = async (paymentId: number, loginUserId: number) => {
-
+export const updatePaymentStatusService = async (paymentId: number, newStatus: PaymentUpdateStatus, loginUserId: number, role: string) => {
     const client = await pool.connect()
     try {
-        await client.query("BEGIN")
+        await client.query(`BEGIN`)
 
         // lock payment
         const paymentResult = await client.query(`
-            select p.order_id , p.status , o.user_id
-            from payment p 
-            join orders o on o.id = p.order_id
-            where p.id = $1
-            for update of p , o 
+            select * from payment
+            where id = $1
+            for update
             `, [paymentId])
 
         if (paymentResult.rowCount === 0) {
-            throw new AppError("Payment not found", 400)
+            throw new AppError("Payment not found ", 400)
         }
 
         const payment = paymentResult.rows[0]
-
-        if (payment.user_id !== loginUserId) {
-            throw new AppError("Forbidden", 403)
-        }
 
         if (payment.status !== 'pending') {
             throw new AppError("Payment already processed", 400)
         }
 
-        // update payment
-        await client.query(`
+        // lock order
+        const orderResult = await client.query(`
+            select * from orders
+            where id = $1
+            for update
+            `, [payment.order_id])
+
+        if (orderResult.rowCount === 0) {
+            throw new AppError("Order not found", 400)
+        }
+
+        const order = orderResult.rows[0]
+
+        if (order.status !== 'pending') {
+            throw new AppError("Order already processed", 400)
+        }
+
+        if (role !== "admin" && Number(order.user_id) !== loginUserId) {
+            throw new AppError("Forbidden", 403)
+        }
+
+        // payment completed
+        if (newStatus === 'completed') {
+
+            // get order items
+            const itemsResult = await client.query(`
+                select product_id , quantity
+                from order_items
+                where order_id = $1
+                `, [order.id])
+
+
+            const items = itemsResult.rows
+
+            for (const item of items) {
+                //lock product
+                const productResult = await client.query(`
+                    select stock 
+                    from products
+                    where id = $1
+                    for update
+                    `, [item.product_id])
+
+                const product = productResult.rows[0]
+
+                if (!product) {
+                    throw new AppError("Product not found", 400)
+                }
+
+                if (product.stock < item.quantity) {
+                    throw new AppError("Insufficient", 400)
+                }
+
+                // decrease stock
+                await client.query(`
+                    update products
+                    set stock = stock - $1
+                    where id = $2
+                    `, [item.quantity, item.product_id])
+
+                // stock movement
+                await client.query(`
+                    insert into stock_movements
+                    (item_type , item_id ,quantity ,movement_type , reference_type,reference_id)
+                    values('product' , $1 ,$2 ,'order' , 'order' , $3)
+                    `, [item.product_id, -item.quantity, order.id])
+            }
+
+            // increase points
+            if (order.earned_points > 0) {
+
+                await client.query(`
+                    insert into point_histories
+                    (user_id , points , source , reference_type , reference_id)
+                    values($1,$2, 'order_earn', 'order' , $3)
+                    `, [order.user_id, order.earned_points, order.id])
+
+                await client.query(`
+                        update users
+                        set points = points + $1
+                        where id = $2
+                        `, [order.earned_points, order.user_id])
+            }
+
+            // update order
+            await client.query(`
+                update orders
+                set status = 'completed',
+                    updated_at = now()
+                    where id = $1
+                `, [order.id])
+
+            // update payment
+            await client.query(`
+                update payment
+                set status = 'completed',
+                    paid_at = now()
+                    where id = $1
+                `, [paymentId])
+        }
+
+
+        // cancelled payment
+        if (newStatus === 'failed') {
+
+            await client.query(`
+                update orders
+                set status = 'cancelled',
+                    updated_at = now()
+                    where id = $1
+                `, [order.id])
+
+            // updated payment
+            await client.query(`
             update payment
-            set status = 'paid',
-            paid_at = now()
+            set status = 'failed',
+                paid_at = null
             where id = $1
             `, [paymentId])
-
-        // update order
-        await client.query(`
-            update orders
-            set status = 'completed'
-            where id = $1
-            `,
-            [payment.order_id])
+        }
 
         await client.query("COMMIT")
-        return {
-            payment_id: paymentId,
-            order_id: payment.order_id,
-            status: 'paid'
-        }
+
+        return { paymentId, status: newStatus }
     } catch (err) {
         await client.query("ROLLBACK")
         throw err
-    } finally {
-        client.release()
-    }
-}
-
-export const cancelledPaymentService = async (paymentId: number, loginUserId: number) => {
-    const client = await pool.connect()
-
-    try {
-        await client.query("BEGIN")
-
-        // lock payment + order 
-        const paymentResult = await client.query(`
-            select 
-                p.order_id,
-                p.status,
-                o.user_id,
-            from payment p
-            join orders o on o.id = p.order_id
-            where p.id = $1
-            for update of p , o
-            `[paymentId])
-
-        if (paymentResult.rowCount === 0) {
-            throw new AppError("Payment not found", 400)
-        }
-
-        const payment = paymentResult.rows[0]
-
-        // owner check
-        if (payment.user_id !== loginUserId) {
-            throw new AppError("Forbidden", 403)
-        }
-
-        // allow cancel only pending
-        if (payment.status !== 'pending') {
-            throw new AppError("Payment already processed", 400)
-        }
-
-        // cancel payment
-        await client.query(`
-            update orders
-            set status = 'cancelled',
-            updated_at = now()
-            where id = $1
-            and status = 'pending'
-            `[payment.order_id])
-
-
-        // cancel order
-        const items = await client.query(`
-            select product_id , quantity
-            from order_items
-            where order_id = $1
-            `, [payment.order_id])
-
-        // restore stock
-        for (const item of items.rows) {
-            await client.query(`
-                update products
-                set stock = stock + $1
-                where id =$2
-                `, [item.quantity, item.product_id])
-        }
-
-        await client.query("COMMIT")
-    } catch (err) {
-        await client.query("ROLLBACK")
     } finally {
         client.release()
     }

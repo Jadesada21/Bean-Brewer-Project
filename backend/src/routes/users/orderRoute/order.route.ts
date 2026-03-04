@@ -2,7 +2,7 @@ import { Router } from 'express'
 
 import {
     createOrder,
-    updateStatusOrder,
+    cancelOrder,
     getOrderByUserId
 } from '../../../controller/order/order.controller'
 
@@ -24,8 +24,8 @@ router.route('/')
 router.route('/me')
     .get(authorize(['customer']), getOrderByUserId)
 
-router.route('/:id/status')
-    .patch(authorize(['customer']), updateStatusOrder)
+router.route('/:id/cancel')
+    .patch(authorize(['customer']), cancelOrder)
 
 
 router.route('/:orderId/payment')

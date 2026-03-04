@@ -1,10 +1,8 @@
 import { Router } from 'express'
 
-import {
-    getRedeemItemByUserId
-} from '../../../controller/redeem/redeemItem.Controller'
 
 import { authorize } from '../../../middleware/authorize'
+import { getRedeemItemByUserId } from '../../../controller/redeem/redeemItem.controller'
 
 const router = Router()
 

@@ -5,10 +5,11 @@ import { AppError } from "../util/AppError";
 import {
     getAllPaymentService,
     createPaymentService,
-    comfirmPaymentService,
-    cancelledPaymentService,
+    updatePaymentStatusService,
     getPaymentByIdService
 } from '../service/payment.service'
+
+import { PaymentUpdateStatus } from "../types/payment.type";
 
 
 export const getAllPayment = async (req: Request, res: Response, next: NextFunction) => {
@@ -38,31 +39,36 @@ export const createPayment = async (req: Request, res: Response, next: NextFunct
     }
 }
 
-export const comfirmPayment = async (req: Request, res: Response, next: NextFunction) => {
+
+export const updatePaymentStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const paymentId = Number(req.params.paymentId)
+        const loginUserId = Number(req.user!.id)
+        const role = req.user!.role
 
-        const loginUserId = req.user!.id
+        if (Number.isNaN(paymentId)) {
+            throw new AppError("Invalid payment id", 400)
+        }
 
-        const data = await comfirmPaymentService(paymentId, loginUserId)
+        const { status } = req.body
+
+        const allowedStatuses: PaymentUpdateStatus[] = ["completed", "failed"]
+
+        if (!allowedStatuses.includes(status)) {
+            throw new AppError("Invalid payment status", 400)
+        }
+
+        if (!['completed', 'failed'].includes(status)) {
+            throw new AppError("Invalid payment status", 400)
+        }
+
+        const data = await updatePaymentStatusService(paymentId, status, loginUserId, role)
         return res.status(200).json({ status: "Success", data: data })
     } catch (err) {
         next(err)
     }
 }
 
-export const cancelledPayment = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const paymentId = Number(req.params.paymentId)
-
-        const loginUserId = req.user!.id
-
-        const data = await cancelledPaymentService(paymentId, loginUserId)
-        return res.status(200).json({ status: "Success", data: data })
-    } catch (err) {
-        next(err)
-    }
-}
 
 export const getPaymentById = async (req: Request, res: Response, next: NextFunction) => {
     try {
