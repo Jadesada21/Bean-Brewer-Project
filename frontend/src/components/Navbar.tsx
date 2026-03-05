@@ -1,14 +1,16 @@
-import { Link } from 'react-router-dom'
-import logo from "../assets/logo.png";
+import { Link } from 'react-router-dom';
+import searchIcon from "../assets/search-img.svg";
+import cart from '../assets/cart.svg';
+import profile from '../assets/profile.svg';
 import OpenBox from "./isopen/OpenBox";
 import ShopDropdown from './dropdown/shop/ShopDropdown';
 
 export default function Navbar() {
     return (
-        <div className="flex items-center justify-between py-5 px-10 w-full h-35">
-            <div className="flex justify-center gap-20 items-center">
+        <div className="flex items-center justify-between py-5 px-10 w-full h-30 border-2 bg-[#fffdf7]">
+            <div className="flex justify-center gap-15 items-center border-2 border-red-300">
                 <Link to="/">
-                    <img src={logo} alt="logo" className="w-17 h-17 items-center rounded-4xl" />
+                    <p className="font-bold text-3xl">BEAN</p>
                 </Link>
                 <OpenBox label="Shop" >
                     <ShopDropdown />
@@ -19,13 +21,22 @@ export default function Navbar() {
                 <OpenBox label="About Us" >
                     {/* <ShopDropdown /> */}
                 </OpenBox>
-
             </div>
 
+            <div className="flex justify-center gap-15  items-center border-red-300 border-2">
+                <button>
+                    <img src={searchIcon} alt="search" className="w-9" />
+                </button>
 
-            <div>
+                <button>
+                    <img src={profile} alt="profile" className="w-8" />
+                </button>
 
+                <button>
+                    <img src={cart} alt="profile" className="w-9" />
+                </button>
             </div>
+
         </div >
     )
 }
