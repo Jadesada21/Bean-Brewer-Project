@@ -20,7 +20,7 @@ export const getAllProduct = async (req: Request, res: Response, next: NextFunct
 
         const role = req.user?.role ?? 'guest'
         const data = await getAllProductService(role)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -61,7 +61,7 @@ export const createProduct = async (req: Request<{}, {}, CreateProductInput>, re
             throw new AppError("Invalid Roast Level", 400)
         }
         const newProduct = await createProductService(req.body)
-        return res.status(201).json({ status: "Success", data: newProduct })
+        return res.status(201).json({ status: "Success", newProduct })
 
     } catch (err) {
         next(err)
@@ -78,7 +78,7 @@ export const getProductById = async (req: Request, res: Response, next: NextFunc
         }
 
         const data = await getProductByIdService(id, role)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
 
     } catch (err) {
         next(err)
@@ -92,7 +92,7 @@ export const toggleProductActive = async (req: Request, res: Response, next: Nex
             throw new AppError("Invalid product ID", 400)
         }
         const data = await toggleProductActiveService(id)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
 
     } catch (err) {
         next(err)

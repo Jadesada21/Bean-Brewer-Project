@@ -16,7 +16,7 @@ import { Status } from '../../types/order.type'
 export const getAllOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await getAllOrderService()
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -30,7 +30,7 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
             req.body,
             loginUserId
         )
-        return res.status(201).json({ status: "Success", data: data })
+        return res.status(201).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -45,7 +45,7 @@ export const cancelOrder = async (req: Request<{ id: string }, {}, { status: Sta
         }
 
         const data = await cancelOrderService(orderId, req.user)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -63,7 +63,7 @@ export const getOrderById = async (req: Request, res: Response, next: NextFuncti
         const role = req.user!.role
 
         const data = await getOrderByidService(orderId, loginUserId, role)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -74,7 +74,7 @@ export const getOrderByUserId = async (req: Request, res: Response, next: NextFu
         const loginUserId = req.user!.id
 
         const data = await getOrderByUserIdService(loginUserId)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }

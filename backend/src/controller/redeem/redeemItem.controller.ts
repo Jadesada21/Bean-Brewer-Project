@@ -19,7 +19,7 @@ export const getRedeemItemByUserId = async (req: Request, res: Response, next: N
 
         const data = await getRedeemItemByUserIdService(redeemId, loginUserId, role)
 
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }

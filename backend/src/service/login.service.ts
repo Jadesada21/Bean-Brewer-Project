@@ -8,8 +8,6 @@ import {
 } from '../types/login.type'
 
 
-
-
 export const loginService = async (username: string, password: string): Promise<LoginResponse> => {
 
     const result = await pool.query(

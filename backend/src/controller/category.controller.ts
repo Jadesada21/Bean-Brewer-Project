@@ -18,7 +18,7 @@ import { AppError } from '../util/AppError'
 export const getAllCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await getAllCategoryService()
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -28,7 +28,7 @@ export const getAllCategory = async (req: Request, res: Response, next: NextFunc
 export const createCategory = async (req: Request<{}, {}, CreateCategoryInput>, res: Response, next: NextFunction) => {
     try {
         const data = await createCategoryService(req.body)
-        return res.status(201).json({ status: "Success", data: data })
+        return res.status(201).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -44,7 +44,7 @@ export const getCategoryById = async (req: Request, res: Response, next: NextFun
 
         const data = await getCategoryByIdService(id)
 
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -60,7 +60,7 @@ export const getCategoryProductsById = async (req: Request, res: Response, next:
         }
         const data = await getCategoryProductsByIdService(id)
 
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -77,7 +77,7 @@ export const getCategoryRewardsById = async (req: Request, res: Response, next: 
 
         const data = await getCategoryRewardsByIdService(id)
 
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -86,7 +86,7 @@ export const getCategoryRewardsById = async (req: Request, res: Response, next: 
 export const admingetAllCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await admingetAllCategoryService()
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }

@@ -17,7 +17,7 @@ import { AppError } from '../../util/AppError'
 export const getAllPromoCode = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await getAllPromoCodeService()
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -49,7 +49,7 @@ export const createPromoCode = async (req: Request<{}, {}, PromoCodeTypeInput>, 
         }
 
         const newPromoCode = await createPromoCodeService(req.body)
-        return res.status(201).json({ status: "Success", data: newPromoCode })
+        return res.status(201).json({ status: "Success", newPromoCode })
 
     } catch (err) {
         next(err)
@@ -64,7 +64,7 @@ export const getPromoCodeById = async (req: Request, res: Response, next: NextFu
         }
 
         const data = await getPromoCodeByIdService(id)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
 
     } catch (err) {
         next(err)
@@ -78,7 +78,7 @@ export const togglePromoCodeActive = async (req: Request, res: Response, next: N
             throw new AppError("Invalid Promo Code id", 400)
         }
         const data = await togglePromoCodeActiveService(id)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
 
     } catch (err) {
         next(err)

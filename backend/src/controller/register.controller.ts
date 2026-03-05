@@ -17,7 +17,7 @@ export const createUsers = async (req: Request<{}, {}, CreateUsersInput>, res: R
         }
 
         const newCustomer = await createUsersService(req.body)
-        return res.status(201).json({ status: "Success", data: newCustomer })
+        return res.status(201).json({ status: "Success", newCustomer })
 
     } catch (err) {
         next(err)

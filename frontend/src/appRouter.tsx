@@ -1,14 +1,30 @@
-import { Routes, Route } from "react-router-dom"
-// import Home from "../pages/Home"
-// import Shop from "../pages/Shop"
-// import Rewards from "../pages/Rewards"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
+
+import Home from "./pages/HomePage"
+import ShopPage from "./pages/shop/ShopPage"
+import RewardPage from "./pages/reward/RewardPage"
 
 export default function AppRouter() {
     return (
-        <Routes>
-            {/* <Route path="/" element={<Home />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/rewards" element={<Rewards />} /> */}
-        </Routes>
+        <BrowserRouter>
+            <div className="min-h-screen flex flex-col">
+
+                <Navbar />
+
+                <main className="grow">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/shops" element={<ShopPage />} />
+                        <Route path="/rewards" element={<RewardPage />} />
+                    </Routes>
+                </main>
+
+                <Footer />
+            </div>
+        </BrowserRouter >
     )
 }
+

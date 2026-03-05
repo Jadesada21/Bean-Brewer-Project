@@ -22,7 +22,7 @@ export const getOrderItemByOrderIdandUserId = async (req: Request, res: Response
 
         const data = await getOrderItemByUserIdService(orderId, userId, role)
 
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }

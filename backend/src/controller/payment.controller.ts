@@ -15,7 +15,7 @@ import { PaymentUpdateStatus } from "../types/payment.type";
 export const getAllPayment = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await getAllPaymentService()
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -33,7 +33,7 @@ export const createPayment = async (req: Request, res: Response, next: NextFunct
 
 
         const payment = await createPaymentService(orderId, userId)
-        return res.status(201).json({ status: "Success", data: payment })
+        return res.status(201).json({ status: "Success", payment })
     } catch (err) {
         next(err)
     }
@@ -63,7 +63,7 @@ export const updatePaymentStatus = async (req: Request, res: Response, next: Nex
         }
 
         const data = await updatePaymentStatusService(paymentId, status, loginUserId, role)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -79,7 +79,7 @@ export const getPaymentById = async (req: Request, res: Response, next: NextFunc
         }
 
         const data = await getPaymentByIdService(paymentId, req.user!.id, req.user!.role)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }

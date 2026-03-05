@@ -10,7 +10,7 @@ import { AppError } from "../util/AppError";
 export const getAllStockmovement = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await getAllStockmovementService()
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -25,7 +25,7 @@ export const getStockmovementById = async (req: Request, res: Response, next: Ne
         }
 
         const data = await getStockmovementByIdService(id)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }

@@ -7,8 +7,8 @@ import ShopDropdown from './dropdown/shop/ShopDropdown';
 
 export default function Navbar() {
     return (
-        <div className="flex items-center justify-between py-5 px-10 w-full h-30 border-2 bg-[#fffdf7]">
-            <div className="flex justify-center gap-15 items-center border-2 border-red-300">
+        <div className="flex items-center justify-between py-5 px-10 w-full h-30 border-2 bg-[#fffdf7] ">
+            <div className="flex justify-center gap-15 items-center border-2 border-red-300 ml-15">
                 <Link to="/">
                     <p className="font-bold text-3xl">BEAN</p>
                 </Link>
@@ -23,7 +23,7 @@ export default function Navbar() {
                 </OpenBox>
             </div>
 
-            <div className="flex justify-center gap-15  items-center border-red-300 border-2">
+            <div className="flex justify-center gap-15  items-center border-red-300 border-2 mr-20">
                 <button>
                     <img src={searchIcon} alt="search" className="w-9" />
                 </button>

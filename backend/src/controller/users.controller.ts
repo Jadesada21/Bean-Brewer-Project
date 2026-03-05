@@ -25,7 +25,7 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
     try {
         const user = await getAllUsersService()
 
-        return res.status(200).json({ status: "Success", data: user })
+        return res.status(200).json({ status: "Success", user })
     } catch (err) {
         next(err)
     }
@@ -43,7 +43,7 @@ export const getUsersById = async (req: Request, res: Response, next: NextFuncti
 
         const data = await getUsersByIdService(targetUserId, req.user!.id)
 
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -67,7 +67,7 @@ export const updateUsersById = async (req: Request, res: Response, next: NextFun
 
         const responese = await updateUsersByIdService(targetUserId, req.user!.id, { phone_num })
 
-        return res.status(200).json({ status: "Success", data: responese })
+        return res.status(200).json({ status: "Success", responese })
     } catch (err) {
         next(err)
     }
@@ -81,7 +81,7 @@ export const getAllUsersAddress = async (req: Request, res: Response, next: Next
     try {
         const user = await getAllUsersAddressService()
 
-        return res.status(200).json({ status: "Success", data: user })
+        return res.status(200).json({ status: "Success", user })
     } catch (err) {
         next(err)
     }
@@ -99,7 +99,7 @@ export const addUsersAddressById = async (req: Request<{}, {}, AddUsersAddressBy
         }
 
         const newAddress = await createUsersAddressByIdService(userId, req.body)
-        return res.status(201).json({ status: "Success", data: newAddress })
+        return res.status(201).json({ status: "Success", newAddress })
     } catch (err) {
         next(err)
     }
@@ -123,7 +123,7 @@ export const updateAddressUsersById = async (req: Request<{ id: string }, {}, Up
 
         const updated = await updateAddressUserByIdService(userId, addressId, req.body)
 
-        res.status(200).json({ status: "Success", data: updated })
+        res.status(200).json({ status: "Success", updated })
     } catch (err) {
         next(err)
     }
@@ -132,7 +132,7 @@ export const updateAddressUsersById = async (req: Request<{ id: string }, {}, Up
 export const getAllMyAddress = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await getAllMyAddressService(req.user!.id)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -148,7 +148,7 @@ export const setdefaultAddress = async (req: Request, res: Response, next: NextF
 
         const userId = req.user!.id
         const data = await setdefaultAddressService(userId, addressId)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }

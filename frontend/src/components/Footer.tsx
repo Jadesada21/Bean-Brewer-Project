@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
     return (
-        <footer className="bg-zinc-800 text-white px-60 pt-10 pb-5">
+        <footer className="bg-zinc-800 text-white px-70 pt-10 pb-5">
 
             {/* <!-- top --> */}
             <div className="flex justify-between">
 
                 {/* <!-- left --> */}
-                <div className="grid grid-cols-4 gap-35">
+                <div className="grid grid-cols-4 gap-30">
 
                     <div>
                         <h3 className="font-bold mb-4 text-xl">Shop</h3>

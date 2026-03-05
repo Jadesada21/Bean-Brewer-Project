@@ -20,7 +20,7 @@ export const getAllReward = async (req: Request, res: Response, next: NextFuncti
         const role = req.user?.role ?? 'guest'
 
         const data = await getAllRewardService(role)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -53,7 +53,7 @@ export const createReward = async (req: Request<{}, {}, CreateRewardInput>, res:
         }
 
         const data = await createRewardService(req.body)
-        return res.status(201).json({ status: "Success", data: data })
+        return res.status(201).json({ status: "Success", data })
 
     } catch (err) {
         next(err)
@@ -70,7 +70,7 @@ export const getRewardById = async (req: Request, res: Response, next: NextFunct
         }
 
         const data = await getRewardByIdService(id, role)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
 
     } catch (err) {
         next(err)
@@ -84,7 +84,7 @@ export const toggleRewardActive = async (req: Request, res: Response, next: Next
             throw new AppError("Invalid reward ID", 400)
         }
         const data = await toggleRewardActiveService(id)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
 
     } catch (err) {
         next(err)

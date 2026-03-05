@@ -14,7 +14,7 @@ export const getMyPromoCodeUsage = async (req: Request, res: Response, next: Nex
         const loginUserId = Number(req.user!.id)
 
         const data = await getMyPromoCodeUsageService(loginUserId)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -47,7 +47,7 @@ export const redeemPromoCode = async (req: Request, res: Response, next: NextFun
 export const getAllRedeemedPromoCodeusages = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await getAllRedeemedPromoCodeusagesService()
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
 
     } catch (err) {
         next(err)
@@ -65,7 +65,7 @@ export const getRedeemedPromoCodeusagesById = async (req: Request, res: Response
         }
 
         const data = await getRedeemedPromoCodeusagesByIdService(id)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
 
     } catch (err) {
         next(err)

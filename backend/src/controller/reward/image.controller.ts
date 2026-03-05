@@ -35,7 +35,7 @@ export const uploadImageByRewardId = async (
 
         const data = await uploadImageRewardByIdService(
             reward_id, files, imagesMeta)
-        return res.status(201).json({ status: "Success", data: data })
+        return res.status(201).json({ status: "Success", data })
     } catch (err) {
         next(err)
 
@@ -51,7 +51,7 @@ export const getImageById = async (req: Request, res: Response, next: NextFuncti
         }
 
         const data = await getImageRewardByIdService(id)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
 
@@ -73,7 +73,7 @@ export const updatePrimaryImagesByRewardId = async (req: Request<{ reward_id: st
         }
 
         const data = await updatePrimaryImagesByIdService(reward_id, { image_id })
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -120,9 +120,7 @@ export const deleteRewardImagesByRewardId = async (req: Request<{ reward_id: str
 
         const data = await deleteRewardImagesByIdService(reward_id, { image_ids })
         return res.status(200).json({
-            status: "Success",
-            message: "Images deleted successfully",
-            data
+            status: "Success", message: "Images deleted successfully", data
         })
     } catch (err) {
         next(err)

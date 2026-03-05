@@ -35,7 +35,7 @@ export const uploadImageByProductId = async (
 
         const data = await uploadImageProductByIdService(
             product_id, files, imagesMeta)
-        return res.status(201).json({ status: "Success", data: data })
+        return res.status(201).json({ status: "Success", data })
     } catch (err) {
         next(err)
 
@@ -51,7 +51,7 @@ export const getImageById = async (req: Request, res: Response, next: NextFuncti
         }
 
         const data = await getImageProductByIdService(id)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
 
@@ -73,7 +73,7 @@ export const updatePrimaryImagesByProductId = async (req: Request<{ product_id: 
         }
 
         const data = await updatePrimaryImagesByIdService(product_id, { image_id })
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -120,9 +120,7 @@ export const deleteProductImagesByProductId = async (req: Request<{ product_id: 
 
         const data = await deleteProductImagesByIdService(product_id, { image_ids })
         return res.status(200).json({
-            status: "Success",
-            message: "Images deleted successfully",
-            data
+            status: "Success", message: "Images deleted successfully", data
         })
     } catch (err) {
         next(err)

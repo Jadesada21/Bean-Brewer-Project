@@ -26,7 +26,7 @@ export const getAllPointsHistory = async (req: Request, res: Response, next: Nex
         }
 
         const data = await getAllPointsHistoryService(userId, limit)
-        return res.status(200).json({ status: "Success", total: data.length, data })
+        return res.status(200).json({ status: "Success", total: data.length })
 
     } catch (err) {
         next(err)
@@ -50,7 +50,7 @@ export const getPointsHistoryByUserId = async (req: Request, res: Response, next
         }
 
         const data = await getPointsHistoryByUserIdService(targetUserId, limit)
-        return res.status(200).json({ status: "Success", total: data.length, data })
+        return res.status(200).json({ status: "Success", total: data.length })
     } catch (err) {
         next(err)
     }
@@ -62,7 +62,7 @@ export const getMyPointsHistory = async (req: Request, res: Response, next: Next
         const loginUserId = req.user!.id
 
         const data = await getPointsHistoryByUserIdService(loginUserId, 10)
-        return res.status(200).json({ status: "Success", data: data })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
