@@ -5,12 +5,12 @@ import {
     getAllRedeemService,
     createRedeemService,
     updateStatusRedeemService,
-    getRedeemByIdService,
+    getMyRedeemHistoryService,
     getRedeemByUserIdService,
     adminGetRedeemByIdService
 } from '../../service/redeem/redeem.service'
 
-import { Status } from "../../types/redeem.type";
+import { RedeemUpdateStatus } from "../../types/redeem.type";
 
 export const getAllRedeem = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -36,37 +36,42 @@ export const createRedeem = async (req: Request, res: Response, next: NextFuncti
     }
 }
 
-export const updateStatusRedeem = async (req: Request<{ id: string }, {}, { status: Status }>, res: Response, next: NextFunction) => {
+export const updateStatusRedeem = async (req: Request, res: Response, next: NextFunction) => {
     try {
+
         const redeemId = Number(req.params.id)
-        const { status } = req.body
+        const loginUserId = Number(req.user!.id)
+        const role = req.user!.role
+
 
         if (Number.isNaN(redeemId)) {
             throw new AppError("Invalid redeemId", 400)
         }
 
-        if (!status) {
-            throw new AppError("Status required", 400)
+        const { status } = req.body
+
+        const allowedStatuses: RedeemUpdateStatus[] = ["completed", "failed"]
+
+        if (!allowedStatuses.includes(status)) {
+            throw new AppError("Invalid redeem status", 400)
         }
 
-        const data = await updateStatusRedeemService(redeemId, status, req.user)
+        if (!['completed', 'failed'].includes(status)) {
+            throw new AppError("Invalid redeem status", 400)
+        }
+
+        const data = await updateStatusRedeemService(redeemId, status, loginUserId, role)
         return res.status(200).json({ status: "Success", data: data })
     } catch (err) {
         next(err)
     }
 }
 
-export const getRedeemById = async (req: Request, res: Response, next: NextFunction) => {
+export const getMyRedeemHistory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const redeemId = Number(req.params.id)
-
-        if (Number.isNaN(redeemId)) {
-            throw new AppError("Invalid redeem id", 400)
-        }
-
         const loginUserId = req.user!.id
 
-        const data = await getRedeemByIdService(redeemId, loginUserId)
+        const data = await getMyRedeemHistoryService(loginUserId)
         return res.status(200).json({ status: "Success", data: data })
     } catch (err) {
         next(err)
@@ -75,9 +80,9 @@ export const getRedeemById = async (req: Request, res: Response, next: NextFunct
 
 export const getRedeemByUserId = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = Number(req.params.id)
+        const userId = Number(req.params.userId)
 
-        if (Number.isNaN(userId) || userId < 0) {
+        if (Number.isNaN(userId) || userId <= 0) {
             throw new AppError("Invalid user id ", 400)
         }
 

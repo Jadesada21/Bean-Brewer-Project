@@ -14,13 +14,10 @@ export const getRedeemItemByUserId = async (req: Request, res: Response, next: N
             throw new AppError("Invalid redeem id", 400)
         }
 
-        if (!req.user) {
-            throw new AppError("Unauthorized", 401)
-        }
+        const loginUserId = req.user!.id
+        const role = req.user!.role
 
-        const { id: userId, role } = req.user
-
-        const data = await getRedeemItemByUserIdService(redeemId, userId, role)
+        const data = await getRedeemItemByUserIdService(redeemId, loginUserId, role)
 
         return res.status(200).json({ status: "Success", data: data })
     } catch (err) {

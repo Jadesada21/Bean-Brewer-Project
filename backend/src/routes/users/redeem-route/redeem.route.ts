@@ -3,7 +3,7 @@ import { Router } from 'express'
 import {
     createRedeem,
     updateStatusRedeem,
-    getRedeemById
+    getMyRedeemHistory
 } from '../../../controller/redeem/redeem.controller'
 
 import redeemItemRoute from './redeemItem.route'
@@ -18,7 +18,7 @@ router.route('/')
     .post(authorize(['customer']), createRedeem)
 
 router.route('/me')
-    .get(authorize(['customer']), getRedeemById)
+    .get(authorize(['customer']), getMyRedeemHistory)
 
 router.route('/:id/status')
     .patch(authorize(['customer']), updateStatusRedeem)

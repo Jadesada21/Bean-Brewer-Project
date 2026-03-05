@@ -3,7 +3,7 @@ import { Role } from '../../types/users.type'
 import { AppError } from '../../util/AppError'
 
 
-export const getRedeemItemByUserIdService = async (redeemId: number, userId: number, role: Role) => {
+export const getRedeemItemByUserIdService = async (redeemId: number, loginUserId: number, role: Role) => {
     let sql
     let values
 
@@ -19,7 +19,7 @@ export const getRedeemItemByUserIdService = async (redeemId: number, userId: num
         from redeem_items ri
         join rewards r on r.id = ri.reward_id
         where ri.redeem_id = $1
-        redeem by ri.id
+        order by ri.id
         `
         values = [redeemId]
     } else {
@@ -38,7 +38,7 @@ export const getRedeemItemByUserIdService = async (redeemId: number, userId: num
         and rd.user_id = $2
         order by ri.id
         `
-        values = [redeemId, userId]
+        values = [redeemId, loginUserId]
     }
 
     const response = await pool.query(sql, values)

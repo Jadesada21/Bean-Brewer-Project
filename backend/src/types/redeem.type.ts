@@ -1,4 +1,5 @@
-export type Status = 'pending' | 'confirm' | 'cancelled'
+export type Status = 'pending' | 'confirmed' | 'cancelled'
+export type RedeemUpdateStatus = "completed" | "failed"
 
 export interface RedeemResponse {
     id: number

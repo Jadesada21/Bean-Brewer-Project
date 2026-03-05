@@ -91,7 +91,12 @@ export const createPaymentService = async (order_id: number, userId: number) => 
 
 }
 
-export const updatePaymentStatusService = async (paymentId: number, newStatus: PaymentUpdateStatus, loginUserId: number, role: string) => {
+export const updatePaymentStatusService = async (
+    paymentId: number,
+    newStatus: PaymentUpdateStatus,
+    loginUserId: number, role: string
+) => {
+
     const client = await pool.connect()
     try {
         await client.query(`BEGIN`)

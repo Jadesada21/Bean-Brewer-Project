@@ -5,7 +5,7 @@ import {
     toggleRewardActive
 } from '../../../controller/reward/reward.controller'
 
-import imageRewardRoute from '../../admin/rewardRoute/ad.image.reward.route'
+import imageRewardRoute from './ad.image.reward.route'
 
 const router = Router()
 

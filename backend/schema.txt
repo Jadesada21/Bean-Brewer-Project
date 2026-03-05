@@ -12,7 +12,7 @@ create type stock_type_new as enum ('order','redeem' , 'cancel' , 'restock' , 'a
 
 create type payment_status_new as enum ('pending' , 'completed' , 'failed');
 
-create type status_redeem as enum ('pending' , 'confirm' , 'cancelled')
+create type status_redeem_new as enum ('pending' , 'confirmed' , 'cancelled')
 
 CREATE TYPE order_status AS ENUM ('pending', 'completed', 'cancelled');
 
@@ -150,7 +150,7 @@ id serial primary key ,
 user_id int not null ,
 reward_id int not null,
 redeem_number varchar(50) unique not null,
-status status_redeem not null default 'pending',
+status status_redeem_new not null default 'pending',
 points_used int not null check(points_used >0),
 created_at timestamp default current_timestamp not null,
 foreign key (user_id) references users(id) on delete restrict,
@@ -311,6 +311,23 @@ for each row
 execute function generate_order_number();
 
 
+// trigger redeem_number
+
+create or replace function generate_redeem_number()
+returns trigger as $$
+begin
+    new.redeem_number :=
+        'ORD-' || lpad(new.id::text, 6, '0');
+    return new;
+end;
+$$ language plpgsql;
+
+// สร้าง trigger สำหรับ redeem_number
+
+create trigger trg_generate_redeem_number
+before insert on redeems
+for each row
+execute function generate_redeem_number()
 
 // primary = sort_order 1
 

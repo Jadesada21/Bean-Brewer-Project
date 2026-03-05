@@ -1,16 +1,15 @@
 import { pool } from '../../db/connectPostgre.repository'
-import { Role } from '../../types/users.type'
 import { AppError } from '../../util/AppError'
 
 import {
     RedeemResponse,
     CreateRedeemInput,
-    Status
+    RedeemUpdateStatus
 } from '../../types/redeem.type'
 
 export const getAllRedeemService = async () => {
     const response = await pool.query(`
-        select * from redeem_history
+        select * from redeems
         order by created_at desc
         `)
 
@@ -28,9 +27,17 @@ export const createRedeemService = async (
     try {
         await client.query("BEGIN")
 
+        // limit 1 redeem <= 2 items
+        const maxRedeemItems = 2
+
+        const totalQty = items.reduce((sum, item) => sum + item.quantity, 0)
+
+        if (totalQty > maxRedeemItems) {
+            throw new AppError("Redeem limit exceeded (max 2 items)", 400)
+        }
+
         // ดึงข้อมูล reward ทั้งหมดที่เลือก 
         const reward_ids = [...new Set(items.map(i => i.reward_id))]
-
 
         // lock row เพื่อกัน race conidtion
         const rewardResult = await client.query(`
@@ -57,9 +64,9 @@ export const createRedeemService = async (
             )
         }
 
-
         // validate reward
-        let totalPoints_used = 0
+        let totalPointsUsed = 0
+
 
         for (const [rewardId, totalQty] of quantityMap.entries()) {
 
@@ -73,15 +80,9 @@ export const createRedeemService = async (
                 throw new AppError("Insufficient stock", 400)
             }
 
-            totalPoints_used += reward.points_required * totalQty
-
+            totalPointsUsed += reward.points_required * totalQty
         }
 
-        // calculate totals
-        for (const item of items) {
-            const reward = rewardMap.get(item.reward_id)
-
-        }
 
         // lock user
         const userResult = await client.query(`
@@ -97,7 +98,7 @@ export const createRedeemService = async (
             throw new AppError("User not found", 404)
         }
 
-        if (user.points < totalPoints_used) {
+        if (user.points < totalPointsUsed) {
             throw new AppError("Insufficient points", 400)
         }
 
@@ -105,86 +106,19 @@ export const createRedeemService = async (
         // สร้าง redeem
         const redeemResult = await client.query(`
             insert into redeems
-            (user_id , redeem_number , total_points_used , status)
-            values($1,
-            'RDM-' || lpad(nextval('redeem_number_seq'):: text, 6 , '0'),
-            $2,
-            'pending'
-            )
+            (user_id  , total_points_used , status)
+            values($1,$2,'pending')
             returning *`,
-            [loginUserId, totalPoints_used]
+            [loginUserId, totalPointsUsed]
         )
         const redeem = redeemResult.rows[0]
 
-
-        // decrease user point
-        const userUpdate = await client.query(`
-                update users
-                set points = points - $1
-                where id = $2
-                and points >= $1
-                returning id
-                `, [totalPoints_used, loginUserId]
-        )
-
-        if (userUpdate.rowCount === 0) {
-            throw new AppError("Point decrease failed", 400)
-        }
-
-        // points_movement
-        await client.query(`
-            insert into points_histories(
-            user_id,
-            points,
-            source,
-            reference_type,
-            reference_id)
-            values ($1,$2,'redeem','redeem' ,$3)
-            `, [loginUserId, -totalPoints_used, redeem.id])
-
-
-        // decrease reward stock
-        for (const [rewardId, totalQty] of quantityMap.entries()) {
-
-            const result = await client.query(`
-                update rewards
-                set stock = stock - $1
-                where id = $2
-                and stock >= $1
-                returning id
-                `,
-                [totalQty, rewardId]
-            )
-
-            if (result.rowCount === 0) {
-                throw new AppError("Stock update failed", 400)
-            }
-
-            await client.query(`
-            insert into stock_movements(
-            item_type,
-            item_id,
-            quantity,
-            movement_type,
-            reference_type,
-            reference_id)
-            values($1,$2,$3,$4,$5,$6)
-            `, ['reward',
-                rewardId,
-                -totalQty,
-                'redeem',
-                'redeem',
-                redeem.id])
-        }
-
-
-        // insert redeem_item
         for (const item of items) {
 
             const reward = rewardMap.get(item.reward_id)
 
             if (!reward) {
-                throw new AppError("Reward not found ", 400)
+                throw new AppError("Reward not found", 400)
             }
 
             const totalPoints = item.quantity * reward.points_required
@@ -193,18 +127,16 @@ export const createRedeemService = async (
                 insert into redeem_items
                 (redeem_id , reward_id , quantity , points_per_item , total_points_used)
                 values($1,$2,$3,$4,$5)
-                `,
-                [
-                    redeem.id,
-                    item.reward_id,
-                    item.quantity,
-                    reward.points_required,
-                    totalPoints
-                ]
-            )
+                `, [
+                redeem.id,
+                item.reward_id,
+                item.quantity,
+                reward.points_required,
+                totalPoints
+            ])
         }
-        await client.query("COMMIT")
 
+        await client.query("COMMIT")
         return redeem
     } catch (err) {
         await client.query("ROLLBACK")
@@ -216,8 +148,8 @@ export const createRedeemService = async (
 
 export const updateStatusRedeemService = async (
     redeemId: number,
-    newStatus: Status,
-    user: any
+    newStatus: RedeemUpdateStatus,
+    loginUserId: number, role: string
 ) => {
     const client = await pool.connect()
 
@@ -238,7 +170,7 @@ export const updateStatusRedeemService = async (
         const redeem = redeemResult.rows[0]
 
         // check own
-        if (user.role !== 'admin' && redeem.user_id !== user.id) {
+        if (role !== 'admin' && Number(redeem.user_id) !== loginUserId) {
             throw new AppError("Forbidden", 403)
         }
 
@@ -246,7 +178,7 @@ export const updateStatusRedeemService = async (
             throw new AppError("Order already processed", 400)
         }
 
-        if (!['completed', 'cancelled'].includes(newStatus)) {
+        if (!['completed', 'failed'].includes(newStatus)) {
             throw new AppError("Invalid status transition", 400)
         }
 
@@ -254,9 +186,8 @@ export const updateStatusRedeemService = async (
             throw new AppError("Status already set", 400)
         }
 
-
         const itemsResult = await client.query(`
-            select reward_id , quantity
+            select reward_id , quantity , points_per_item
             from redeem_items
             where redeem_id = $1
             `, [redeemId]
@@ -265,66 +196,73 @@ export const updateStatusRedeemService = async (
         const items = itemsResult.rows
 
         // confirm
-        if (newStatus === 'confirm') {
-            await client.query(`
-                    update redeems
-                    set status = $1,
-                    updated_at = now()
-                    where id = $2
-                    `, ['confirm', redeemId])
-        }
+        if (newStatus === 'completed') {
 
-        // cancelled
-        if (newStatus === 'cancelled') {
+            // lock row user 
+            const userResult = await client.query(`
+                select id , points
+                from users
+                where id = $1
+                for update
+                `, [redeem.user_id])
 
-            for (const item of items) {
+            const userData = userResult.rows[0]
 
-                await client.query(`
-                    update rewards
-                    set stock = stock + $1
-                    where id = $2
-                    `, [item.quantity, item.reward_id])
-
-                // restore stock
-                await client.query(`
-                        insert into stock_movements
-                        (
-                        item_type ,
-                        item_id,
-                        quantity,
-                        movement_type,
-                        reference_type,
-                        reference_id
-                        )
-                        values('reward', $1,$2 ,'cancel', 'redeem', $3)
-                        `, [
-                    'reward',
-                    item.reward_id, item.quantity, redeemId
-                ])
+            if (userData.points < redeem.total_points_used) {
+                throw new AppError("Insufficient points", 400)
             }
 
-            // restore points
+            // decrease points
             await client.query(`
-                update users 
-                set points = points + $1
+                update users
+                set points = points - $1
                 where id = $2
                 `, [redeem.total_points_used, redeem.user_id])
 
-
             await client.query(`
-                insert into points_histories
-                (user_id , points, source, reference_type , reference_id)
-                values($1, $2 , 'redeem_cancel' ,'redeem',$3)
-                `, [redeem.user_id, redeem.total_points_used, redeemId])
+                insert into point_histories
+                (user_id , points , source , reference_type , reference_id)
+                values ($1,$2,  'redeem_use' , 'redeem' ,$3)
+                `, [redeem.user_id, -redeem.total_points_used, redeem.id])
 
 
-            // update status
-            await client.query(`
-                    update redeems
-                    set status = $1,
-                    updated_at = now()
+            for (const item of items) {
+                // decrease reward stock
+                const result = await client.query(`
+                    update rewards
+                    set stock = stock - $1
                     where id = $2
-                    `, [newStatus, redeemId])
+                    and stock >= $1
+                    returning id
+                    `, [item.quantity, item.reward_id])
+
+                if (result.rowCount === 0) {
+                    throw new AppError("insufficient stock", 400)
+                }
+
+                await client.query(`
+                insert into stock_movements
+                (item_type , item_id , quantity , movement_type , reference_type , reference_id)
+                values ('reward' ,$1 , $2 ,'redeem','redeem' ,$3)
+                `, [item.reward_id, -item.quantity, redeem.id])
+            }
+
+            await client.query(`
+                update redeems
+                set status = 'confirmed',
+                updated_at = now()
+                where id = $1
+                `, [redeemId])
+        }
+
+        // cancelled
+        if (newStatus === 'failed') {
+
+            await client.query(`
+                update redeems
+                set status = 'cancelled'
+                where id = $1
+                `, [redeemId])
         }
 
         await client.query("COMMIT")
@@ -333,8 +271,6 @@ export const updateStatusRedeemService = async (
             redeemId,
             status: newStatus
         }
-
-
     } catch (err) {
         await client.query("ROLLBACK")
         throw err
@@ -343,55 +279,53 @@ export const updateStatusRedeemService = async (
     }
 }
 
-export const getRedeemByIdService = async (
-    redeemId: number,
+export const getMyRedeemHistoryService = async (
     loginUserId: number
 ) => {
     const response = await pool.query(
         `select * 
         from redeems
-        where id = $1
-        and user_id = $2
-        `, [redeemId, loginUserId]
+        where user_id = $1
+        `, [loginUserId]
     )
 
     if (response.rowCount === 0) {
         throw new AppError("Redeem not found", 404)
     }
 
-    return response.rows[0]
+    return response.rows
 }
 
 export const getRedeemByUserIdService = async (
-    loginUserId: number
+    userId: number
 ) => {
     const response = await pool.query(`
-        select 
+         select 
             r.id as redeem_id,
             r.redeem_number,
             r.status,
             r.total_points_used,
             r.created_at,
-        coalesce(
-            json_agg(
-                json_build_object(
-                    'reward_id' , rw.id,
-                    'name' , rw.name,
-                    'quantity' , ri.quantity,
-                    'points_per_item' , ri.points_per_item
+            coalesce(
+                json_agg(
+                    json_build_object(
+                        'reward_id', rw.id,
+                        'name', rw.name,
+                        'quantity', ri.quantity,
+                        'points_per_item', ri.points_per_item
                     )
                 ) filter (where ri.id is not null),
-                '[]' 
+                '[]'
             ) as items
-            from redeems r
-            left join redeem_items ri
-                    on ri.redeem_id = r.id
-            left join rewards rw
-                    on rw.id = ri.reward_id
-            where r.user_id = $1
-            group by r.id
-            order by o.created_at desc
-        `, [loginUserId])
+        from redeems r
+        left join redeem_items ri
+            on ri.redeem_id = r.id
+        left join rewards rw
+            on rw.id = ri.reward_id
+        where r.user_id = $1
+        group by r.id
+        order by r.created_at desc
+        `, [userId])
 
     return response.rows
 }

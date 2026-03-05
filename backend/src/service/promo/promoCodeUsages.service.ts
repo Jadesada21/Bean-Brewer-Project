@@ -41,7 +41,7 @@ export const redeemPromoCodeService = async (code: string, loginUserId: number) 
         }
 
         // check usage limit
-        if (promo.max_usage && promo.usage_count >= promo.max_usage) {
+        if (promo.max_usage !== null && promo.used_count >= promo.max_usage) {
             throw new AppError("Promo code fully redeemed", 400)
         }
 
@@ -61,14 +61,14 @@ export const redeemPromoCodeService = async (code: string, loginUserId: number) 
         // insert pro-code-usage snapshot
         await client.query(`
             insert into promo_code_usage
-            (promo_code_id ,  user_id ,points, used_at)
+            (promo_code_id , user_id , points, used_at)
             values($1,$2,$3,now())
         `, [promo.id, loginUserId, promo.bonus_points])
 
         // update promo usage_count
         await client.query(`
             update promo_code
-            set usage_count = usage_count + 1
+            set used_count = used_count + 1
             where id = $1
             `, [promo.id])
 
@@ -79,10 +79,10 @@ export const redeemPromoCodeService = async (code: string, loginUserId: number) 
             where id = $2
             `, [promo.bonus_points, loginUserId])
 
-        // insert points_histories
+        // insert point_histories
         await client.query(`
-            insert into points_histories
-            (user_id , points , points_source , reference_id , created_at)
+            insert into point_histories
+            (user_id , points , source , reference_id , created_at)
             values($1,$2,'promo_bonus' , $3, now())
             `, [loginUserId, promo.bonus_points, promo.id])
 
