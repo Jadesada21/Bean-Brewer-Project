@@ -10,6 +10,8 @@ import Cookies from "./pages/Cookies";
 import Home from "./pages/HomePage"
 import ShopPage from "./pages/shop/ShopPage"
 import RewardPage from "./pages/reward/RewardPage"
+import AboutUs from "./pages/AboutUs";
+import ContactUs from "./pages/ContactUs";
 
 
 
@@ -27,6 +29,10 @@ export default function AppRouter() {
                         <Route path="/" element={<Home />} />
                         <Route path="/shops" element={<ShopPage />} />
                         <Route path="/rewards" element={<RewardPage />} />
+                        <Route path="/about-us" element={<AboutUs />} />
+                        <Route path="/contact-us" element={<ContactUs />} />
+
+
 
                         <Route path="/term" element={<Term />} />
                         <Route path="/cookies" element={<Cookies />} />

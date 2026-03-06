@@ -24,14 +24,14 @@ export default function OpenBox({ label, children }: OpenBoxProps) {
     }
 
     return (
-        <p className="w-25 h-17 flex items-center justify-center text-[18px]">
+        <p className="h-17 flex items-center justify-center text-[18px]">
             <span className="relative inline-block font-baskerville">
                 {/* TEXT */}
                 <span
                     className={` relative  inline-block  cursor-pointer after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-full  after:bg-black after:origin-left after:transition-transform after:duration-300
                         ${open ? "after:scale-x-100" : "after:scale-x-0"}`}
                     onMouseEnter={handlerEnter}
-                // onMouseLeave={handlerLeave}
+                    onMouseLeave={handlerLeave}
                 >
                     {label}
                 </span>
@@ -39,9 +39,9 @@ export default function OpenBox({ label, children }: OpenBoxProps) {
                 {/* DROPDOWN */}
                 {open && (
                     <div
-                        className="absolute top-13 left-74 -translate-x-1/2 mt-3 w-170 h-75 bg-[#f3efe7] rounded-3xl shadow-lg z-20"
+                        className="absolute top-11 left-23 -translate-x-1/2 mt-3 w-50 h-45 bg-[#f3efe7] rounded-3xl shadow-lg z-20"
                         onMouseEnter={handlerEnter}
-                    // onMouseLeave={handlerLeave}
+                        onMouseLeave={handlerLeave}
                     >
                         {children}
                         {/* เมนูข้างใน */}

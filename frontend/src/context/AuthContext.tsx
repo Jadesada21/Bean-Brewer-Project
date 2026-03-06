@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-import axios from 'axios'
 
-import { api } from '../axiosInstance'
+import { api } from '../AxiosInstance'
 
 type User = {
     id: number

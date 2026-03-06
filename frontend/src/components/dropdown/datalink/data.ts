@@ -1,11 +1,5 @@
 export const shopLinkslist = [
-    { label: "All products", to: "/shop" },
+    { label: "All products", to: "/shops" },
     { label: "Best sellers", to: "/shop/best" },
-    { label: "Bundles", to: "/shop/bundles" },
-    { label: "Gift cards", to: "/shop/gift" },
 ];
 
-export const rewardLinks = [
-    { label: "Camping", to: "/rewards/camping" },
-    { label: "Grider", to: "/rewards/grider" },
-];

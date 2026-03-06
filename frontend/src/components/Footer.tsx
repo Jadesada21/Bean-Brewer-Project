@@ -14,23 +14,33 @@ export default function Footer() {
                     <div>
                         <h3 className="font-bold mb-4 text-xl font-baskerville">Shop</h3>
                         <ul className="space-y-2 text-xl ">
-                            <li className="pt-3 hover:underline decoration-1 font-baskerville"><Link to="">Bean</Link></li>
-                            <li className="pt-3 hover:underline decoration-1 font-baskerville"><Link to="">Roast Level</Link></li>
+
+                            <li className="pt-3 hover:underline decoration-1 font-baskerville">
+                                <Link to="/shops">Bean</Link></li>
+
+                            <li className="pt-3 hover:underline decoration-1 font-baskerville">
+                                <Link to="/roast-level">Roast Level</Link></li>
                         </ul>
                     </div>
 
                     <div>
                         <h3 className="font-bold mb-4 text-xl font-baskerville">Reward</h3>
                         <ul className="space-y-2 text-xl ">
-                            <li className="pt-3 hover:underline decoration-1 font-baskerville"><Link to="">Equipment</Link></li>
+
+                            <li className="pt-3 hover:underline decoration-1 font-baskerville">
+                                <Link to="">Equipment</Link></li>
                         </ul>
                     </div>
 
                     <div>
                         <h3 className="font-bold mb-4 text-xl font-baskerville">Support</h3>
                         <ul className="space-y-2 text-xl ">
-                            <li className="pt-3 hover:underline decoration-1 font-baskerville"> <Link to="">Contact Us</Link></li>
-                            <li className="pt-3 hover:underline decoration-1 font-baskerville"><Link to="">About Us</Link></li>
+
+                            <li className="pt-3 hover:underline decoration-1 font-baskerville">
+                                <Link to="/contact-us">Contact Us</Link></li>
+
+                            <li className="pt-3 hover:underline decoration-1 font-baskerville">
+                                <Link to="/about-us">About Us</Link></li>
                         </ul >
                     </div>
 
