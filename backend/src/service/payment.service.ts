@@ -221,7 +221,7 @@ export const updatePaymentStatusService = async (
 
 
         // cancelled payment
-        if (newStatus === 'failed') {
+        if (newStatus === 'cancelled') {
 
             await client.query(`
                 update orders
@@ -233,7 +233,7 @@ export const updatePaymentStatusService = async (
             // updated payment
             await client.query(`
             update payment
-            set status = 'failed',
+            set status = 'cancelled',
                 paid_at = null
             where id = $1
             `, [paymentId])

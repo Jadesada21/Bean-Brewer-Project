@@ -249,7 +249,7 @@ export const updateStatusRedeemService = async (
 
             await client.query(`
                 update redeems
-                set status = 'confirmed',
+                set status = 'completed',
                 updated_at = now()
                 where id = $1
                 `, [redeemId])

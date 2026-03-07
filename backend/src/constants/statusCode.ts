@@ -1,0 +1,2 @@
+
+export const USER_EMAIL_ALREADY_USED = '23505'

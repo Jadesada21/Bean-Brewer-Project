@@ -1,5 +1,5 @@
 export type Status = "completed" | 'failed' | 'pending'
-export type PaymentUpdateStatus = "completed" | "failed"
+export type PaymentUpdateStatus = "completed" | "cancelled"
 
 export interface PaymentResponse {
     id: number

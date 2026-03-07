@@ -10,9 +10,9 @@ create type roast_level as enum ('light','medium','dark');
 
 create type stock_type_new as enum ('order','redeem' , 'cancel' , 'restock' , 'adjustment');
 
-create type payment_status_new as enum ('pending' , 'completed' , 'failed');
+create type payment_status_new1 as enum ('pending' , 'completed' , 'cancelled');
 
-create type status_redeem_new as enum ('pending' , 'confirmed' , 'cancelled')
+create type status_redeem_new1 as enum ('pending' , 'completed' , 'cancelled');
 
 CREATE TYPE order_status AS ENUM ('pending', 'completed', 'cancelled');
 
