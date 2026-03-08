@@ -1,28 +1,33 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { useAuth } from './context/AuthContext'
-import LoginModal from "./pages/login-out/LoginModal"
+
+import ProtectedRoute from "./routes/ProtectedRoute";
+import AdminRoute from "./routes/AdminRoute";
+
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop"
 
-import Term from "./pages/Term";
-import Privacy from "./pages/Privacy";
-import Cookies from "./pages/Cookies";
+import TermPage from "./pages/Term";
+import PrivacyPage from "./pages/Privacy";
+import CookiesPage from "./pages/Cookies";
 
-import Home from "./pages/HomePage"
+import HomePage from "./pages/HomePage"
 import ShopPage from "./pages/shop/ShopPage"
 import RewardPage from "./pages/reward/RewardPage"
-import AboutUs from "./pages/AboutUs";
-import ContactUs from "./pages/ContactUs";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import Profiles from "./pages/Profiles"
-import { useState } from "react";
+import AboutUsPage from "./pages/AboutUs";
+import ContactUsPage from "./pages/ContactUs";
+import ProfilesPage from "./pages/ProfilesPage";
+
+
+import AdminPage from "./pages/AdminPage";
+
+
 
 
 
 export default function AppRouter() {
 
-    const [openLogin, setOpenLogin] = useState(false)
 
     const { loading } = useAuth()
 
@@ -35,28 +40,27 @@ export default function AppRouter() {
             <ScrollToTop />
             <div className="min-h-screen flex flex-col">
 
-                <Navbar openLogin={() => setOpenLogin(true)} />
-
-                {openLogin && (
-                    <LoginModal close={() => setOpenLogin(false)} />
-                )}
-
+                <Navbar />
 
                 <main className="grow">
                     <Routes>
-                        <Route path="/" element={<Home />} />
+                        <Route path="/" element={<HomePage />} />
                         <Route path="/shops" element={<ShopPage />} />
                         <Route path="/rewards" element={<RewardPage />} />
-                        <Route path="/about-us" element={<AboutUs />} />
-                        <Route path="/contact-us" element={<ContactUs />} />
+                        <Route path="/about-us" element={<AboutUsPage />} />
+                        <Route path="/contact-us" element={<ContactUsPage />} />
 
                         <Route path="/profile" element={<ProtectedRoute>
-                            <Profiles />
+                            <ProfilesPage />
                         </ProtectedRoute>} />
 
-                        <Route path="/term" element={<Term />} />
-                        <Route path="/cookies" element={<Cookies />} />
-                        <Route path="/privacy" element={<Privacy />} />
+                        <Route path="/admin" element={<AdminRoute>
+                            <AdminPage />
+                        </AdminRoute>} />
+
+                        <Route path="/term" element={<TermPage />} />
+                        <Route path="/cookies" element={<CookiesPage />} />
+                        <Route path="/privacy" element={<PrivacyPage />} />
 
                     </Routes>
                 </main>

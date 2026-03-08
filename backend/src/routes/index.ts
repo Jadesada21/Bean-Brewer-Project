@@ -29,8 +29,6 @@ import adminRedeemRoute from './admin/ad.redeem.route'
 import adminPromoCodeRoute from './admin/ad.promoCode.route'
 import adminPromoCodeUsagedRoute from './admin/ad.promoCodeUsages.route'
 
-
-import { getMe } from '../controller/getMe.controller'
 import { authenticate } from '../middleware/authenticate'
 import { authorize } from '../middleware/authorize'
 const router = Router()
@@ -47,7 +45,7 @@ router.use('/rewards', rewardsRoute)
 // verify route
 // users route
 router.use(authenticate)
-router.get('/me', getMe)
+
 
 router.use('/logout', logoutRoute)
 router.use('/users', userRoute)

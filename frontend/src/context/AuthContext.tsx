@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-
 import { api } from '../AxiosInstance'
 
 type User = {
@@ -15,7 +14,7 @@ type AuthContextType = {
         password: string,
         navigate: (path: string) => void
     ) => Promise<void>
-    logout: () => Promise<void>
+    logout: (navigate: (path: string) => void) => Promise<void>
     loading: boolean
 }
 
@@ -29,10 +28,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     // check login when refresh or close tab
     useEffect(() => {
-
         const fetchUser = async () => {
             try {
-                const res = await api.get('/auth/me')
+                const res = await api.get('/me')
 
                 setUser(res.data.user)
             } catch (err) {
@@ -50,24 +48,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password: string,
         navigate: (path: string) => void
     ) => {
-        await api.post("/auth/login", { username, password })
+        try {
+            const res = await api.post("/auth/login", { username, password })
 
-        const res = await api.get('/auth/me')
-        const user = res.data.user
-        setUser(user)
+            const user = res.data.user
+            setUser(user)
 
-        if (user.role === 'admin') {
-            navigate('/admin')
-        } else {
-            navigate('/')
+            if (user.role === 'admin') {
+                navigate('/admin')
+            } else {
+                navigate('/')
+            }
+        } catch (err) {
+            console.error("Login failed", err);
+            throw err
         }
     }
 
-    const logout = async () => {
-        await api.post(
-            "/auth/logout"
-        )
+    const logout = async (navigate: (path: string) => void) => {
+        try {
+            await api.post("/auth/logout")
+        } catch (err) {
+            console.error(err)
+        }
         setUser(null)
+        navigate('/')
     }
 
     return (

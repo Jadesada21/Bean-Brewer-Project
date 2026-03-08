@@ -7,7 +7,7 @@ import {
     CreateUsersInput,
     UsersResponse
 } from "../types/users.type"
-import { USER_EMAIL_ALREADY_USED } from "../constants/statusCode"
+import { DB_CONSTRAINT_EXISTING } from "../constants/statusCode"
 
 
 
@@ -32,7 +32,7 @@ export const createUsersService = async (
 
         return response.rows[0]
     } catch (err: any) {
-        if (err.code === USER_EMAIL_ALREADY_USED) {
+        if (err.code === DB_CONSTRAINT_EXISTING) {
             throw new AppError("Username or email already exists", 400)
         }
         throw err

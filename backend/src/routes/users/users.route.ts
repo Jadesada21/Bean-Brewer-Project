@@ -1,7 +1,7 @@
 import { Router } from "express";
+
 import {
-    getAllUsers,
-    getUsersById,
+    getUserByLoginUser,
     updateUsersById,
 } from '../../controller/users.controller'
 
@@ -14,7 +14,9 @@ const router = Router();
 
 
 router.route('/:id')
-    .get(authorize(['customer']), getUsersById)
     .patch(authorize(['customer']), updateUsersById)
+
+router.route('/me')
+    .get(authorize(['customer']), getUserByLoginUser)
 
 export default router;

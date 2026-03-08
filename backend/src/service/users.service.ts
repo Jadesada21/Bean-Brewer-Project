@@ -74,6 +74,21 @@ export const updateUsersByIdService = async (targetUserId: number, loginUserId: 
 }
 
 
+export const getUserByLoginUserService = async (userId: number) => {
+    const result = await pool.query(`
+        select  username , email ,first_name , last_name , phone_num ,points ,created_at
+        from users
+        where id = $1
+        `, [userId])
+
+    if (result.rowCount === 0) {
+        throw new AppError("User not found", 404)
+    }
+
+    return result.rows[0]
+}
+
+
 // *************************** ADDRESS
 
 

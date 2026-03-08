@@ -1,14 +1,27 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import searchIcon from "../assets/search-img.svg";
 import cart from '../assets/cart.svg';
 import profile from '../assets/profile.svg';
 import OpenBox from "./isopen/OpenBox";
 import ShopDropdown from './dropdown/shop/ShopDropdown';
+import BoxModal from '../pages/login-signup/BoxModal';
 
-import LoginModal from '../pages/login-out/LoginModal';
+import { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
 
-export default function Navbar({ openLogin }: { openLogin: () => void }) {
+export default function Navbar() {
+    const [openBoxModal, setOpenBoxModal] = useState(false)
 
+    const { user } = useAuth()
+    const navigate = useNavigate()
+
+    const handleProfileClick = () => {
+        if (user) {
+            navigate('/profile')
+        } else {
+            setOpenBoxModal(true)
+        }
+    }
 
     return (
         <div className="flex items-center justify-between py-5 px-10 w-full h-20 border-b border-gray-400 bg-[#f7f5ef] ">
@@ -46,7 +59,7 @@ export default function Navbar({ openLogin }: { openLogin: () => void }) {
                     <img src={searchIcon} alt="search" className="w-9" />
                 </button>
 
-                <button onClick={(openLogin)}>
+                <button onClick={() => handleProfileClick()}>
                     <img src={profile} alt="profile" className="w-8" />
                 </button>
 
@@ -55,6 +68,12 @@ export default function Navbar({ openLogin }: { openLogin: () => void }) {
                 </button>
             </div>
 
+            {/* BoxModal */}
+            {
+                openBoxModal && (
+                    <BoxModal close={() => setOpenBoxModal(false)} />
+                )
+            }
         </div >
     )
 }

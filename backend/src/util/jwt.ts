@@ -9,5 +9,4 @@ export const verifyToken = (token: string) => {
         id: number
         role: 'admin' | 'customer'
     }
-
 }

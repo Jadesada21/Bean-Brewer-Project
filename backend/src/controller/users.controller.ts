@@ -6,6 +6,7 @@ import {
     getAllUsersAddressService,
     createUsersAddressByIdService,
     updateAddressUserByIdService,
+    getUserByLoginUserService,
     getAllMyAddressService,
     setdefaultAddressService
 } from '../service/users.service'
@@ -71,6 +72,19 @@ export const updateUsersById = async (req: Request, res: Response, next: NextFun
         next(err)
     }
 }
+
+
+export const getUserByLoginUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const loginUserId = req.user!.id
+
+        const user = await getUserByLoginUserService(loginUserId)
+        return res.status(200).json({ status: "Success", user })
+    } catch (err) {
+        next(err)
+    }
+}
+
 
 // ****************************** ADDRESS
 

@@ -6,8 +6,8 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
 
     if (loading) return null
 
-    if (!user) {
-        return <Navigate to="/login" />
+    if (!user || user.role !== 'admin') {
+        return <Navigate to="/" />
     }
 
     return children

@@ -17,7 +17,6 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
         const { token, user } = await loginService(username, password)
 
-
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
