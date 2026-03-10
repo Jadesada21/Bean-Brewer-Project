@@ -1,7 +1,7 @@
 import { Router } from 'express'
 
 import {
-    getMyPromoCodeUsage,
+    getAllPromoCodeUsageByLoginUser,
     redeemPromoCode
 } from '../../../controller/promo/promoCodeUsages.controller'
 
@@ -9,8 +9,8 @@ import { authorize } from '../../../middleware/authorize'
 
 const router = Router()
 
-router.route('/my')
-    .get(authorize(['customer']), getMyPromoCodeUsage)
+router.route('/me')
+    .get(authorize(['customer']), getAllPromoCodeUsageByLoginUser)
 
 
 export default router

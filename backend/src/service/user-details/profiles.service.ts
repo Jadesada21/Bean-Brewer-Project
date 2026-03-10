@@ -23,13 +23,15 @@ export const getProfileByLoginUserService = async (userId: number) => {
 export const getAllPaymentByLoginUserService = async (userId: number) => {
     const response = await pool.query(`
         select
+            p.id,
             p.order_id,
             p.amount,
             p.transaction_ref,
             p.created_at,
             p.payment_provider,
             p.paid_at,
-            p.status
+            p.status,
+            o.order_number 
         from payment p
         join orders o on p.order_id = o.id
         where o.user_id = $1

@@ -2,18 +2,18 @@ import { Request, Response, NextFunction } from 'express'
 import { AppError } from '../../util/AppError'
 
 import {
-    getMyPromoCodeUsageService,
+    getAllPromoCodeUsageByLoginUserService,
     redeemPromoCodeService,
     getAllRedeemedPromoCodeusagesService,
     getRedeemedPromoCodeusagesByIdService
 } from '../../service/promo/promoCodeUsages.service'
 
 // user route
-export const getMyPromoCodeUsage = async (req: Request, res: Response, next: NextFunction) => {
+export const getAllPromoCodeUsageByLoginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const loginUserId = Number(req.user!.id)
 
-        const data = await getMyPromoCodeUsageService(loginUserId)
+        const data = await getAllPromoCodeUsageByLoginUserService(loginUserId)
         return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)

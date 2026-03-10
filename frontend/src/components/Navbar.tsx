@@ -60,7 +60,7 @@ export default function Navbar() {
                 </button>
 
                 <button onClick={() => handleProfileClick()}>
-                    <img src={profile} alt="profile" className="w-8" />
+                    <img src={profile} alt="profile" className="w-8 cursor-pointer" />
                 </button>
 
                 <button>

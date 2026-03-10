@@ -9,7 +9,7 @@ import {
 import { Role } from '../../types/users.type'
 
 
-
+//ad
 export const getAllOrderService = async () => {
     const sql = `select 
     *
@@ -185,8 +185,8 @@ export const cancelOrderService = async (
     }
 }
 
-
-export const getOrderByidService = async (orderId: number, loginUserId: number, role: Role) => {
+//ad
+export const getOrderByidService = async (orderId: number) => {
     const response = await pool.query(
         `select * 
         from orders 
@@ -217,8 +217,8 @@ export const getAllOrderByLoginUserService = async (loginUserId: number) => {
                     'product_id', p.id,
                     'name', p.name,
                     'quantity', oi.quantity,
-                    'price per 1 items', oi.price,
-                    'total points' , oi.total_points
+                    'price_per_items', oi.price,
+                    'total_points' , oi.total_points
                 )
             ) filter (where oi.id is not null),
              '[]'
@@ -240,4 +240,36 @@ export const getAllOrderByLoginUserService = async (loginUserId: number) => {
     `, [loginUserId])
 
     return response.rows
+}
+
+export const getOrderByIdByLoginUserService = async (orderId: number, loginUserId: number) => {
+    const response = await pool.query(`
+        select 
+            o.id as order_id,
+            o.order_number,
+            o.status,
+            o.total_price,
+            o.created_at,
+        json_agg(
+        json_build_object(
+            'product_id', p.id,
+            'product_name', p.name,
+            'quantity', oi.quantity,
+            'price', oi.price,
+            'total_price', oi.quantity * oi.price
+                 )
+             ) as items
+        from orders o
+        join order_items oi on oi.order_id = o.id
+        join products p on p.id = oi.product_id
+        where o.id = $1
+        and o.user_id = $2
+        group by o.id
+        `, [orderId, loginUserId])
+
+    if (response.rowCount === 0) {
+        throw new AppError("Orders not found", 404)
+    }
+
+    return response.rows[0]
 }

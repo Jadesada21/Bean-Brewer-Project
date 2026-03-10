@@ -32,7 +32,6 @@ export const getAllUsersService = async () => {
     return response.rows
 }
 
-
 export const getUsersByIdService = async (targetUserId: number, loginUserId: number) => {
 
     if (targetUserId !== loginUserId) {
@@ -79,7 +78,6 @@ export const updateUsersByLoginUserService = async (loginUserId: number, body: U
 
 
 export const getAllUsersAddressService = async () => {
-
     const sql = ` select
         id,
         user_id,

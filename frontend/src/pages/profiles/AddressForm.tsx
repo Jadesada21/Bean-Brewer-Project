@@ -302,7 +302,7 @@ export default function AddressForm() {
                                                 setShowOtherHeader(false)
                                                 setEditingId(addr.id)
                                             }}
-                                            className="border px-4 py-2 rounded"
+                                            className="border px-4 py-2 rounded font-baskerville"
                                         >
                                             Edit
                                         </button>
@@ -325,7 +325,7 @@ export default function AddressForm() {
                                         />
                                     ) :
                                         (
-                                            <p>{addr.address_line}</p>
+                                            <p className="font-baskerville">{addr.address_line}</p>
                                         )}
                                 </div>
 
@@ -383,7 +383,7 @@ export default function AddressForm() {
                                                 className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
                                             />
                                         ) : (
-                                            <p>{addr.province}</p>
+                                            <p className="font-baskerville">{addr.province}</p>
                                         )}
 
                                     </div>
@@ -402,7 +402,7 @@ export default function AddressForm() {
                                                 className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
                                             />
                                         ) : (
-                                            <p>{addr.postal_code}</p>
+                                            <p className="font-baskerville">{addr.postal_code}</p>
                                         )}
 
                                     </div>
@@ -422,7 +422,7 @@ export default function AddressForm() {
                                             className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
                                         />
                                     ) : (
-                                        <p>{addr.country}</p>
+                                        <p className="font-baskerville">{addr.country}</p>
                                     )}
                                 </div>
 

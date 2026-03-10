@@ -11,6 +11,5 @@ export const getMeRefreshService = async (userId: number) => {
     if (result.rowCount === 0) {
         throw new AppError("User not found", 404)
     }
-
     return result.rows[0]
 }

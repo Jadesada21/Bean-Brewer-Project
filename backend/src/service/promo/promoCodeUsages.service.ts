@@ -2,15 +2,20 @@ import { pool } from '../../db/connectPostgre.repository'
 import { AppError } from '../../util/AppError'
 
 // user owner
-export const getMyPromoCodeUsageService = async (loginUserId: number) => {
+export const getAllPromoCodeUsageByLoginUserService = async (loginUserId: number) => {
     const response = await pool.query(`
-    select * from 
-    promo_code_usage where user_id = $1
-    order by created_at desc
+    select 
+        pcu.*,
+        pc.code 
+    from promo_code_usage pcu
+    join promo_code pc on pcu.promo_code_id = pc.id
+    where pcu.user_id = $1
+    order by pcu.created_at desc
     `, [loginUserId])
 
     return response.rows
 }
+
 
 // user route
 export const redeemPromoCodeService = async (code: string, loginUserId: number) => {

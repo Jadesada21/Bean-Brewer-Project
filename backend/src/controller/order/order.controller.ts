@@ -6,7 +6,8 @@ import {
     createOrderService,
     cancelOrderService,
     getOrderByidService,
-    getAllOrderByLoginUserService
+    getAllOrderByLoginUserService,
+    getOrderByIdByLoginUserService
 } from '../../service/order/order.service'
 
 
@@ -59,10 +60,7 @@ export const getOrderById = async (req: Request, res: Response, next: NextFuncti
             throw new AppError("Invalid order id", 400)
         }
 
-        const loginUserId = req.user!.id
-        const role = req.user!.role
-
-        const data = await getOrderByidService(orderId, loginUserId, role)
+        const data = await getOrderByidService(orderId)
         return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
@@ -74,6 +72,22 @@ export const getAllOrderByLoginUser = async (req: Request, res: Response, next: 
         const loginUserId = req.user!.id
 
         const data = await getAllOrderByLoginUserService(loginUserId)
+        return res.status(200).json({ status: "Success", data })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const getOrderByIdByLoginUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const orderId = Number(req.params.id)
+        const loginUserId = req.user!.id
+
+        if (Number.isNaN(orderId)) {
+            throw new AppError("Order not found", 400)
+        }
+
+        const data = await getOrderByIdByLoginUserService(orderId, loginUserId)
         return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)

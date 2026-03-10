@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
     return (
-        <footer className="bg-zinc-800 text-white px-60 pt-10 pb-5 ">
+        <footer className="bg-zinc-800 text-white px-60 pt-10 pb-5">
 
             {/* <!-- top --> */}
             <div className="flex justify-between">
@@ -66,7 +66,6 @@ export default function Footer() {
             <div className="mt-2 text-xl text-gray-400 flex gap-6 " >
                 <span className="font-baskerville">Copyright © Bean Inc. 2026 All Rights Reserved</span>
             </div>
-
 
         </footer>
     )

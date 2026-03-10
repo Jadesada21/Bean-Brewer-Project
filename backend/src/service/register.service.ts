@@ -10,9 +10,6 @@ import {
 
 import { DB_CONSTRAINT_EXISTING } from "../constants/statusCode"
 
-
-
-
 export const createUsersService = async (
     body: CreateUsersInput
 ): Promise<UsersResponse> => {
@@ -38,5 +35,4 @@ export const createUsersService = async (
         }
         throw err
     }
-
 }

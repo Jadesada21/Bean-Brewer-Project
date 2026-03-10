@@ -4,7 +4,7 @@ import {
     createOrder,
     cancelOrder,
     getAllOrderByLoginUser,
-    getOrderById
+    getOrderByIdByLoginUser
 } from '../../../controller/order/order.controller'
 
 import orderItemRoute from './orderItems.route'
@@ -26,11 +26,10 @@ router.route('/me')
     .get(authorize(['customer']), getAllOrderByLoginUser)
 
 router.route('/:id')
-    .get(authorize(['customer']), getOrderById)
+    .get(authorize(['customer']), getOrderByIdByLoginUser)
 
 router.route('/:id/cancel')
     .patch(authorize(['customer']), cancelOrder)
-
 
 router.route('/:orderId/payment')
     .post(authorize(['customer']), createPayment)

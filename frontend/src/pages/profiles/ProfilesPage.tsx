@@ -1,16 +1,13 @@
-import { useNavigate } from "react-router-dom"
+import { Outlet, useNavigate, useLocation } from "react-router-dom"
+
 import { useAuth } from "../../context/AuthContext"
 import { useState } from "react"
 
-import ProfileForm from "./ProfileForm"
-import AddressForm from "./AddressForm"
-
-
 export default function ProfilesPage() {
 
-    const [selectedMenu, setSelectedMenu] = useState("profile")
-
     const [openProfilesMenu, setOpenProfilesMenu] = useState(false)
+
+    const location = useLocation()
 
     const navigate = useNavigate()
     const { user, logout } = useAuth()
@@ -19,68 +16,102 @@ export default function ProfilesPage() {
         await logout(navigate)
     }
 
-    const menus = [
-        { id: "payment", label: "Payment History" },
-        { id: "order", label: "Order History" },
-        { id: "redeem", label: "Redeem Code History" },
-        { id: "point", label: "Point History" },
-    ]
-
     const capitalize = (text?: string) => {
         if (!text) return ""
         return text.charAt(0).toUpperCase() + text.slice(1)
     }
 
     return (
-        <div className="flex h-full ">
+        <div className="flex h-full">
 
             {/* sidebar */}
 
-            <div className="w-75 bg-white/60 flex flex-col border-r border-gray-200 pt-20 items-center space-y-4">
+            <div className="pb-6 w-75 bg-white/60 flex flex-col border-r border-gray-200 pt-20 items-center space-y-4">
 
                 <button
-                    onClick={() => setOpenProfilesMenu(!openProfilesMenu)}
-                    className="text-xl border-b border-transparent hover:border-black font-baskerville"
+                    onClick={() => {
+                        setOpenProfilesMenu(!openProfilesMenu)
+                        navigate("/profile")
+                    }}
+                    className={`cursor-pointer text-xl border-b font-baskerville
+                        ${location.pathname === "/profile"
+                            ? "border-black"
+                            : "border-transparent hover:border-black"
+                        }`}
                 >Profiles
                 </button>
 
                 {openProfilesMenu && (
                     <div className="flex flex-col items-center space-y-2 text-lg">
                         <button
-                            onClick={() => setSelectedMenu("profile")}
-                            className={`border-b ${selectedMenu === "profile" ? "border-black" : "border-transparent font-baskerville"
-                                }`}
+                            onClick={() => navigate("/profile")}
+                            className="cursor-pointer border-b border-transparent font-baskerville"
                         >
                             Personal Info
                         </button>
 
                         <button
-                            onClick={() => setSelectedMenu("address")}
-                            className={`border-b ${selectedMenu === "address" ? "border-black" : "border-transparent font-baskerville"
+                            onClick={() => navigate("/profile/address")}
+                            className={`cursor-pointer text-xl pt-4 font-baskerville border-b
+                        ${location.pathname.startsWith("/profile/address")
+                                    ? "border-black"
+                                    : "border-transparent"
                                 }`}
                         >
                             Address
                         </button>
                     </div>
                 )}
-                {menus.map((menu) => (
-                    <button
-                        key={menu.id}
-                        onClick={() => setSelectedMenu(menu.id)}
-                        className={` text-xl border-b pt-4 font-baskerville
-                                ${selectedMenu === menu.id
-                                ? "border-black"
-                                : "border-transparent"
-                            }`}
-                    >
-                        {menu.label}
-                    </button>
-                ))}
+
+                <button
+                    onClick={() => navigate("/profile/payments")}
+                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b
+                        ${location.pathname.startsWith("/profile/payment")
+                            ? "border-black"
+                            : "border-transparent"
+                        }`}
+                >
+                    Payment History
+                </button>
+
+                <button
+                    onClick={() => navigate("/profile/orders")}
+                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b
+                        ${location.pathname.startsWith("/profile/orders")
+                            ? "border-black"
+                            : "border-transparent"
+                        }`}
+                >
+                    Order History
+                </button>
+
+                <button
+                    onClick={() => navigate("/profile/redeems")}
+                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b
+                        ${location.pathname.startsWith("/profile/redeem")
+                            ? "border-black"
+                            : "border-transparent"
+                        }`}
+                >
+                    Redeem Code History
+                </button>
+
+                <button
+                    onClick={() => navigate("/profile/points")}
+                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b
+                        ${location.pathname.startsWith("/profile/points")
+                            ? "border-black"
+                            : "border-transparent"
+                        }`}
+                >
+                    Point History
+                </button>
+
 
                 <div className="pt-4">
                     <button
                         onClick={handleLogout}
-                        className="border px-4 py-2 rounded font-bold font-baskerville"
+                        className="cursor-pointer border px-4 py-2 rounded font-bold font-baskerville"
                     >
                         Log Out
                     </button>
@@ -91,52 +122,11 @@ export default function ProfilesPage() {
             {/* content */}
             <main className="flex-1 bg-gray-100 pl-30 pt-20">
 
-                {selectedMenu === 'profile' && (
-                    <div>
-                        <div className="text-2xl font-bold font-baskerville">
-                            Hi, {capitalize(user?.username)}!
-                        </div>
-                        <div className="mt-20 rounded">
-                            <ProfileForm />
-                        </div>
-                    </div>
-                )}
+                <div className="text-2xl font-bold font-baskerville mb-10">
+                    Hi, {capitalize(user?.username)}!
+                </div>
 
-
-                {selectedMenu === 'address' && (
-                    <div>
-                        <div className="text-2xl font-bold font-baskerville">
-                            Hi, {capitalize(user?.username)}!
-                        </div>
-                        <div className="mt-20 rounded">
-                            <AddressForm />
-                        </div>
-                    </div>
-                )}
-
-                {selectedMenu === 'order' && (
-                    <div className="text-2xl font-bold font-baskerville">
-                        Hello order history
-                    </div>
-                )}
-
-                {selectedMenu === 'payment' && (
-                    <div className="text-2xl font-bold font-baskerville">
-                        Hello payment history
-                    </div>
-                )}
-
-                {selectedMenu === 'redeem' && (
-                    <div className="text-2xl font-bold font-baskerville">
-                        Hello redeem history
-                    </div>
-                )}
-
-                {selectedMenu === 'point' && (
-                    <div className="text-2xl font-bold font-baskerville">
-                        Hello point history
-                    </div>
-                )}
+                <Outlet />
 
             </main>
         </div >

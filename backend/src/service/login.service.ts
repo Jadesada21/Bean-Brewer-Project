@@ -14,6 +14,7 @@ export const loginService = async (username: string, password: string): Promise<
         `select id , username ,password, role, is_active from users where username = $1`,
         [username]
     )
+
     if (result.rowCount === 0) {
         throw new AppError("Invalid credentials", 401)
     }

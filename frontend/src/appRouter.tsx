@@ -19,13 +19,19 @@ import AboutUsPage from "./pages/AboutUs";
 import ContactUsPage from "./pages/ContactUs";
 import ProfilesPage from "./pages/profiles/ProfilesPage";
 
-
 import AdminPage from "./pages/AdminPage";
+import OrderDetails from "./pages/profiles/details/OrderDetailPage";
+
+import ProfileForm from "./pages/profiles/ProfileForm";
+import AddressForm from "./pages/profiles/AddressForm";
+import OrderHis from "./pages/profiles/OrderHis";
+import PaymentHis from "./pages/profiles/PaymentHis";
+import RedeemHis from "./pages/profiles/RedeemHis";
+import PointHis from "./pages/profiles/PointHis";
+import PaymentDetails from "./pages/profiles/details/PaymentDetailPage";
 
 
 export default function AppRouter() {
-
-
     const { loading } = useAuth()
 
     if (loading) {
@@ -47,8 +53,26 @@ export default function AppRouter() {
                         <Route path="/about-us" element={<AboutUsPage />} />
                         <Route path="/contact-us" element={<ContactUsPage />} />
 
-                        <Route path="/profile" element={<ProtectedRoute>
-                            <ProfilesPage />
+                        <Route
+                            path="/profile"
+                            element={<ProtectedRoute>
+                                <ProfilesPage />
+                            </ProtectedRoute>
+                            }
+                        >
+                            <Route index element={<ProfileForm />} />
+                            <Route path="address" element={<AddressForm />} />
+                            <Route path="orders" element={<OrderHis />} />
+                            <Route path="orders/:id" element={<OrderDetails />} />
+                            <Route path="payments" element={<PaymentHis />} />
+                            <Route path="payments/:id" element={<PaymentDetails />} />
+                            <Route path="redeems" element={<RedeemHis />} />
+                            <Route path="points" element={<PointHis />} />
+
+                        </Route>
+
+                        <Route path="/profile/orders/:id" element={<ProtectedRoute>
+                            <OrderDetails />
                         </ProtectedRoute>} />
 
                         <Route path="/admin" element={<AdminRoute>
