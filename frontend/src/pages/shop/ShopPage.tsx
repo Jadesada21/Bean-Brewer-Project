@@ -85,7 +85,7 @@ export default function ShopPage() {
                 <section className="flex gap-12 pt-8">
 
                     {/* Filter Sidebar */}
-                    <div className="w-75">
+                    <div className="w-75 font-baskerville">
                         <FilterSidebar
                             searchParams={searchParams}
                             setSearchParams={setSearchParams}
@@ -93,10 +93,13 @@ export default function ShopPage() {
                     </div>
 
                     {/* Product Grid */}
-                    <div className="grid gap-10 w-full">
-                        <ProductCard products={products} />
+                    <div className="grid grid-cols-4 gap-10 font-baskerville">
+                        {products.map((product) => (
+                            <Link key={product.id} to={`/shops/${product.id}`}>
+                                <ProductCard products={product} />
+                            </Link>
+                        ))}
                     </div>
-
                 </section>
             </main>
 

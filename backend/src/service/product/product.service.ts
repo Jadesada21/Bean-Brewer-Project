@@ -165,8 +165,11 @@ export const getProductByIdService = async (id: number, role?: Role | 'guest') =
         p.id,
         p.name,
         p.price,
+        p.description,
         p.reward_points,
         p.taste,
+        p.roast_level,
+        p.bag_size,
         p.reward_points as points,
         pi.image_url
     from products p

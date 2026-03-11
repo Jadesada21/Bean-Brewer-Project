@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import searchIcon from "../assets/search-img.svg";
-import cart from '../assets/cart.svg';
+import Cart from '../assets/cart.svg';
 import profile from '../assets/profile.svg';
 import OpenBox from "./isopen/OpenBox";
 import ShopDropdown from './dropdown/shop/ShopDropdown';
@@ -8,9 +8,15 @@ import BoxModal from '../pages/login-signup/BoxModal';
 
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from "../context/CartContext"
+import CartDrawer from './cart/CartDrawer';
 
 export default function Navbar() {
     const [openBoxModal, setOpenBoxModal] = useState(false)
+
+    const [openCart, setOpenCart] = useState(false)
+
+    const { cart } = useCart()
 
     const { user } = useAuth()
     const navigate = useNavigate()
@@ -22,6 +28,11 @@ export default function Navbar() {
             setOpenBoxModal(true)
         }
     }
+
+    const totalItems = cart.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+    )
 
     return (
         <div className="flex items-center justify-between py-5 px-10 w-full h-20 border-b border-gray-400 bg-[#f7f5ef] ">
@@ -63,9 +74,21 @@ export default function Navbar() {
                     <img src={profile} alt="profile" className="w-8 cursor-pointer" />
                 </button>
 
-                <button>
-                    <img src={cart} alt="profile" className="w-9" />
-                </button>
+                <div className="relative">
+                    <button onClick={() => setOpenCart(true)}>
+                        <img src={Cart} alt="cart" className="w-9" />
+                    </button>
+
+                    {totalItems > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                            {totalItems}
+                        </span>
+                    )}
+                </div>
+                <CartDrawer
+                    open={openCart}
+                    onClose={() => setOpenCart(false)}
+                />
             </div>
 
             {/* BoxModal */}

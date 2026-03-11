@@ -4,7 +4,8 @@ import {
     getCartByLoginUserService,
     addToCartService,
     updateCartItemService,
-    deleteCartItemService
+    deleteCartItemService,
+    getCartItemsService
 } from '../service/cart.service'
 import { AppError } from '../util/AppError'
 
@@ -24,21 +25,38 @@ export const getCartByLoginUser = async (req: Request, res: Response, next: Next
 export const addToCart = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
-
+        const { product_id, quantity } = req.body
         const loginUserId = req.user!.id
-        const product_id = Number(req.body)
-        const quantity = Number(req.body)
+        const productId = Number(product_id)
+        const qty = Number(quantity)
 
-        if (!product_id || isNaN(Number(product_id))) {
+        if (!product_id || isNaN(productId)) {
             throw new AppError("Invalid product id", 400)
         }
 
-        if (!quantity || isNaN(Number(quantity)) || Number(quantity) < 1) {
+        if (!quantity || isNaN(qty) || qty < 1) {
             throw new AppError("Invalid quantity", 400)
         }
 
-        const data = await addToCartService(loginUserId, product_id, quantity)
+        const data = await addToCartService(loginUserId, productId, qty)
         res.status(201).json({ status: "success", data: data })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+export const getCartItems = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const loginUserId = req.user!.id
+
+        const data = await getCartItemsService(loginUserId)
+
+        res.status(200).json({
+            status: "success",
+            data
+        })
 
     } catch (error) {
         next(error)
@@ -50,14 +68,14 @@ export const updateCartItem = async (req: Request, res: Response, next: NextFunc
     try {
 
         const loginUserId = req.user!.id
-        const id = Number(req.params)
+        const id = Number(req.params.id)
         const quantity = Number(req.body)
 
-        if (!id || isNaN(Number(id))) {
+        if (!id || isNaN(id)) {
             throw new AppError("Invalid cart item id", 400)
         }
 
-        if (!quantity || isNaN(Number(quantity)) || Number(quantity) < 1) {
+        if (!quantity || isNaN(quantity) || Number(quantity) < 1) {
             throw new AppError("Invalid quantity", 400)
         }
 
@@ -75,9 +93,9 @@ export const deleteCartItem = async (req: Request, res: Response, next: NextFunc
     try {
 
         const loginUserId = req.user!.id
-        const id = Number(req.params)
+        const id = Number(req.params.id)
 
-        if (!id || isNaN(Number(id))) {
+        if (!id || isNaN(id)) {
             throw new AppError("Invalid cart item id", 400)
         }
 

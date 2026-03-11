@@ -3,8 +3,10 @@ import { Router } from 'express'
 import {
     getCartByLoginUser,
     addToCart,
+    getCartItems,
     updateCartItem,
     deleteCartItem
+
 } from '../../controller/cart.controller'
 import {
     authorize
@@ -18,6 +20,7 @@ router.route('/')
 
 router.route('/items')
     .post(authorize(['customer']), addToCart)
+    .get(authorize(['customer']), getCartItems)
 
 router.route('/items/:id')
     .patch(authorize(['customer']), updateCartItem)

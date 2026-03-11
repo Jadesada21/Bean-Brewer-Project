@@ -19,6 +19,8 @@ import AboutUsPage from "./pages/AboutUs";
 import ContactUsPage from "./pages/ContactUs";
 import ProfilesPage from "./pages/profiles/ProfilesPage";
 
+import ShopDetailPage from "./pages/shop/ShopDetailPage"
+
 import AdminPage from "./pages/AdminPage";
 import OrderDetails from "./pages/profiles/details/OrderDetailPage";
 
@@ -48,7 +50,10 @@ export default function AppRouter() {
                 <main className="flex-1">
                     <Routes>
                         <Route path="/" element={<HomePage />} />
+
                         <Route path="/shops" element={<ShopPage />} />
+                        <Route path="/shops/:id" element={<ShopDetailPage />} />
+
                         <Route path="/rewards" element={<RewardPage />} />
                         <Route path="/about-us" element={<AboutUsPage />} />
                         <Route path="/contact-us" element={<ContactUsPage />} />

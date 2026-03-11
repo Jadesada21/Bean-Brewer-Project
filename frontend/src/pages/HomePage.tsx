@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 
 
@@ -7,10 +8,13 @@ export default function HomePage() {
             <h1 className="pt-5 font-semibold text-6xl font-baskerville">Find your new favorite </h1>
             <h1 className="pt-5 font-semibold text-6xl font-baskerville">coffee, again and again</h1>
 
-            <button className="flex justify-center items-center 
+
+
+            <button className="flex justify-center items-center cursor-pointer 
             mt-12 text-left ml-10 w-40 h-15 bg-black rounded-3xl">
-                <p className="text-white font-bold font-baskerville">GRIND HERE</p>
+                <Link to="/shops" > <p className="text-white font-bold font-baskerville">GRIND HERE</p></Link>
             </button>
+
 
 
             <div className="mt-20 overflow-hidden">

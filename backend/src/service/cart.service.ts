@@ -1,5 +1,4 @@
 import { pool } from '../db/connectPostgre.repository'
-import { AppError } from '../util/AppError'
 
 
 export const getCartByLoginUserService = async (userId: number) => {
@@ -46,25 +45,62 @@ export const addToCartService = async (
     }
 
     const existingItem = await pool.query(`
-            select id , quantity from cart_items
-            where card_id = $1
+            select id , quantity 
+            from cart_items
+            where cart_id = $1
             and product_id = $2
         `, [cartId, productId])
 
-    if (existingItem.rowCount === 0) {
-
+    if (existingItem.rows.length > 0) {
         await pool.query(`
             update cart_items
             set quantity = quantity + $1
             where id = $2
             `, [quantity, existingItem.rows[0].id])
-    } else {
 
+
+    } else {
         await pool.query(`
             insert into cart_items (cart_id , product_id , quantity)
             values ($1,$2,$3)
             `, [cartId, productId, quantity])
     }
+}
+
+export const getCartItemsService = async (userId: number) => {
+
+    const cart = await pool.query(`
+        select id
+        from cart
+        where user_id = $1
+    `, [userId])
+
+    if (cart.rows.length === 0) {
+        return []
+    }
+
+    const cartId = cart.rows[0].id
+
+    const items = await pool.query(`
+        select
+            ci.id as cart_item_id,
+            ci.product_id,
+            p.name,
+            p.price,
+            p.bag_size,
+            ci.quantity,
+            pi.image_url
+        from cart_items ci
+        join products p
+            on ci.product_id = p.id
+        left join product_images pi
+            on p.id = pi.product_id
+            and pi.is_primary = true
+        where ci.cart_id = $1
+        order by ci.id desc
+    `, [cartId])
+
+    return items.rows
 }
 
 export const updateCartItemService = async (
@@ -90,7 +126,7 @@ export const deleteCartItemService = async (
 
     await pool.query(`
         delete from cart_items ci
-        using car c
+        using cart c
         where ci.cart_id = c.id
         and c.user_id = $1
         and ci.id = $2

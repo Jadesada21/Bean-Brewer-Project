@@ -12,9 +12,9 @@ export default function PriceFilter({
 
     const prices = [
         "any",
-        "300-600",
-        "400-700",
-        "500-800"
+        "300-600 ฿",
+        "400-700 ฿",
+        "500-800 ฿"
     ]
 
     return (
