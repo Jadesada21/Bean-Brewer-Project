@@ -8,17 +8,21 @@ import {
 
 import { Role } from '../../types/users.type'
 
-export const getAllProductService = async (role?: Role | 'guest') => {
+export const getAllProductService = async (
+    role?: Role | 'guest',
+    price: string = 'any',
+    roast_level?: string | undefined
+) => {
     if (role === 'admin') {
         const sql = ` select 
         p.id,
         p.name,
         p.description,
-        p.short_description,
         p.price,
         p.stock,
         p.reward_points,
         p.roast_level,
+        p.taste,
         p.category_id,
         p.is_active,
         p.created_at,
@@ -37,21 +41,63 @@ export const getAllProductService = async (role?: Role | 'guest') => {
         const response = await pool.query(sql)
         return response.rows
     } else {
-        const sql = `
+        let sql = `
         select  
-        p.id,
-        p.name,
-        p.short_description,
-        p.price,
-        p.reward_points,
-        pi.image_url
+            p.id,
+            p.name,
+            p.price,
+            p.reward_points,
+            p.taste,
+            pi.image_url
         from products p
         left join product_images pi 
         on pi.product_id = p.id 
         and pi.is_primary = true
         where p.is_active = true
-        order by p.created_at desc`
-        const response = await pool.query(sql)
+       `
+
+        const conditions: string[] = []
+        const values: any[] = []
+        let paramIndex = 1
+
+        // price filter
+        if (price && price !== 'any') {
+
+            if (price.includes('-')) {
+
+                const [min, max] = price.split('-')
+
+                conditions.push(`p.price between $${paramIndex} and $${paramIndex + 1}`)
+
+                values.push(Number(min), Number(max))
+
+                paramIndex += 2
+
+            } else {
+
+                conditions.push(`p.price <= $${paramIndex}`)
+
+                values.push(Number(price))
+
+                paramIndex += 1
+            }
+        }
+        // roast_level filter
+        if (roast_level && roast_level !== '') {
+            conditions.push(`p.roast_level = $${paramIndex}`)
+            values.push(roast_level)
+            paramIndex += 1
+        }
+
+        // apply condition
+        if (conditions.length > 0) {
+            sql += `and ${conditions.join(" and ")}`
+        }
+
+        sql += ` order by p.created_at desc`
+
+        const response = await pool.query(sql, values)
+
         return response.rows
     }
 }
@@ -61,7 +107,7 @@ export const createProductService = async (
     body: CreateProductInput
 ): Promise<ProductResponse> => {
 
-    const { name, description, short_description, price, stock, reward_points, category_id, roast_level } = body
+    const { name, description, price, stock, reward_points, taste, category_id, roast_level } = body
 
     const checkCategory = await pool.query(`
     select id from categories where id = $1    
@@ -73,10 +119,10 @@ export const createProductService = async (
 
     const response = await pool.query(`
         insert into products 
-        (name , description ,short_description, price , stock ,reward_points, category_id , roast_level)
+        (name , description , price , stock ,reward_points, taste, category_id , roast_level)
         values($1,$2,$3,$4,$5,$6,$7,$8)
         returning *`,
-        [name, description, short_description, price, stock, reward_points, category_id, roast_level]
+        [name, description, price, stock, reward_points, taste, category_id, roast_level]
     )
     return response.rows[0]
 }
@@ -88,12 +134,12 @@ export const getProductByIdService = async (id: number, role?: Role | 'guest') =
         p.id,
         p.name,
         p.description,
-        p.short_description,
         p.price,
         p.stock,
         p.reward_points,
         p.roast_level,
         p.category_id,
+        p.taste,
         p.is_active,
         p.created_at,
         p.updated_at,
@@ -118,9 +164,9 @@ export const getProductByIdService = async (id: number, role?: Role | 'guest') =
         select  
         p.id,
         p.name,
-        p.short_description,
         p.price,
         p.reward_points,
+        p.taste,
         p.reward_points as points,
         pi.image_url
     from products p

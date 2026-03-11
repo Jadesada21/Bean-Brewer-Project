@@ -4,9 +4,9 @@ export interface ProductResponse {
     id: number
     name: string
     description: string
-    short_description: string
     price: number
     stock: number
+    taste: string
     category_id: number
     roast_level: RoastLevel
     is_active: boolean
@@ -17,9 +17,9 @@ export interface ProductResponse {
 export interface CreateProductInput {
     name: string
     description: string
-    short_description: string
     price: number
     stock: number
+    taste: string
     reward_points: number
     category_id: number
     roast_level: RoastLevel
