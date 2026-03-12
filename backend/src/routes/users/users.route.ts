@@ -20,4 +20,6 @@ router.route('/me')
 router.route('/update')
     .patch(authorize(['customer']), updateUsersByLoginUser)
 
+
+
 export default router;

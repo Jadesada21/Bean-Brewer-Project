@@ -7,7 +7,8 @@ import {
     createUsersAddressByIdService,
     updateAddressUserByLoginUserService,
     getAllMyAddressService,
-    setdefaultAddressService
+    setdefaultAddressService,
+    getPrimaryService
 } from '../service/users.service'
 
 
@@ -23,9 +24,9 @@ import { AppError } from '../util/AppError'
 
 export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const user = await getAllUsersService()
+        const data = await getAllUsersService()
 
-        return res.status(200).json({ status: "Success", user })
+        return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
     }
@@ -147,6 +148,18 @@ export const setdefaultAddress = async (req: Request, res: Response, next: NextF
         const userId = req.user!.id
         const data = await setdefaultAddressService(userId, addressId)
         return res.status(200).json({ status: "Success", data })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const getPrimary = async (req: Request, res: Response, next: NextFunction) => {
+
+    try {
+        const userId = req.user!.id
+
+        const data = await getPrimaryService(userId)
+        return res.status(200).json({ data })
     } catch (err) {
         next(err)
     }

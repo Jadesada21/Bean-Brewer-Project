@@ -262,3 +262,16 @@ export const setdefaultAddressService = async (userId: number, addressId: number
         client.release()
     }
 }
+
+export const getPrimaryService = async (userId: number) => {
+
+    const response = await pool.query(`
+        select * 
+        from users_addresses
+        where user_id = $1
+        and is_default = true
+        limit 1
+        `, [userId])
+
+    return response.rows[0]
+}

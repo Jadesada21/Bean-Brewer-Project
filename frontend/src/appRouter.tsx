@@ -20,6 +20,8 @@ import ContactUsPage from "./pages/ContactUs";
 import ProfilesPage from "./pages/profiles/ProfilesPage";
 
 import ShopDetailPage from "./pages/shop/ShopDetailPage"
+import PaymentPage from "./pages/payment/PaymentPage";
+
 
 import AdminPage from "./pages/AdminPage";
 import OrderDetails from "./pages/profiles/details/OrderDetailPage";
@@ -57,6 +59,7 @@ export default function AppRouter() {
                         <Route path="/rewards" element={<RewardPage />} />
                         <Route path="/about-us" element={<AboutUsPage />} />
                         <Route path="/contact-us" element={<ContactUsPage />} />
+                        <Route path="/payments/:id" element={<PaymentPage />} />
 
                         <Route
                             path="/profile"

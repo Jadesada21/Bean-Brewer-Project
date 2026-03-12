@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, useNavigate } from "react-router-dom"
 import { api } from "../../AxiosInstance"
 import { useCart } from "../../context/CartContext"
+import OrderDetailModal from "../order/OrderDetailModal"
 
 
 interface Product {
@@ -16,12 +17,30 @@ interface Product {
     bag_size: string
 }
 
+interface OrderItem {
+    product_name: string
+    price: number
+    quantity: number
+}
+
+interface Order {
+    id: number
+    status: string
+    created_at: string
+    total_amount: number
+    items: OrderItem[]
+}
+
 export default function ShopDetailPage() {
     const { id } = useParams()
+
+    const navigate = useNavigate()
 
     const [product, setProduct] = useState<Product | null>(null)
     const [qty, setQty] = useState(1)
 
+    const [open, setOpen] = useState(false)
+    const [order, setOrder] = useState<Order | null>(null)
 
     const fetchProduct = async () => {
         const res = await api.get(`/products/${id}`)
@@ -30,9 +49,66 @@ export default function ShopDetailPage() {
 
     useEffect(() => {
         fetchProduct()
-    }, [])
+    }, [id])
 
     const { addToCart } = useCart()
+
+    const handleBuyNow = async () => {
+        try {
+
+            const res = await api.post("/orders", {
+                items: [
+                    {
+                        product_id: product?.id,
+                        quantity: qty
+                    }
+                ]
+            })
+
+            setOrder({
+                ...res.data.data,
+                items: [
+                    {
+                        product_name: product?.name,
+                        price: product?.price,
+                        quantity: qty
+                    }
+                ]
+            })
+
+            setOpen(true)
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const handleCancel = async () => {
+        if (!order) return null
+
+        try {
+
+            await api.patch(`/orders/${order.id}/cancel`)
+
+            setOrder({
+                ...order,
+                status: 'cancelled'
+            })
+
+            setOpen(false)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const handlePayNow = async () => {
+        if (!order) return
+
+        setOpen(false)
+
+        navigate(`/payments/${order.id}`)
+    }
+
 
     if (!product) return <div>Loading...</div>
 
@@ -129,15 +205,22 @@ export default function ShopDetailPage() {
                     </button>
 
                     <button
+                        onClick={handleBuyNow}
                         className="mt-6 w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800"
                     >
                         Buy Now
                     </button>
 
+                    {open && (
+                        <OrderDetailModal
+                            order={order}
+                            onClose={() => setOpen(false)}
+                            onPay={handlePayNow}
+                            onCancel={handleCancel}
+                        />
+                    )}
                 </div>
-
             </div>
-
         </div>
     )
 }

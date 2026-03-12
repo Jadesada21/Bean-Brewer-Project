@@ -4,7 +4,8 @@ import {
     addUsersAddressById,
     updateAddressUserByLoginUser,
     getAllMyAddress,
-    setdefaultAddress
+    setdefaultAddress,
+    getPrimary
 } from '../../controller/users.controller'
 
 const router = Router();
@@ -23,5 +24,8 @@ router.route('/update/:id')
 
 router.route('/:id/default')
     .patch(authorize(['customer']), setdefaultAddress)
+
+router.route('/primary')
+    .get(authorize(['customer']), getPrimary)
 
 export default router
