@@ -50,3 +50,13 @@ export const loginService = async (username: string, password: string): Promise<
         }
     }
 }
+
+export const getProductBySearchService = async (keyword: string) => {
+    const response = await pool.query(`
+        select * 
+        from products
+        where name ilike '%' || $1 || '%'
+        `, [keyword])
+
+    return response.rows
+}

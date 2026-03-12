@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import { AppError } from "../util/AppError";
 
 import {
-    loginService
+    loginService,
+    getProductBySearchService
 } from '../service/login.service'
 
 
@@ -25,6 +26,24 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         })
 
         return res.status(200).json({ status: "Success", user })
+    } catch (err) {
+        next(err)
+    }
+}
+
+
+export const getProductBySearch = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const keyword = req.query.keyword as string
+
+        if (!keyword) {
+            return res.json({
+                data: []
+            })
+        }
+
+        const data = await getProductBySearchService(keyword)
+        return res.status(200).json({ data })
     } catch (err) {
         next(err)
     }

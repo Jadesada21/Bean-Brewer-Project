@@ -4,6 +4,8 @@ import loginRoute from './public-route/login-out-RegisRoute/login.route'
 import registerRoute from './public-route/login-out-RegisRoute/register.route'
 import logoutRoute from './public-route/login-out-RegisRoute/logout.route'
 import getMeRefresh from './public-route/login-out-RegisRoute/getMeRefresh.route'
+import getProductBySearch from './public-route/search/getProductBySearch.route'
+
 
 import userRoute from './users/users.route'
 import categoryRoute from './users/category.route'
@@ -42,6 +44,7 @@ router.use('/login', loginRoute)
 router.use('/categories', categoryRoute)
 router.use('/products', productsRoute)
 router.use('/rewards', rewardsRoute)
+router.use('/', getProductBySearch)
 
 
 // verify route

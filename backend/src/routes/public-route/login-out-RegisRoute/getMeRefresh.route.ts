@@ -1,12 +1,12 @@
 import { Router } from 'express'
 
 import {
-    getMeRefresh
-} from '../../../controller/getMeRefresh.controller'
+    getProductBySearch
+} from '../../../controller/login.controller'
 
 const router = Router()
 
-router.route('/me')
-    .get(getMeRefresh)
+router.route('/')
+    .get(getProductBySearch)
 
 export default router

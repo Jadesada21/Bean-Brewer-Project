@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop"
 
+
+
 import TermPage from "./pages/Term";
 import PrivacyPage from "./pages/Privacy";
 import CookiesPage from "./pages/Cookies";
@@ -35,8 +37,11 @@ import PointHis from "./pages/profiles/PointHis";
 import PaymentDetails from "./pages/profiles/details/PaymentDetailPage";
 
 
+
 export default function AppRouter() {
     const { loading } = useAuth()
+
+
 
     if (loading) {
         return <div>Loading...</div>
