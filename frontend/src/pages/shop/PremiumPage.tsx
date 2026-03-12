@@ -13,7 +13,7 @@ interface Product {
     image_url: string
 }
 
-export default function ShopPage() {
+export default function PremiumPage() {
 
     const [searchParams, setSearchParams] = useSearchParams()
 
@@ -39,21 +39,21 @@ export default function ShopPage() {
 
     return (
         <>
-            <main className="w-full h-full xl:px-60 py-15 mb-10 md:px-30">
+            <main className="w-full h-full xl:px-60 py-15 mb-10 md:px-30 font-baskerville">
                 {/* Upper */}
-                <div className="flex font-baskerville items-center">
+                <div className="flex  items-center">
                     <Link to='/'>Home</Link>
                     <img src="https://res.cloudinary.com/dbraczg5a/image/upload/v1773165802/right-arrow-svgrepo-com_mhdnwz.svg"
                         alt="right-vector"
                         className="pl-2 h-6 w-7" />
-                    <p className="pl-2 font-semibold">All Specialty Coffee</p>
+                    <p className="pl-2 font-semibold">All Premium Coffee</p>
                 </div>
 
-                <div className="mt-40 text-6xl font-baskerville">
+                <div className="mt-40 text-6xl ">
                     All Specialty Coffee
                 </div>
 
-                <div className="mt-6 font-baskerville">
+                <div className="mt-6 ">
                     Explore our collection of specialty coffee beans, carefully sourced and roasted fresh for the perfect cup.
                 </div>
 
@@ -66,13 +66,13 @@ export default function ShopPage() {
                                     className="w-10 h-10"
                                 />
 
-                                <p className="text-xl font-semibold font-baskerville">Filters</p>
+                                <p className="text-xl font-semibold ">Filters</p>
 
                             </div>
 
                             <button
                                 onClick={() => setSearchParams({})}
-                                className="text-xl font-semibold font-baskerville text-[#f45048] underline cursor-pointer"
+                                className="text-xl font-semibold  text-[#f45048] underline cursor-pointer"
                             >
                                 Clear
                             </button>
@@ -82,10 +82,10 @@ export default function ShopPage() {
                 </div>
 
                 {/* Product Section */}
-                <section className="flex gap-12 pt-8">
+                <section className="flex gap-12 pt-8 ">
 
                     {/* Filter Sidebar */}
-                    <div className="w-75 font-baskerville">
+                    <div className="w-75 ">
                         <FilterSidebar
                             searchParams={searchParams}
                             setSearchParams={setSearchParams}
@@ -93,14 +93,33 @@ export default function ShopPage() {
                     </div>
 
                     {/* Product Grid */}
-                    <div className="grid xl:grid-cols-4 gap-10 font-baskerville md:grid-cols-3">
+                    {/* <div className="grid xl:grid-cols-4 gap-10  md:grid-cols-3">
                         {products.map((product) => (
                             <Link key={product.id} to={`/shops/${product.id}`}>
                                 <ProductCard products={product} />
                             </Link>
                         ))}
+                    </div> */}
+
+                    <div className="pl-100">
+                        <div className="relative">
+                            <img src="//www.drinktrade.com/cdn/shop/files/Star_7.svg?v=1768508731&width=480"
+                                alt=""
+                            />
+
+                            <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                <img src="//www.drinktrade.com/cdn/shop/files/Ico-Coffee_d87007bd-3e01-4163-a2e7-70a51863d656.svg?v=1768508733&width=80"
+                                    className="pb-3"
+                                    alt="" />
+                                <p className="pb-2">Premium Products </p>
+                                <p>Coming Soon</p>
+                            </div>
+                        </div>
+
                     </div>
+
                 </section>
+
             </main>
 
 

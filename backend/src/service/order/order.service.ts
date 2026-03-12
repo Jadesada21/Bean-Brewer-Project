@@ -250,21 +250,27 @@ export const getOrderByIdByLoginUserService = async (orderId: number, loginUserI
             o.status,
             o.total_price,
             o.created_at,
+            pay.id as payment_id,
         json_agg(
-        json_build_object(
-            'product_id', p.id,
-            'product_name', p.name,
-            'quantity', oi.quantity,
-            'price', oi.price,
-            'total_price', oi.quantity * oi.price
-                 )
-             ) as items
-        from orders o
-        join order_items oi on oi.order_id = o.id
-        join products p on p.id = oi.product_id
-        where o.id = $1
-        and o.user_id = $2
-        group by o.id
+            json_build_object(
+                'product_id', p.id,
+                'product_name', p.name,
+                'image_url' , pi.image_url,
+                'quantity', oi.quantity,
+                'price', oi.price,
+                'total_price', oi.quantity * oi.price
+            )
+        ) as items
+    from orders o
+    join order_items oi on oi.order_id = o.id
+    join products p on p.id = oi.product_id
+    join product_images pi on pi.product_id = p.id
+    and pi.is_primary = true
+    left join payment pay
+        on pay.order_id = o.id
+    where o.id = $1
+    and o.user_id = $2
+    group by o.id , pay.id
         `, [orderId, loginUserId])
 
     if (response.rowCount === 0) {

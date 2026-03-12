@@ -241,6 +241,7 @@ export const updatePaymentStatusService = async (
 
         await client.query("COMMIT")
 
+
         return { paymentId, status: newStatus }
     } catch (err) {
         await client.query("ROLLBACK")

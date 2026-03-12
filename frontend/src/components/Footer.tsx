@@ -11,35 +11,35 @@ export default function Footer() {
                 {/* <!-- left --> */}
                 <div className="grid grid-cols-3 gap-25 w-225">
 
-                    <div>
-                        <h3 className="font-bold mb-4 text-xl font-baskerville">Shop</h3>
+                    <div className="text-gray-200 font-baskerville">
+                        <h3 className="font-bold mb-4 text-xl">Shop</h3>
                         <ul className="space-y-2 text-xl ">
 
-                            <li className="pt-3 hover:underline decoration-1 font-baskerville">
+                            <li className="pt-3 hover:underline decoration-1">
                                 <Link to="/shops">Bean</Link></li>
 
-                            <li className="pt-3 hover:underline decoration-1 font-baskerville">
+                            <li className="pt-3 hover:underline decoration-1">
                                 <Link to="/roast-level">Roast Level</Link></li>
                         </ul>
                     </div>
 
-                    <div>
-                        <h3 className="font-bold mb-4 text-xl font-baskerville">Reward</h3>
+                    <div className="text-gray-200 font-baskerville">
+                        <h3 className="font-bold mb-4 text-xl ">Reward</h3>
                         <ul className="space-y-2 text-xl ">
 
-                            <li className="pt-3 hover:underline decoration-1 font-baskerville">
+                            <li className="pt-3 hover:underline decoration-1 ">
                                 <Link to="">Equipment</Link></li>
                         </ul>
                     </div>
 
-                    <div>
-                        <h3 className="font-bold mb-4 text-xl font-baskerville">Support</h3>
+                    <div className="text-gray-200 font-baskerville">
+                        <h3 className="font-bold mb-4 text-xl ">Support</h3>
                         <ul className="space-y-2 text-xl ">
 
-                            <li className="pt-3 hover:underline decoration-1 font-baskerville">
+                            <li className="pt-3 hover:underline decoration-1 ">
                                 <Link to="/contact-us">Contact Us</Link></li>
 
-                            <li className="pt-3 hover:underline decoration-1 font-baskerville">
+                            <li className="pt-3 hover:underline decoration-1 ">
                                 <Link to="/about-us">About Us</Link></li>
                         </ul >
                     </div>
@@ -48,7 +48,7 @@ export default function Footer() {
 
                 {/* <!-- right --> */}
                 <div className="flex items-center justify-center w-150 mt-25" >
-                    <h2 className="text-8xl font-bold font-baskerville">
+                    <h2 className="text-8xl font-bold font-baskerville text-gray-200">
                         BEAN
                     </h2>
 

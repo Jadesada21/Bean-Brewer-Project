@@ -1,4 +1,4 @@
-export type Status = "completed" | 'failed' | 'pending'
+export type Status = "completed" | 'cancelled' | 'pending'
 export type PaymentUpdateStatus = "completed" | "cancelled"
 
 export interface PaymentResponse {

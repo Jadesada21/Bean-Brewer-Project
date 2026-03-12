@@ -66,11 +66,10 @@ export default function PaymentHistory() {
                 <table className="w-full border-collapse">
                     <thead>
                         <tr className="text-left text-gray-500 border-b border-gray-300">
-                            <th className="pb-3">Order</th>
+                            <th className="pb-3">Payment Order</th>
                             <th className="pb-3">Status</th>
                             <th className="pb-3">Date</th>
                             <th className="pb-3 pr-4">Amount</th>
-                            <th className="pb-3">transaction</th>
                         </tr>
                     </thead>
 
@@ -81,7 +80,7 @@ export default function PaymentHistory() {
                                 className="border-b border-gray-300 hover:bg-gray-50 transition"
                             >
                                 <td className="py-4 font-medium font-baskerville">
-                                    {payment.order_number}
+                                    {payment.transaction_ref}
                                 </td>
 
                                 <td className="py-4">
@@ -107,12 +106,7 @@ export default function PaymentHistory() {
                                     ฿ {formatPrice(payment.amount)}
                                 </td>
 
-
-                                <td className="py-4 font-baskerville">
-                                    {payment.transaction_ref}
-                                </td>
-
-                                <td className="py-4 text-right font-baskerville">
+                                <td className="py-4  font-baskerville">
                                     <button
                                         onClick={() => navigate(`/profile/payments/${payment.id}`)}
                                         className="cursor-pointer bg-emerald-500 text-white px-4 py-2 rounded-md hover:bg-emerald-600 transition">

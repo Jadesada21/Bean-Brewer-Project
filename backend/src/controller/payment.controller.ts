@@ -58,7 +58,7 @@ export const updatePaymentStatus = async (req: Request, res: Response, next: Nex
             throw new AppError("Invalid payment status", 400)
         }
 
-        if (!['completed', 'failed'].includes(status)) {
+        if (!['completed', 'cancelled'].includes(status)) {
             throw new AppError("Invalid payment status", 400)
         }
 

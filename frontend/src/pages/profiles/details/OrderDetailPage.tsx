@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../../AxiosInstance'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 interface OrderDetail {
     order_id: number
@@ -24,13 +24,15 @@ export default function OrderDetails() {
 
     const { id } = useParams()
 
+    const navigate = useNavigate()
+
     const [order, setOrder] = useState<OrderDetail | null>(null)
     const [loading, setLoading] = useState(true)
 
     const fetchOrderDetail = async () => {
         try {
-            const res = await api.get(`orders/${id}`)
-            setOrder(res.data.data)
+            const { data } = await api.get(`orders/${id}`)
+            setOrder(data.data)
         } catch (err) {
             console.error('Error fetching order detail:', err)
         } finally {
@@ -65,11 +67,22 @@ export default function OrderDetails() {
         }
     }
 
+    if (!order) return <div>Order not found</div>
+
+    const handleCancel = async () => {
+        try {
+            await api.patch(`/orders/${order.order_id}/cancel`)
+
+            navigate('/profile/orders')
+        } catch (err) {
+
+        }
+    }
+
     if (loading) {
         return <div>loading...</div>
     }
 
-    if (!order) return <div>Order not found</div>
 
 
 
@@ -117,6 +130,26 @@ export default function OrderDetails() {
 
                     <p>฿ {formatPrice(order.total_price)}</p>
                 </div>
+
+                {order.status === "pending" && (
+                    <div className="flex justify-end gap-3 mt-6">
+
+                        <button
+                            onClick={handleCancel}
+                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                        >
+                            Cancel Order
+                        </button>
+
+                        <button
+                            onClick={() => navigate(`/payments/${order.order_id}`)}
+                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                        >
+                            Pay Now
+                        </button>
+
+                    </div>
+                )}
 
             </div>
         </div>

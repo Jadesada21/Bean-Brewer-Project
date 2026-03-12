@@ -63,11 +63,25 @@ export default function PaymentDetails() {
         }
     }
 
+
+    if (!payment) return <div>Payment not found</div>
+
+    const handleCancel = async () => {
+        try {
+            await api.patch(`/payments/${payment.id}/status`, {
+                status: "cancelled"
+            })
+
+            navigate('/profile/payments')
+        } catch (err) {
+
+        }
+    }
+
     if (loading) {
         return <div>loading...</div>
     }
 
-    if (!payment) return <div>Payment not found</div>
 
 
 
@@ -125,6 +139,26 @@ export default function PaymentDetails() {
                     <p>฿ {formatPrice(payment.amount)}</p>
                 </div>
 
+
+                {payment.status === "pending" && (
+                    <div className="flex justify-end gap-3 mt-6">
+
+                        <button
+                            onClick={handleCancel}
+                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                        >
+                            Cancel Payment
+                        </button>
+
+                        <button
+                            onClick={() => navigate(`/payments/${payment.order_id}`)}
+                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                        >
+                            Pay Now
+                        </button>
+
+                    </div>
+                )}
             </div>
         </div>
     )

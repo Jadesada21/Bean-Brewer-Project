@@ -21,7 +21,7 @@ import ProfilesPage from "./pages/profiles/ProfilesPage";
 
 import ShopDetailPage from "./pages/shop/ShopDetailPage"
 import PaymentPage from "./pages/payment/PaymentPage";
-
+import PremiumPage from "./pages/shop/PremiumPage"
 
 import AdminPage from "./pages/AdminPage";
 import OrderDetails from "./pages/profiles/details/OrderDetailPage";
@@ -45,7 +45,7 @@ export default function AppRouter() {
     return (
         <BrowserRouter>
             <ScrollToTop />
-            <div className="min-h-screen flex flex-col">
+            <div className="min-h-screen flex flex-col bg-[#f7f5ef]">
 
                 <Navbar />
 
@@ -55,11 +55,13 @@ export default function AppRouter() {
 
                         <Route path="/shops" element={<ShopPage />} />
                         <Route path="/shops/:id" element={<ShopDetailPage />} />
+                        <Route path="/shops/special" element={<PremiumPage />} />
 
                         <Route path="/rewards" element={<RewardPage />} />
                         <Route path="/about-us" element={<AboutUsPage />} />
                         <Route path="/contact-us" element={<ContactUsPage />} />
                         <Route path="/payments/:id" element={<PaymentPage />} />
+
 
                         <Route
                             path="/profile"

@@ -6,6 +6,7 @@ interface OrderItem {
     product_name: string
     price: number
     quantity: number
+    image_url: string
 }
 
 interface Order {
@@ -13,6 +14,7 @@ interface Order {
     order_number: string
     status: string
     total_price: number
+    payment_id: number
     items: OrderItem[]
 }
 
@@ -63,7 +65,7 @@ export default function PaymentPage() {
 
 
     useEffect(() => {
-        if (id) return
+        if (!id) return
 
         const createPayment = async () => {
 
@@ -88,11 +90,11 @@ export default function PaymentPage() {
     const handlePayNow = async () => {
         try {
 
-            await api.patch(`/payments/${order.order_id}/status`, {
+            await api.patch(`/payments/${order.payment_id}/status`, {
                 status: "completed"
             })
 
-            navigate('/orders')
+            navigate('/profile/payments')
 
         } catch (err) {
             console.log(err)
@@ -103,11 +105,11 @@ export default function PaymentPage() {
         if (!order) return
 
         try {
-            await api.patch(`/payments/${order.order_id}/status`, {
+            await api.patch(`/payments/${order.payment_id}/status`, {
                 status: "cancelled"
             })
 
-            navigate('/orders')
+            navigate('/profile/payments')
 
         } catch (err) {
             console.log(err)
@@ -116,13 +118,13 @@ export default function PaymentPage() {
 
 
     return (
-        <div className="min-h-screen grid grid-cols-2 md:px-35 px-20 ">
+        <div className="h-full flex md:px-35 px-20 justify-center font-baskerville">
 
             {/* LEFT SIDE */}
 
-            <div className="px-16 py-12">
+            <div className="px-16 py-12 border-r border-gray-200 border-b  ">
 
-                <h1 className="text-3xl font-semibold mb-10">
+                <h1 className="text-3xl font-semibold mb-10 text-center">
                     Checkout
                 </h1>
 
@@ -136,16 +138,23 @@ export default function PaymentPage() {
                         <span className="font-semibold">Phone:</span> {user.phone_num}
                     </p>
 
-                    <p>
+                    <div>
                         <span className="font-semibold">Address:</span><br />
 
-                        {addressUser.address_line}{""} ,
-                        {addressUser.district}{""} ,
-                        {addressUser.subdistrict}{""} ,
-                        {addressUser.postal_code}{""} ,
-                        {addressUser.province}{""} ,
-                        {addressUser.country}{""} ,
-                    </p>
+                        <div className="pt-2">
+                            {addressUser.address_line}{""} ,
+                        </div>
+
+                        <div className="pt-2">
+                            {addressUser.district}{""} ,
+                            {addressUser.subdistrict} ,
+                        </div>
+                        <div className="pt-2">
+                            {addressUser.postal_code}{""} ,
+                            {addressUser.province}{""} ,
+                            {addressUser.country}{""}
+                        </div>
+                    </div>
 
                 </div>
 
@@ -155,14 +164,14 @@ export default function PaymentPage() {
 
                     <button
                         onClick={handleCancel}
-                        className="px-6 py-3 border rounded-lg"
+                        className="px-6 py-3 border rounded-lg bg-red-500 opacity-70 text-white"
                     >
                         Cancel Order
                     </button>
 
                     <button
                         onClick={handlePayNow}
-                        className="px-6 py-3 bg-green-600 text-white rounded-lg"
+                        className="px-6 py-3 bg-green-600 text-white opacity-70 rounded-lg"
                     >
                         Pay Now
                     </button>
@@ -173,7 +182,7 @@ export default function PaymentPage() {
 
             {/* RIGHT SIDE */}
 
-            <div className="bg-gray-50 px-16 py-12">
+            <div className="bg-[#d8d8d885] px-16 py-12 w-130 border-b border-gray-200">
 
                 <h2 className="text-xl font-semibold mb-6">
                     Order Summary
@@ -190,11 +199,17 @@ export default function PaymentPage() {
                             className="flex justify-between"
                         >
 
-                            <div>
-                                <p>{item.product_name}</p>
-                                <p className="text-sm text-gray-500">
-                                    Qty {item.quantity} × {item.price} ฿
-                                </p>
+                            <div className="flex gap-6 ">
+                                <img src={item.image_url}
+                                    className="w-16 h-16 object-cover rounded border border-white"
+                                />
+
+                                <div>
+                                    <p>{item.product_name}</p>
+                                    <p className="text-sm text-gray-500">
+                                        Qty {item.quantity} × {item.price} ฿
+                                    </p>
+                                </div>
                             </div>
 
                             <p>

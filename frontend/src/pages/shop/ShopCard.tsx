@@ -13,7 +13,7 @@ export function ProductCard({ products }: { products: Product }) {
     return (
         <div className="h-100 w-65 cursor-pointer">
 
-            <div className="bg-gray-100 rounded-2xl flex justify-center">
+            <div className="bg-gray-300 rounded-2xl flex justify-center">
                 <img
                     src={products.image_url}
                     className="h-full w-full object-cover"
