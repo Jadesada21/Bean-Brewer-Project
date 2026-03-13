@@ -28,9 +28,6 @@ import PremiumPage from "./pages/shop/PremiumPage"
 
 import RewardDetailPage from "./pages/reward/RewardDetailPage";
 
-
-import AdminPage from "./pages/AdminPage";
-
 import ProfileForm from "./pages/profiles/ProfileForm";
 import AddressForm from "./pages/profiles/AddressForm";
 import PaymentHis from "./pages/profiles/PaymentHis";
@@ -42,6 +39,10 @@ import RedeemRewardDetails from "./pages/profiles/details/RedeemRewardPage";
 
 import RedeemHis from "./pages/profiles/RedeemHis";
 import PointHis from "./pages/profiles/PointHis";
+
+
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminLayout from "./pages/admin/AdminLayout";
 
 
 
@@ -127,11 +128,16 @@ export default function AppRouter() {
                     path="/admin"
                     element={
                         <AdminRoute>
-                            <AdminPage />
+                            <AdminLayout />
                         </AdminRoute>
                     }
                 >
 
+                    <Route index element={<AdminDashboard />} />
+                    {/* <Route path="orders" element={<AdminOrders />} /> */}
+                    {/* <Route path="products" element={<AdminProducts />} />
+                    <Route path="rewards" element={<AdminRewards />} />
+                    <Route path="users" element={<AdminUsers />} /> */}
                 </Route>
 
 
