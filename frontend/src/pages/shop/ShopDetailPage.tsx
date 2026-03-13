@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom"
 import { api } from "../../AxiosInstance"
 import { useCart } from "../../context/CartContext"
 import OrderDetailModal from "../order/OrderDetailModal"
+import { useAuth } from "../../context/AuthContext"
 
 
 interface Product {
@@ -34,6 +35,9 @@ interface Order {
 export default function ShopDetailPage() {
     const { id } = useParams()
 
+    const { user } = useAuth()
+    const { addToCart } = useCart()
+
     const navigate = useNavigate()
 
     const [product, setProduct] = useState<Product | null>(null)
@@ -41,6 +45,8 @@ export default function ShopDetailPage() {
 
     const [open, setOpen] = useState(false)
     const [order, setOrder] = useState<Order | null>(null)
+
+    const [openLoginModal, setOpenLoginModal] = useState(false)
 
     const fetchProduct = async () => {
         const res = await api.get(`/products/${id}`)
@@ -51,10 +57,27 @@ export default function ShopDetailPage() {
         fetchProduct()
     }, [id])
 
-    const { addToCart } = useCart()
+
+    const handleAddToCart = () => {
+
+        if (!user) {
+            setOpenLoginModal(true)
+            return
+        }
+
+        if (!product) return
+
+        addToCart(product.id, qty)
+    }
+
 
     const handleBuyNow = async () => {
         try {
+
+            if (!user) {
+                setOpenLoginModal(true)
+                return
+            }
 
             const res = await api.post("/orders", {
                 items: [
@@ -198,7 +221,8 @@ export default function ShopDetailPage() {
                     {/* Add to cart */}
 
                     <button
-                        onClick={() => addToCart(product.id, qty)}
+                        onClick={handleAddToCart}
+                        disabled={!product}
                         className="mt-6 w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800"
                     >
                         Add to Cart
@@ -221,6 +245,6 @@ export default function ShopDetailPage() {
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { api } from '../AxiosInstance'
+import { useAuth } from './AuthContext'
 
 interface CartItem {
     cart_item_id: number
@@ -22,6 +23,7 @@ const CartContext = createContext<CartContextType | null>(null)
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const [cart, setCart] = useState<CartItem[]>([])
+    const { user } = useAuth()
 
     const fetchCart = async () => {
         const res = await api.get("/carts/items")
@@ -48,8 +50,11 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     useEffect(() => {
-        fetchCart()
-    }, [])
+        if (user) {
+            fetchCart()
+
+        }
+    }, [user])
 
     return (
         <CartContext.Provider value={{ cart, fetchCart, addToCart, removeItem }}>
