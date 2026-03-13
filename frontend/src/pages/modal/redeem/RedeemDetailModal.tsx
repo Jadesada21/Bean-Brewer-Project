@@ -1,50 +1,68 @@
 import { useNavigate } from "react-router-dom"
-import { api } from "../../AxiosInstance"
+import { api } from "../../../AxiosInstance"
 
 
-interface OrderItem {
-    product_name: string
-    price: number
+interface redeemItem {
+    reward_name: string
+    points_required: number
     quantity: number
 }
 
-interface Order {
+interface Redeem {
     id: number
     status: string
     created_at: string
-    total_amount: number
-    items: OrderItem[]
+    total_points_used: number
+    items: redeemItem[]
 }
 
 interface Props {
-    order: Order | null
+    redeem: Redeem | null
     onClose: () => void
-    onPay?: () => void
+    onRedeem?: () => void
     onCancel?: () => void
 }
 
-export default function OrderDetailModal({
-    order,
+export default function RedeemDetailModal({
+    redeem,
     onClose,
-    onPay,
+    onRedeem,
     onCancel
 }: Props) {
 
     const navigate = useNavigate()
-    if (!order) return null
+    if (!redeem) return null
 
-    const subtotal = order.items?.reduce(
-        (sum, item) => sum + item.price * item.quantity, 0
+    const subtotal = redeem.items?.reduce(
+        (sum, item) => sum + item.points_required * item.quantity, 0
     ) ?? 0
 
     const handleCancel = async () => {
         try {
 
-            await api.patch(`/orders/${order.id}/cancel`)
+            await api.patch(`/redeems/${redeem.id}/status`, {
+                status: 'cancelled'
+            }
 
-            navigate('/profile/orders')
+            )
+
+
+            navigate('/profile/rewards-redeem')
         } catch (err) {
             console.error(err)
+        }
+    }
+
+    const handleRedeemNow = async () => {
+        try {
+
+            await api.patch(`/redeems/${redeem.id}/status`, {
+                status: "completed"
+            })
+
+            navigate('/profile/rewards-redeem')
+        } catch (err) {
+            console.log(err)
         }
     }
 
@@ -57,7 +75,7 @@ export default function OrderDetailModal({
                 {/* Header */}
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-semibold">
-                        Order #{order.id}
+                        Redeem #{redeem.id}
                     </h2>
 
                     <button
@@ -70,48 +88,34 @@ export default function OrderDetailModal({
 
                 {/* Status */}
                 <div className="mb-4 text-sm text-gray-600">
-                    <p>Status: <span className="font-medium">{order.status}</span></p>
-                    <p>Date: {new Date(order.created_at).toLocaleString()}</p>
+                    <p>Status: <span className="font-medium">{redeem.status}</span></p>
+                    <p>Date: {new Date(redeem.created_at).toLocaleString()}</p>
                 </div>
 
                 {/* Items */}
                 <div className="border-t border-b py-4 mb-4">
                     <h3 className="font-semibold mb-3">Items</h3>
 
-                    {order.items?.map((item, index) => (
+                    {redeem.items?.map((item, index) => (
                         <div
                             key={index}
                             className="flex justify-between text-sm mb-2"
                         >
                             <div>
-                                <p>{item.product_name}</p>
+                                <p>{item.reward_name}</p>
                                 <p className="text-gray-500">
-                                    {item.quantity} × {item.price} ฿
+                                    {item.quantity} × {item.points_required}
                                 </p>
                             </div>
-
-                            <p className="font-medium">
-                                {item.price * item.quantity} ฿
-                            </p>
                         </div>
                     ))}
                 </div>
 
                 {/* Summary */}
                 <div className="mb-6">
-                    <div className="flex justify-between text-sm mb-1">
-                        <span>Subtotal</span>
-                        <span>{subtotal} ฿</span>
-                    </div>
-
-                    <div className="flex justify-between text-sm mb-1">
-                        <span>Shipping</span>
-                        <span>0 ฿</span>
-                    </div>
-
                     <div className="flex justify-between font-semibold mt-2">
-                        <span>Total</span>
-                        <span>{order.total_amount} ฿</span>
+                        <span>Points total</span>
+                        <span>{redeem.total_points_used} pts</span>
                     </div>
                 </div>
 
@@ -126,22 +130,20 @@ export default function OrderDetailModal({
                             Close
                         </button>
                     </div>
-                    {order.status === "pending" && (
+                    {redeem.status === "pending" && (
                         <div className="flex gap-3 mt-6">
-
-
                             <button
                                 onClick={handleCancel}
                                 className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                             >
-                                Cancel Order
+                                Cancel Redeem
                             </button>
 
                             <button
-                                onClick={() => navigate(`/payments/${order.id}`)}
+                                onClick={handleRedeemNow}
                                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
                             >
-                                Pay Now
+                                Redeem Now
                             </button>
                         </div>
                     )}

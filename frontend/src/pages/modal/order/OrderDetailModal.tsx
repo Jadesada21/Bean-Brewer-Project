@@ -1,52 +1,47 @@
 import { useNavigate } from "react-router-dom"
-import { api } from "../../AxiosInstance"
+import { api } from "../../../AxiosInstance"
 
 
-interface redeemItem {
-    reward_name: string
-    points_required: number
+interface OrderItem {
+    product_name: string
+    price: number
     quantity: number
 }
 
-interface Redeem {
+interface Order {
     id: number
     status: string
     created_at: string
-    total_points_used: number
-    items: redeemItem[]
+    total_amount: number
+    items: OrderItem[]
 }
 
 interface Props {
-    redeem: Redeem | null
+    order: Order | null
     onClose: () => void
-    onRedeem?: () => void
+    onPay?: () => void
     onCancel?: () => void
 }
 
-export default function RedeemDetailModal({
-    redeem,
+export default function OrderDetailModal({
+    order,
     onClose,
-    onRedeem,
+    onPay,
     onCancel
 }: Props) {
 
     const navigate = useNavigate()
-    if (!redeem) return null
+    if (!order) return null
 
-    const subtotal = redeem.items?.reduce(
-        (sum, item) => sum + item.points_required * item.quantity, 0
+    const subtotal = order.items?.reduce(
+        (sum, item) => sum + item.price * item.quantity, 0
     ) ?? 0
 
     const handleCancel = async () => {
         try {
 
-            await api.patch(`/redeems/${redeem.id}/status`, {
-                status: 'cancelled'
-            }
+            await api.patch(`/orders/${order.id}/cancel`)
 
-            )
-
-            // ** อย่าลืมเปลี่ยน path หลังสร้าง redeem reward his เสร็จ
             navigate('/profile/orders')
         } catch (err) {
             console.error(err)
@@ -62,7 +57,7 @@ export default function RedeemDetailModal({
                 {/* Header */}
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-semibold">
-                        Redeem #{redeem.id}
+                        Order #{order.id}
                     </h2>
 
                     <button
@@ -75,28 +70,28 @@ export default function RedeemDetailModal({
 
                 {/* Status */}
                 <div className="mb-4 text-sm text-gray-600">
-                    <p>Status: <span className="font-medium">{redeem.status}</span></p>
-                    <p>Date: {new Date(redeem.created_at).toLocaleString()}</p>
+                    <p>Status: <span className="font-medium">{order.status}</span></p>
+                    <p>Date: {new Date(order.created_at).toLocaleString()}</p>
                 </div>
 
                 {/* Items */}
                 <div className="border-t border-b py-4 mb-4">
                     <h3 className="font-semibold mb-3">Items</h3>
 
-                    {redeem.items?.map((item, index) => (
+                    {order.items?.map((item, index) => (
                         <div
                             key={index}
                             className="flex justify-between text-sm mb-2"
                         >
                             <div>
-                                <p>{item.reward_name}</p>
+                                <p>{item.product_name}</p>
                                 <p className="text-gray-500">
-                                    {item.quantity} × {item.points_required}
+                                    {item.quantity} × {item.price} ฿
                                 </p>
                             </div>
 
                             <p className="font-medium">
-                                {item.points_required * item.quantity}
+                                {item.price * item.quantity} ฿
                             </p>
                         </div>
                     ))}
@@ -109,9 +104,14 @@ export default function RedeemDetailModal({
                         <span>{subtotal} ฿</span>
                     </div>
 
+                    <div className="flex justify-between text-sm mb-1">
+                        <span>Shipping</span>
+                        <span>0 ฿</span>
+                    </div>
+
                     <div className="flex justify-between font-semibold mt-2">
                         <span>Total</span>
-                        <span>{redeem.total_points_used} ฿</span>
+                        <span>{order.total_amount} ฿</span>
                     </div>
                 </div>
 
@@ -126,8 +126,10 @@ export default function RedeemDetailModal({
                             Close
                         </button>
                     </div>
-                    {redeem.status === "pending" && (
+                    {order.status === "pending" && (
                         <div className="flex gap-3 mt-6">
+
+
                             <button
                                 onClick={handleCancel}
                                 className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
@@ -136,10 +138,10 @@ export default function RedeemDetailModal({
                             </button>
 
                             <button
-                                onClick={() => navigate(`/redeems/${redeem.id}`)}
+                                onClick={() => navigate(`/payments/${order.id}`)}
                                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
                             >
-                                Redeem Now
+                                Pay Now
                             </button>
                         </div>
                     )}

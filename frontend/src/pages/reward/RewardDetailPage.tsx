@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom"
 import { api } from "../../AxiosInstance"
 import { useAuth } from "../../context/AuthContext"
 import BoxModal from "../login-signup/BoxModal"
-import RedeemDetailModal from "../redeem/RedeemDetailModal"
+import RedeemDetailModal from "../modal/redeem/RedeemDetailModal"
 
 
 interface Reward {
@@ -147,7 +147,6 @@ export default function ShopDetailPage() {
 
                 {/* Detail */}
                 <div>
-
                     <p className="text-sm tracking-widest text-gray-500 uppercase">
                         {reward.category}
                     </p>
@@ -194,8 +193,6 @@ export default function ShopDetailPage() {
                             +
                         </button>
                     </div>
-
-
 
                     <button
                         onClick={handleRedeem}

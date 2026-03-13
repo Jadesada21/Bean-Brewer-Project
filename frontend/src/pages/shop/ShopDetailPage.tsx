@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { api } from "../../AxiosInstance"
 import { useCart } from "../../context/CartContext"
-import OrderDetailModal from "../order/OrderDetailModal"
+import OrderDetailModal from "../modal/order/OrderDetailModal"
 import { useAuth } from "../../context/AuthContext"
 import BoxModal from "../login-signup/BoxModal"
 

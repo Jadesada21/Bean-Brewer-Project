@@ -178,9 +178,6 @@ export const updateStatusRedeemService = async (
             throw new AppError("Order already processed", 400)
         }
 
-        if (!['completed', 'failed'].includes(newStatus)) {
-            throw new AppError("Invalid status transition", 400)
-        }
 
         if (redeem.status === newStatus) {
             throw new AppError("Status already set", 400)
@@ -256,7 +253,7 @@ export const updateStatusRedeemService = async (
         }
 
         // cancelled
-        if (newStatus === 'failed') {
+        if (newStatus === 'cancelled') {
 
             await client.query(`
                 update redeems

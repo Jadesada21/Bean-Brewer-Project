@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom"
 import { useAuth } from './context/AuthContext'
 import { useState } from 'react'
 
@@ -30,15 +30,18 @@ import RewardDetailPage from "./pages/reward/RewardDetailPage";
 
 
 import AdminPage from "./pages/AdminPage";
-import OrderDetails from "./pages/profiles/details/OrderDetailPage";
 
 import ProfileForm from "./pages/profiles/ProfileForm";
 import AddressForm from "./pages/profiles/AddressForm";
-import OrderHis from "./pages/profiles/OrderHis";
 import PaymentHis from "./pages/profiles/PaymentHis";
+import PaymentDetails from "./pages/profiles/details/PaymentDetailPage";
+import OrderHis from "./pages/profiles/OrderHis";
+import OrderDetails from "./pages/profiles/details/OrderDetailPage";
+import RewardHis from "./pages/profiles/RewardHis";
+import RedeemRewardDetails from "./pages/profiles/details/RedeemRewardPage";
+
 import RedeemHis from "./pages/profiles/RedeemHis";
 import PointHis from "./pages/profiles/PointHis";
-import PaymentDetails from "./pages/profiles/details/PaymentDetailPage";
 
 
 
@@ -55,67 +58,86 @@ export default function AppRouter() {
     return (
         <BrowserRouter>
             <ScrollToTop />
-            <div className="min-h-screen flex flex-col bg-[#f7f5ef]">
 
-                <Navbar setOpenSearch={setOpenSearch} />
+            <Routes>
 
-                <Search
-                    open={openSearch}
-                    setOpen={setOpenSearch}
-                />
+                {/* User layout */}
+                <Route element={
+                    <div className="min-h-screen flex flex-col bg-[#f7f5ef]">
+                        <Navbar setOpenSearch={setOpenSearch} />
 
-                <main className="flex-1">
-                    <Routes>
-                        <Route path="/" element={<HomePage />} />
+                        <Search
+                            open={openSearch}
+                            setOpen={setOpenSearch}
+                        />
 
-                        <Route path="/shops" element={<ShopPage />} />
-                        <Route path="/shops/:id" element={<ShopDetailPage />} />
-                        <Route path="/shops/special" element={<PremiumPage />} />
+                        <main className="flex-1">
+                            <Outlet />
+                        </main>
 
-                        <Route path="/rewards" element={<RewardPage />} />
-                        <Route path='/rewards/:id' element={<RewardDetailPage />} />
+                        <Footer />
 
-                        <Route path="/about-us" element={<AboutUsPage />} />
-                        <Route path="/contact-us" element={<ContactUsPage />} />
-                        <Route path="/payments/:id" element={<PaymentPage />} />
+                    </div>
+                }>
+
+                    <Route path="/" element={<HomePage />} />
+
+                    <Route path="/shops" element={<ShopPage />} />
+                    <Route path="/shops/:id" element={<ShopDetailPage />} />
+                    <Route path="/shops/special" element={<PremiumPage />} />
+
+                    <Route path="/rewards" element={<RewardPage />} />
+                    <Route path='/rewards/:id' element={<RewardDetailPage />} />
+
+                    <Route path="/about-us" element={<AboutUsPage />} />
+                    <Route path="/contact-us" element={<ContactUsPage />} />
+                    <Route path="/payments/:id" element={<PaymentPage />} />
 
 
-                        <Route
-                            path="/profile"
-                            element={<ProtectedRoute>
-                                <ProfilesPage />
-                            </ProtectedRoute>
-                            }
-                        >
-                            <Route index element={<ProfileForm />} />
-                            <Route path="address" element={<AddressForm />} />
-                            <Route path="orders" element={<OrderHis />} />
-                            <Route path="orders/:id" element={<OrderDetails />} />
-                            <Route path="payments" element={<PaymentHis />} />
-                            <Route path="payments/:id" element={<PaymentDetails />} />
-                            <Route path="redeems" element={<RedeemHis />} />
-                            <Route path="points" element={<PointHis />} />
+                    <Route
+                        path="/profile"
+                        element={<ProtectedRoute>
+                            <ProfilesPage />
+                        </ProtectedRoute>
+                        }
+                    >
+                        <Route index element={<ProfileForm />} />
+                        <Route path="address" element={<AddressForm />} />
+                        <Route path="payments" element={<PaymentHis />} />
+                        <Route path="payments/:id" element={<PaymentDetails />} />
+                        <Route path="orders" element={<OrderHis />} />
+                        <Route path="orders/:id" element={<OrderDetails />} />
+                        <Route path="rewards-redeem" element={<RewardHis />} />
+                        <Route path="rewards-redeem/:id" element={<RedeemRewardDetails />} />
+                        <Route path="redeems" element={<RedeemHis />} />
+                        <Route path="points" element={<PointHis />} />
 
-                        </Route>
+                    </Route>
 
-                        <Route path="/profile/orders/:id" element={<ProtectedRoute>
-                            <OrderDetails />
-                        </ProtectedRoute>} />
 
-                        <Route path="/admin" element={<AdminRoute>
+
+                    <Route path="/term" element={<TermPage />} />
+                    <Route path="/cookies" element={<CookiesPage />} />
+                    <Route path="/privacy" element={<PrivacyPage />} />
+
+                </Route>
+
+
+                <Route
+                    path="/admin"
+                    element={
+                        <AdminRoute>
                             <AdminPage />
-                        </AdminRoute>} />
+                        </AdminRoute>
+                    }
+                >
 
-                        <Route path="/term" element={<TermPage />} />
-                        <Route path="/cookies" element={<CookiesPage />} />
-                        <Route path="/privacy" element={<PrivacyPage />} />
-
-                    </Routes>
-                </main>
+                </Route>
 
 
-                <Footer />
-            </div>
+
+
+            </Routes>
         </BrowserRouter >
     )
 }

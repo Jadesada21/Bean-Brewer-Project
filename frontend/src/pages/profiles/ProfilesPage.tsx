@@ -86,6 +86,18 @@ export default function ProfilesPage() {
                 </button>
 
                 <button
+                    onClick={() => navigate("/profile/rewards-redeem")}
+                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b
+                        ${location.pathname.startsWith("/profile/rewards")
+                            ? "border-black"
+                            : "border-transparent"
+                        }`}
+                >
+                    Reward History
+                </button>
+
+
+                <button
                     onClick={() => navigate("/profile/redeems")}
                     className={`cursor-pointer text-xl pt-4 font-baskerville border-b
                         ${location.pathname.startsWith("/profile/redeem")

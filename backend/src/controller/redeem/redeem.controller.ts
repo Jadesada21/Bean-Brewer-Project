@@ -50,13 +50,9 @@ export const updateStatusRedeem = async (req: Request, res: Response, next: Next
 
         const { status } = req.body
 
-        const allowedStatuses: RedeemUpdateStatus[] = ["completed", "failed"]
+        const allowedStatuses: RedeemUpdateStatus[] = ["completed", "cancelled"]
 
         if (!allowedStatuses.includes(status)) {
-            throw new AppError("Invalid redeem status", 400)
-        }
-
-        if (!['completed', 'failed'].includes(status)) {
             throw new AppError("Invalid redeem status", 400)
         }
 
