@@ -6,6 +6,7 @@ import {
     createOrderService,
     cancelOrderService,
     getOrderByidService,
+    getOrderDetailsByIdService,
     getAllOrderByLoginUserService,
     getOrderByIdByLoginUserService,
     createOrderFromCartService
@@ -17,7 +18,9 @@ import { Status } from '../../types/order.type'
 
 export const getAllOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = await getAllOrderService()
+        const page = Number(req.query.page) || 1
+
+        const data = await getAllOrderService(page)
         return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
@@ -63,6 +66,21 @@ export const getOrderById = async (req: Request, res: Response, next: NextFuncti
 
         const data = await getOrderByidService(orderId)
         return res.status(200).json({ status: "Success", data })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const getOrderDetailsById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const orderId = Number(req.params.id)
+
+        if (Number.isNaN(orderId)) {
+            throw new AppError("Invalid order id", 400)
+        }
+
+        const data = await getOrderDetailsByIdService(orderId)
+        return res.status(200).json({ data })
     } catch (err) {
         next(err)
     }

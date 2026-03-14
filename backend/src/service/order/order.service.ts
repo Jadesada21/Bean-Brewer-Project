@@ -10,13 +10,17 @@ import { Role } from '../../types/users.type'
 
 
 //ad
-export const getAllOrderService = async () => {
-    const sql = `select 
-    *
-    from orders 
-    order by created_at desc`
+export const getAllOrderService = async (page: number) => {
+    const limit = 10
+    const offset = (page - 1) * limit
 
-    const response = await pool.query(sql)
+    const response = await pool.query(`
+         select 
+                *
+         from orders 
+         order by created_at desc
+         limit $1 offset $2
+        `, [limit, offset])
     return response.rows
 }
 
@@ -194,6 +198,62 @@ export const getOrderByidService = async (orderId: number) => {
         `,
         [orderId]
     )
+
+    if (response.rowCount === 0) {
+        throw new AppError("Orders not found", 404)
+    }
+
+    return response.rows[0]
+}
+
+// ad
+export const getOrderDetailsByIdService = async (orderId: number) => {
+    const response = await pool.query(`
+        select 
+            o.id as order_id,
+            o.order_number,
+            o.status,
+            o.total_price,
+            o.earned_points,
+            o.created_at,
+
+            json_build_object(
+                'id' , u.id,
+                'first_name' , u.first_name,
+                'last_name' , u.last_name,
+                'email' , u.email
+            ) as user,
+        
+        coalesce(
+            json_agg(
+                json_build_object(  
+                    'product_id', p.id,
+                    'name' , p.name,
+                    'quantity' , oi.quantity,
+                    'price_per_items' , oi.price,
+                    'total_points' , oi.total_points
+                )
+            ) filter (where oi.id is not null),
+             '[]'
+        ) as items
+
+        from orders o
+        
+        join users u
+            on u.id = o.user_id
+
+        left join order_items oi
+            on oi.order_id = o.id
+
+        left join products p
+            on p.id = oi.product_id
+        
+        where o.id = $1
+
+        group by 
+        o.id,
+        u.id
+        `, [orderId])
 
     if (response.rowCount === 0) {
         throw new AppError("Orders not found", 404)

@@ -17,10 +17,10 @@ export default function AdminLayout() {
     }
 
     return (
-        <div className="flex min-h-screen bg-gray-100">
+        <div className="flex min-h-screen bg-gray-100 font-baskerville">
 
             {/* SIDEBAR */}
-            <aside className="w-80 bg-white border-r border-gray-200 p-6">
+            <aside className="w-80 bg-white border-r border-gray-200 xl:p-6">
 
                 <h2 className="text-xl font-semibold mb-6 pt-20 ml-10">
                     Admin Panel

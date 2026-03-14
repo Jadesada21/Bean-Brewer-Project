@@ -90,7 +90,7 @@ export default function OrderDetails() {
         <div>
             <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-3xl mb-10 h-full">
                 <h2 className="text-xl font-semibold mb-4 font-baskerville">
-                    Order {order.order_number}
+                    {order.order_number}
                 </h2>
 
                 <p className={`mb-2 font-baskerville ${getStatusStyle(order.status)}`}>
