@@ -12,7 +12,12 @@ export default function HomePage() {
 
             <button className="flex justify-center items-center cursor-pointer 
             mt-12 text-left ml-10 w-40 h-15 bg-black rounded-3xl">
-                <Link to="/shops" > <p className="text-white font-bold font-baskerville">GRIND HERE</p></Link>
+                <Link to="/shops" >
+                    <p
+                        className="text-white font-bold font-baskerville transition-transform duration-150 active:scale-90 hover:scale-105">
+                        GRIND HERE
+                    </p>
+                </Link>
             </button>
 
 

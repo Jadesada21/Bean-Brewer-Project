@@ -33,7 +33,7 @@ export default function ProfilesPage() {
                         setOpenProfilesMenu(!openProfilesMenu)
                         navigate("/profile")
                     }}
-                    className={`cursor-pointer text-xl border-b font-baskerville
+                    className={`cursor-pointer text-xl border-b font-baskerville transition-transform duration-150 active:scale-90 hover:scale-105
                         ${location.pathname === "/profile"
                             ? "border-black"
                             : "border-transparent hover:border-black"
@@ -45,14 +45,14 @@ export default function ProfilesPage() {
                     <div className="flex flex-col items-center space-y-2 text-lg">
                         <button
                             onClick={() => navigate("/profile")}
-                            className="cursor-pointer border-b border-transparent font-baskerville"
+                            className="cursor-pointer border-b border-transparent font-baskerville transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Personal Info
                         </button>
 
                         <button
                             onClick={() => navigate("/profile/address")}
-                            className={`cursor-pointer text-xl pt-4 font-baskerville border-b
+                            className={`cursor-pointer text-xl pt-4 font-baskerville border-b transition-transform duration-150 active:scale-90 hover:scale-105
                         ${location.pathname.startsWith("/profile/address")
                                     ? "border-black"
                                     : "border-transparent"
@@ -65,7 +65,7 @@ export default function ProfilesPage() {
 
                 <button
                     onClick={() => navigate("/profile/payments")}
-                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b
+                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b transition-transform duration-150 active:scale-90 hover:scale-105
                         ${location.pathname.startsWith("/profile/payment")
                             ? "border-black"
                             : "border-transparent"
@@ -76,7 +76,7 @@ export default function ProfilesPage() {
 
                 <button
                     onClick={() => navigate("/profile/orders")}
-                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b
+                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b transition-transform duration-150 active:scale-90 hover:scale-105
                         ${location.pathname.startsWith("/profile/orders")
                             ? "border-black"
                             : "border-transparent"
@@ -87,7 +87,7 @@ export default function ProfilesPage() {
 
                 <button
                     onClick={() => navigate("/profile/rewards-redeem")}
-                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b
+                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b transition-transform duration-150 active:scale-90 hover:scale-105
                         ${location.pathname.startsWith("/profile/rewards")
                             ? "border-black"
                             : "border-transparent"
@@ -99,7 +99,7 @@ export default function ProfilesPage() {
 
                 <button
                     onClick={() => navigate("/profile/redeems")}
-                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b
+                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b transition-transform duration-150 active:scale-90 hover:scale-105
                         ${location.pathname.startsWith("/profile/redeem")
                             ? "border-black"
                             : "border-transparent"
@@ -110,7 +110,7 @@ export default function ProfilesPage() {
 
                 <button
                     onClick={() => navigate("/profile/points")}
-                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b
+                    className={`cursor-pointer text-xl pt-4 font-baskerville border-b transition-transform duration-150 active:scale-90 hover:scale-105
                         ${location.pathname.startsWith("/profile/points")
                             ? "border-black"
                             : "border-transparent"
@@ -123,7 +123,7 @@ export default function ProfilesPage() {
                 <div className="pt-4">
                     <button
                         onClick={handleLogout}
-                        className="cursor-pointer border px-4 py-2 rounded font-bold font-baskerville"
+                        className="cursor-pointer border px-4 py-2 rounded font-bold font-baskerville transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         Log Out
                     </button>

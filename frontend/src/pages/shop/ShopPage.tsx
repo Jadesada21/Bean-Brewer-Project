@@ -97,7 +97,7 @@ export default function ShopPage() {
 
                             <button
                                 onClick={() => setSearchParams({})}
-                                className="text-xl font-semibold text-[#f45048] underline cursor-pointer"
+                                className="text-xl font-semibold text-[#f45048] underline cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Clear
                             </button>
@@ -109,7 +109,7 @@ export default function ShopPage() {
                             <button
                                 disabled={page === 1}
                                 onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                                className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="cursor-pointer px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 Prev
                             </button>
@@ -121,7 +121,7 @@ export default function ShopPage() {
                             <button
                                 disabled={page >= totalPages}
                                 onClick={() => setPage(prev => prev + 1)}
-                                className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="cursor-pointer px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 Next
                             </button>

@@ -118,7 +118,7 @@ export default function RedeemsHistory() {
                                 <td className="py-4 text-right font-baskerville">
                                     <button
                                         onClick={() => navigate(`/profile/rewards-redeem/${redeem.redeem_id}`)}
-                                        className="cursor-pointer bg-emerald-500 text-white px-4 py-2 rounded-md hover:bg-emerald-600 transition">
+                                        className="cursor-pointer bg-emerald-500 text-white px-4 py-2 rounded-md hover:bg-emerald-600 transition-all duration-150 active:scale-90 hover:scale-105">
                                         View Details
                                     </button>
                                 </td>

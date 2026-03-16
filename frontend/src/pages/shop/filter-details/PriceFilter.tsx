@@ -21,7 +21,7 @@ export default function PriceFilter({
     return (
         <div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 cursor-pointer">
 
                 {prices.map((price) => (
                     <label

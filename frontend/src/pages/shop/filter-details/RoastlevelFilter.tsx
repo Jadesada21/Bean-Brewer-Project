@@ -17,10 +17,10 @@ export default function RoastLevelFilter({
     ]
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 cursor-pointer">
 
             {roastLevels.map((level) => (
-                <label key={level} className="flex items-center gap-3">
+                <label key={level} className="flex items-center gap-3 cursor-pointer">
 
                     <input
                         type="radio"

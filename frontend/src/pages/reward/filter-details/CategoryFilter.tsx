@@ -21,10 +21,10 @@ export default function CategoryFilter({
     ]
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 cursor-pointer">
 
             {category.map((items) => (
-                <label key={items.value} className="flex items-center gap-3">
+                <label key={items.value} className="flex items-center gap-3 cursor-pointer">
 
                     <input
                         type="radio"

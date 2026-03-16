@@ -28,7 +28,11 @@ export default function OpenBox({ label, children }: OpenBoxProps) {
             <span className="relative inline-block font-baskerville">
                 {/* TEXT */}
                 <span
-                    className={` relative  inline-block  cursor-pointer after:content-[''] after:absolute after:left-0 after:-bottom-0.5 after:h-px after:w-full  after:bg-black after:origin-left after:transition-transform after:duration-300
+                    className={` 
+                        relative  inline-block  cursor-pointer after:content-[''] 
+                        after:absolute after:left-0 after:-bottom-0.5 
+                        after:h-px after:w-full  after:bg-black after:origin-left 
+                        after:transition-transform after:duration-300
                         ${open ? "after:scale-x-100" : "after:scale-x-0"}`}
                     onMouseEnter={handlerEnter}
                     onMouseLeave={handlerLeave}

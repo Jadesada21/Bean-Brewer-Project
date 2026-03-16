@@ -20,7 +20,7 @@ export function ItemCard({
 }: ItemCardProps) {
 
     return (
-        <div className="h-100 w-65 cursor-pointer font-baskerville"
+        <div className="h-100 w-65 cursor-pointer font-baskerville transition-transform duration-150 active:scale-90 hover:scale-105"
             onClick={onClick}
         >
 

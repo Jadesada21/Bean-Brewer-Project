@@ -22,7 +22,7 @@ export default function PointsFilter({
     return (
         <div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 cursor-pointer">
 
                 {points.map((point) => (
                     <label

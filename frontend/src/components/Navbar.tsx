@@ -41,7 +41,10 @@ export default function Navbar({ setOpenSearch }: any) {
         <div className="flex items-center justify-between py-5 px-10 w-full h-20 border-b border-gray-400 bg-[#f7f5ef] ">
             <div className="flex justify-center gap-15 items-center ml-20 ">
                 <Link to="/">
-                    <p className="font-bold text-4xl font-baskerville">BEAN</p>
+                    <p
+                        className="font-bold text-4xl font-baskerville transition-transform duration-150 active:scale-90 hover:scale-105">
+                        BEAN
+                    </p>
                 </Link>
 
                 <OpenBox label="Shop" >
@@ -74,12 +77,19 @@ export default function Navbar({ setOpenSearch }: any) {
                 </button>
 
                 <button onClick={() => handleProfileClick()}>
-                    <img src={profile} alt="profile" className="w-8 cursor-pointer" />
+                    <img
+                        src={profile}
+                        alt="profile"
+                        className="w-8 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                    />
                 </button>
 
                 <div className="relative">
                     <button onClick={() => setOpenCart(true)}>
-                        <img src={Cart} alt="cart" className="w-9" />
+                        <img
+                            src={Cart}
+                            alt="cart"
+                            className="w-9 transition-transform duration-150 active:scale-90 hover:scale-105" />
                     </button>
 
                     {totalItems > 0 && (

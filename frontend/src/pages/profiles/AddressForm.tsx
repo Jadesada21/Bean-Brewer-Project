@@ -160,7 +160,7 @@ export default function AddressForm() {
                                 setEditingId(defaultAddress?.id || null)
                                 setIsEditing(true)
                             }}
-                            className="border px-4 py-2 rounded font-baskerville"
+                            className="border px-4 py-2 rounded font-baskerville cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Edit
                         </button>
@@ -266,14 +266,14 @@ export default function AddressForm() {
 
                         <button
                             onClick={handleSubmit}
-                            className="bg-black text-white px-6 py-2 rounded font-baskerville"
+                            className="bg-black text-white px-6 py-2 rounded font-baskerville cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Save
                         </button>
 
                         <button
                             onClick={() => setIsEditing(false)}
-                            className="border px-6 py-2 rounded font-baskerville"
+                            className="border px-6 py-2 rounded font-baskerville cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Cancel
                         </button>
@@ -302,7 +302,7 @@ export default function AddressForm() {
                                                 setShowOtherHeader(false)
                                                 setEditingId(addr.id)
                                             }}
-                                            className="border px-4 py-2 rounded font-baskerville"
+                                            className="border px-4 py-2 rounded font-baskerville cursor-pointer"
                                         >
                                             Edit
                                         </button>
@@ -435,7 +435,7 @@ export default function AddressForm() {
                                                 setEditingId(null)
                                                 setShowOtherHeader(true)
                                             }}
-                                            className="bg-black text-white px-6 py-2 rounded font-baskerville"
+                                            className="bg-black text-white px-6 py-2 rounded font-baskerville cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                                         >
                                             Save
                                         </button>
@@ -445,7 +445,7 @@ export default function AddressForm() {
                                                 setEditingId(null)
                                                 setShowOtherHeader(true)
                                             }}
-                                            className="border px-6 py-2 rounded font-baskerville"
+                                            className="border px-6 py-2 rounded font-baskerville cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                                         >
                                             Cancel
                                         </button>

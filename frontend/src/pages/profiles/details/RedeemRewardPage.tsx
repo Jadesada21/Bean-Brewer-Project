@@ -150,14 +150,14 @@ export default function RedeemRewardDetails() {
 
                         <button
                             onClick={handleCancel}
-                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Cancel Redeem
                         </button>
 
                         <button
                             onClick={handleRedeemNow}
-                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Redeem Now
                         </button>
