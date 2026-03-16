@@ -26,8 +26,6 @@ interface Props {
 export default function OrderDetailModal({
     order,
     onClose,
-    onPay,
-    onCancel
 }: Props) {
 
     const navigate = useNavigate()

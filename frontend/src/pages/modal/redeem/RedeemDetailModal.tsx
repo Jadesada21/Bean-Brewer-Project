@@ -26,16 +26,13 @@ interface Props {
 export default function RedeemDetailModal({
     redeem,
     onClose,
-    onRedeem,
-    onCancel
+
 }: Props) {
 
     const navigate = useNavigate()
     if (!redeem) return null
 
-    const subtotal = redeem.items?.reduce(
-        (sum, item) => sum + item.points_required * item.quantity, 0
-    ) ?? 0
+
 
     const handleCancel = async () => {
         try {

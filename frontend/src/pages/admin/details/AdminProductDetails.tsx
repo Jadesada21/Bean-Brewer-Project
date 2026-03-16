@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 
 
@@ -34,7 +34,7 @@ export default function AdminOrderDetails() {
 
     const { id } = useParams()
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const [order, setOrder] = useState<OrderDetail | null>(null)
     const [loading, setLoading] = useState(true)
@@ -56,26 +56,26 @@ export default function AdminOrderDetails() {
         }
     }, [id])
 
-    const formatDate = (date: string) => {
-        return new Date(date).toLocaleDateString('en-GB')
-    }
+    // const formatDate = (date: string) => {
+    //     return new Date(date).toLocaleDateString('en-GB')
+    // }
 
-    const formatPrice = (price: number) => {
-        return price.toLocaleString()
-    }
+    // const formatPrice = (price: number) => {
+    //     return price.toLocaleString()
+    // }
 
-    const getStatusStyle = (status: string) => {
-        switch (status) {
-            case "completed":
-                return "text-green-600"
-            case "cancelled":
-                return "text-red-600"
-            case "pending":
-                return "text-yellow-600"
-            default:
-                return "text-gray-600"
-        }
-    }
+    // const getStatusStyle = (status: string) => {
+    //     switch (status) {
+    //         case "completed":
+    //             return "text-green-600"
+    //         case "cancelled":
+    //             return "text-red-600"
+    //         case "pending":
+    //             return "text-yellow-600"
+    //         default:
+    //             return "text-gray-600"
+    //     }
+    // }
 
     if (!order) return <div>Order not found</div>
 
@@ -83,8 +83,6 @@ export default function AdminOrderDetails() {
     if (loading) {
         return <div>loading...</div>
     }
-
-
 
 
     return (

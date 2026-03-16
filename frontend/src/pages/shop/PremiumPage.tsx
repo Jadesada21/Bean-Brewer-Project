@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { Link, useSearchParams } from "react-router-dom";
 import { FilterSidebar } from '../../components/FilterSidebar'
-import RoastLevelFilter from "./filter-details/RoastlevelFilter"
-import PriceFilter from "./filter-details/PriceFilter"
-import { ItemCard } from "../../components/ItemCard";
+import RoastLevelFilter from "./Filter-details/RoastlevelFilter"
+import PriceFilter from "./Filter-details/PriceFilter"
+// import { ItemCard } from "../../components/ItemCard";
 import { api } from "../../AxiosInstance"
 
 interface Product {
@@ -19,7 +19,7 @@ export default function PremiumPage() {
 
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const [Premiums, setPremiums] = useState<Product[]>([])
+    const [premiums, setPremiums] = useState<Product[]>([])
 
     const price = searchParams.get("price") || "any"
     const roast_level = searchParams.get("roast_level") ?? undefined
@@ -109,18 +109,18 @@ export default function PremiumPage() {
                     </div>
 
                     {/* Product Grid */}
-                    {/* <div className="grid xl:grid-cols-4 gap-10  md:grid-cols-3">
-                        {products.map((product) => (
-                            <Link key={product.id} to={`/shops/${product.id}`}>
-                                 <ItemCard
+                    <div className="grid xl:grid-cols-4 gap-10  md:grid-cols-3">
+                        {premiums.map((premiun) => (
+                            <Link key={premiun.id} to={`/shops/${premiun.id}`}>
+                                {/* <ItemCard
                                     image={product.image_url}
                                     name={product.name}
                                     subtitle={product.taste}
                                     price={product.price}
-                                />
+                                /> */}
                             </Link>
                         ))}
-                    </div> */}
+                    </div>
 
                     <div className="pl-100">
                         <div className="relative">
