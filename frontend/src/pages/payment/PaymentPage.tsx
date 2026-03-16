@@ -164,14 +164,14 @@ export default function PaymentPage() {
 
                     <button
                         onClick={handleCancel}
-                        className="px-6 py-3 border rounded-lg bg-red-500 opacity-70 text-white"
+                        className="px-6 py-3 border rounded-lg bg-red-500 opacity-50 text-white cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         Cancel Order
                     </button>
 
                     <button
                         onClick={handlePayNow}
-                        className="px-6 py-3 bg-green-600 text-white opacity-70 rounded-lg"
+                        className="px-6 py-3 bg-green-600 text-white opacity-50 rounded-lg cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         Pay Now
                     </button>

@@ -29,7 +29,7 @@ export default function CartDrawer({ open, onClose }: any) {
                         My Cart ({cart.length})
                     </h2>
 
-                    <button onClick={onClose} className="cursor-pointer">✕</button>
+                    <button onClick={onClose} className="cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105">✕</button>
                 </div>
 
                 <div className="p-6 space-y-6">
@@ -56,7 +56,7 @@ export default function CartDrawer({ open, onClose }: any) {
                                         <img
                                             src="https://res.cloudinary.com/dbraczg5a/image/upload/v1773260385/trash-svgrepo-com_ssobd4.svg"
                                             alt="BIN"
-                                            className="w-5 h-5"
+                                            className="w-5 h-5 transition-transform duration-150 active:scale-90 hover:scale-105 cursor-pointer"
                                         />
                                     </button>
                                 </div>
@@ -90,7 +90,7 @@ export default function CartDrawer({ open, onClose }: any) {
                         <p className="font-semibold">${total}</p>
                     </div>
 
-                    <button className="w-full bg-black text-white py-3 rounded-lg cursor-pointer">
+                    <button className="w-full bg-black text-white py-3 rounded-lg cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105">
                         Checkout
                     </button>
 
