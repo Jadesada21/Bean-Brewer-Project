@@ -105,7 +105,7 @@ export default function RewardPage() {
                             <button
                                 disabled={page === 1}
                                 onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                                className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                                className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Prev
                             </button>
@@ -117,7 +117,7 @@ export default function RewardPage() {
                             <button
                                 disabled={page >= totalPages}
                                 onClick={() => setPage(prev => prev + 1)}
-                                className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                                className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Next
                             </button>

@@ -67,7 +67,10 @@ export default function ShopPage() {
             <main className="w-full h-full py-15 mb-10 px-30 font-baskerville">
                 {/* Upper */}
                 <div className="flex items-center">
-                    <Link to='/'>Home</Link>
+                    <Link to='/' className="transition-transform duration-150 active:scale-90 hover:scale-105">
+                        Home
+                    </Link>
+
                     <img src="https://res.cloudinary.com/dbraczg5a/image/upload/v1773165802/right-arrow-svgrepo-com_mhdnwz.svg"
                         alt="right-vector"
                         className="pl-2 h-6 w-7" />
@@ -109,7 +112,7 @@ export default function ShopPage() {
                             <button
                                 disabled={page === 1}
                                 onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                                className="cursor-pointer px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="cursor-pointer px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Prev
                             </button>
@@ -121,7 +124,7 @@ export default function ShopPage() {
                             <button
                                 disabled={page >= totalPages}
                                 onClick={() => setPage(prev => prev + 1)}
-                                className="cursor-pointer px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="cursor-pointer px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Next
                             </button>

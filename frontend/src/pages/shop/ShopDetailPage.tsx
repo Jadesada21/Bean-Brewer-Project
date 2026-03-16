@@ -140,11 +140,19 @@ export default function ShopDetailPage() {
         <div className="max-w-7xl mx-auto px-6 py-10 font-baskerville">
 
             <div className="flex font-baskerville items-center pb-10">
-                <Link to='/'>Home</Link>
+                <Link to='/' className=" transition-transform duration-150 active:scale-90 hover:scale-105">
+                    Home
+                </Link>
+
                 <img src="https://res.cloudinary.com/dbraczg5a/image/upload/v1773165802/right-arrow-svgrepo-com_mhdnwz.svg"
                     alt="right-vector"
                     className="pl-2 h-6 w-7" />
-                <Link to='/shops'><p className="pl-2 ">All Specialty Coffee</p></Link>
+
+                <Link to='/shops'><p className=" pl-2 transition-transform duration-150 active:scale-90 hover:scale-105">
+                    All Specialty Coffee
+                </p>
+                </Link>
+
                 <img src="https://res.cloudinary.com/dbraczg5a/image/upload/v1773165802/right-arrow-svgrepo-com_mhdnwz.svg"
                     alt="right-vector"
                     className="pl-2 h-6 w-7" />
@@ -157,7 +165,7 @@ export default function ShopDetailPage() {
                 <div className="bg-gray-100 rounded-2xl flex items-center justify-center p-10">
                     <img
                         src={product.image_url}
-                        className="w-120 object-contain"
+                        className="w-120 object-contain rounded-2xl"
                     />
                 </div>
 
@@ -205,7 +213,7 @@ export default function ShopDetailPage() {
                     <div className="mt-3 flex items-center gap-4 border rounded-lg w-30">
                         <button
                             onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
-                            className="w-10 h-10 text-2xl pb-1"
+                            className="w-10 h-10 text-2xl pb-1 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105 "
                         >
                             -
                         </button>
@@ -216,7 +224,7 @@ export default function ShopDetailPage() {
 
                         <button
                             onClick={() => setQty(qty + 1)}
-                            className="w-10 h-10 text-2xl pb-1"
+                            className="w-10 h-10 text-2xl pb-1 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105 "
                         >
                             +
                         </button>
@@ -228,14 +236,14 @@ export default function ShopDetailPage() {
                     <button
                         onClick={handleAddToCart}
                         disabled={!product}
-                        className="mt-6 w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800"
+                        className="mt-6 w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         Add to Cart
                     </button>
 
                     <button
                         onClick={handleBuyNow}
-                        className="mt-6 w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800"
+                        className="mt-6 w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         Buy Now
                     </button>

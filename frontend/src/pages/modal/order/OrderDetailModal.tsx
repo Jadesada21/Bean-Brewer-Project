@@ -119,7 +119,7 @@ export default function OrderDetailModal({
                     <div className="gap-3 mt-6">
                         <button
                             onClick={onClose}
-                            className="px-4 py-2 border rounded-lg"
+                            className="px-4 py-2 border rounded-lg cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Close
                         </button>
@@ -130,14 +130,14 @@ export default function OrderDetailModal({
 
                             <button
                                 onClick={handleCancel}
-                                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Cancel Order
                             </button>
 
                             <button
                                 onClick={() => navigate(`/payments/${order.id}`)}
-                                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Pay Now
                             </button>

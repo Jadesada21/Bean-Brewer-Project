@@ -73,7 +73,11 @@ export default function Navbar({ setOpenSearch }: any) {
 
             <div className="flex justify-center gap-15  items-center mr-20">
                 <button onClick={() => setOpenSearch(true)}>
-                    <img src={searchIcon} alt="search" className="w-9" />
+                    <img
+                        src={searchIcon}
+                        alt="search"
+                        className="w-9 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                    />
                 </button>
 
                 <button onClick={() => handleProfileClick()}>
@@ -89,7 +93,8 @@ export default function Navbar({ setOpenSearch }: any) {
                         <img
                             src={Cart}
                             alt="cart"
-                            className="w-9 transition-transform duration-150 active:scale-90 hover:scale-105" />
+                            className="cursor-pointer w-9 transition-transform duration-150 active:scale-90 hover:scale-105"
+                        />
                     </button>
 
                     {totalItems > 0 && (

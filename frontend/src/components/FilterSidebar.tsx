@@ -56,7 +56,7 @@ export function FilterSidebar({
                                     onClick={() =>
                                         setOpenFilter(isOpen ? null : filter.key)
                                     }
-                                    className="flex justify-between items-center w-full py-6"
+                                    className="flex justify-between items-center w-full py-6 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                                 >
 
                                     <span className={`

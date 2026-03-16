@@ -26,7 +26,7 @@ export default function Footer() {
                         <ul className="space-y-2 text-xl ">
 
                             <li className="pt-3 hover:underline decoration-1 ">
-                                <Link to="">Equipment</Link></li>
+                                <Link to="/rewards">Equipment</Link></li>
                         </ul>
                     </div>
 
