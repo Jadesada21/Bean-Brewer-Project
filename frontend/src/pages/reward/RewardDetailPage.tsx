@@ -10,7 +10,7 @@ interface Reward {
     id: number
     name: string
     description: string
-    short_description: string
+    short_description?: string
     points_required: number
     image_url: string
     category: string
@@ -165,7 +165,7 @@ export default function ShopDetailPage() {
 
                     {/* Roast */}
                     <div className="mt-6">
-                        <p className="text-xl mb-2">
+                        <p className="text-xl mb-2 whitespace-pre-line">
                             {reward.description}
                         </p>
                     </div>

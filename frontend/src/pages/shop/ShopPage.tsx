@@ -22,7 +22,10 @@ export default function ShopPage() {
     const [products, setProducts] = useState<Product[]>([])
 
     const [page, setPage] = useState(1)
+    const [total, setTotal] = useState(0)
 
+    const limit = 10
+    const totalPages = Math.ceil(total / limit)
 
     const price = searchParams.get("price") || "any"
     const roast_level = searchParams.get("roast_level") ?? undefined
@@ -35,12 +38,15 @@ export default function ShopPage() {
                 page
             }
         })
-        setProducts(res.data.data)
+        setProducts(res.data.products)
+        setTotal(res.data.total)
+
     }
 
     useEffect(() => {
         fetchProducts()
     }, [searchParams, page])
+
 
     const filters = [
         {
@@ -54,7 +60,6 @@ export default function ShopPage() {
             component: PriceFilter
         }
     ]
-
 
 
 
@@ -103,8 +108,9 @@ export default function ShopPage() {
                         <div className="flex gap-6 pt-4 mr-18">
 
                             <button
+                                disabled={page === 1}
                                 onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                                className="px-4 py-2 bg-gray-200 rounded"
+                                className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 Prev
                             </button>
@@ -114,8 +120,9 @@ export default function ShopPage() {
                             </span>
 
                             <button
+                                disabled={page >= totalPages}
                                 onClick={() => setPage(prev => prev + 1)}
-                                className="px-4 py-2 bg-gray-200 rounded"
+                                className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 Next
                             </button>

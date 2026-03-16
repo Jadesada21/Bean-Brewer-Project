@@ -4,6 +4,7 @@ import { api } from "../../AxiosInstance"
 import { FilterSidebar } from '../../components/FilterSidebar'
 import { ItemCard } from "../../components/ItemCard";
 import PointsFilter from "./filter-details/PointFilter";
+import CategoryFilter from "./filter-details/CategoryFilter";
 
 
 interface Reward {
@@ -13,12 +14,17 @@ interface Reward {
     image_url: string
 }
 
-export default function ShopPage() {
+export default function RewardPage() {
 
     const [searchParams, setSearchParams] = useSearchParams()
 
     const [rewards, setRewards] = useState<Reward[]>([])
 
+    const [page, setPage] = useState(1)
+    const [total, setTotal] = useState(0)
+
+    const limit = 9
+    const totalPages = Math.ceil(total / limit)
 
     const points = searchParams.get("points") || "any"
     const category = searchParams.get("category") ?? undefined
@@ -27,21 +33,29 @@ export default function ShopPage() {
         const res = await api.get("/rewards", {
             params: {
                 points,
-                category
+                category,
+                page
             }
         })
-        setRewards(res.data.data)
+        setRewards(res.data.rewards)
+        setTotal(res.data.total)
     }
 
     useEffect(() => {
         fetchRewards()
-    }, [searchParams])
+    }, [searchParams, page])
+
 
     const filters = [
         {
             key: "points",
             label: "Points",
             component: PointsFilter
+        },
+        {
+            key: "category",
+            label: "Category",
+            component: CategoryFilter
         }
     ]
 
@@ -83,6 +97,29 @@ export default function ShopPage() {
                                 className="text-xl font-semibold font-baskerville text-[#f45048] underline cursor-pointer"
                             >
                                 Clear
+                            </button>
+                        </div>
+
+                        <div className="flex gap-6 pt-4 mr-18">
+
+                            <button
+                                disabled={page === 1}
+                                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                                className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Prev
+                            </button>
+
+                            <span className="px-4 py-2 flex items-center">
+                                {page} / {totalPages || 1}
+                            </span>
+
+                            <button
+                                disabled={page >= totalPages}
+                                onClick={() => setPage(prev => prev + 1)}
+                                className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Next
                             </button>
                         </div>
 

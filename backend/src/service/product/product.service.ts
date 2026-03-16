@@ -19,6 +19,7 @@ export const getAllProductService = async ({
     roast_level?: string | undefined
     page: number,
 }) => {
+
     const limit = 10
     const offset = (page - 1) * limit
 
@@ -36,6 +37,7 @@ export const getAllProductService = async ({
         p.is_active,
         p.created_at,
         p.updated_at,
+        count(*) over() as total_count,
         coalesce(img.total_images , 0) as total_images
     from products p 
     left join (
@@ -49,7 +51,14 @@ export const getAllProductService = async ({
     limit $1 offset $2
         `, [limit, offset])
 
-        return response.rows
+        const total = response.rows[0]?.total_count ?? 0
+        const rows = response.rows.map(({ total_count, ...rest }) => rest)
+
+
+        return {
+            products: rows,
+            total
+        }
     } else {
         let sql = `
         select  
@@ -58,7 +67,8 @@ export const getAllProductService = async ({
             p.price,
             p.reward_points,
             p.taste,
-            pi.image_url
+            pi.image_url,
+            count(*) over() as total_count
         from products p
         left join product_images pi 
         on pi.product_id = p.id 
@@ -101,16 +111,21 @@ export const getAllProductService = async ({
 
         // apply condition
         if (conditions.length > 0) {
-            sql += `and ${conditions.join(" and ")}`
+            sql += ` and ${conditions.join(" and  ")}`
         }
 
-        sql += ` order by p.created_at desc limit $${paramIndex} offset $${paramIndex + 1}`
+        sql += ` order by p.created_at asc limit $${paramIndex} offset $${paramIndex + 1}`
 
         values.push(limit, offset)
 
         const response = await pool.query(sql, values)
+        const rows = response.rows.map(({ total_count, ...rest }) => rest)
+        const total = response.rows[0]?.total_count ?? 0
 
-        return response.rows
+        return {
+            products: rows,
+            total
+        }
     }
 }
 

@@ -18,8 +18,6 @@ export default function Footer() {
                             <li className="pt-3 hover:underline decoration-1">
                                 <Link to="/shops">Bean</Link></li>
 
-                            <li className="pt-3 hover:underline decoration-1">
-                                <Link to="/roast-level">Roast Level</Link></li>
                         </ul>
                     </div>
 

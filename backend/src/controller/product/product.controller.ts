@@ -23,11 +23,10 @@ export const getAllProduct = async (req: Request, res: Response, next: NextFunct
 
         const price = req.query.price as string
         const roast_level = req.query.roast_level as string
-
         const page = Number(req.query.page) || 1
 
         const data = await getAllProductService({ role, price, roast_level, page })
-        return res.status(200).json({ data })
+        return res.status(200).json({ products: data.products, total: data.total })
     } catch (err) {
         next(err)
     }

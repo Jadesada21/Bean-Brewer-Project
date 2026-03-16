@@ -6,9 +6,25 @@ import {
     CreateRewardInput
 } from '../../types/reward/reward.type'
 
-export const getAllRewardService = async (role?: string) => {
+import { Role } from '../../types/users.type'
+
+export const getAllRewardService = async ({
+    role,
+    points = 'any',
+    category,
+    page = 1
+}: {
+    role: Role | 'guest'
+    points: string
+    category?: number
+    page: number
+}) => {
+
+    const limit = 9
+    const offset = (page - 1) * limit
+
     if (role === 'admin') {
-        const sql = ` select 
+        const response = await pool.query(` select 
         r.id,
         r.name,
         r.description,
@@ -19,6 +35,7 @@ export const getAllRewardService = async (role?: string) => {
         r.is_active,
         r.created_at,
         r.updated_at,
+        count(*) over() as total_count,
         coalesce(img.total_images , 0) as total_images
     from rewards r
     left join (
@@ -29,24 +46,82 @@ export const getAllRewardService = async (role?: string) => {
         group by reward_id
     ) img on img.reward_id = r.id
     order by r.created_at desc
-        `
-        const response = await pool.query(sql)
-        return response.rows
+    limit $1 offset $2
+        `, [limit, offset])
+
+        const total = response.rows[0]?.total_count ?? 0
+        const rows = response.rows.map(({ total_count, ...rest }) => rest)
+
+
+        return {
+            rewards: rows,
+            total
+        }
     } else {
-        const sql = `
+        let sql = `
         select
-        r.id,
-        r.name,
-        r.points_required,
-        ri.image_url
+            r.id,
+            r.name,
+            r.points_required,
+            c.name as category_name,
+            ri.image_url,
+        count(*) over() as total_count
         from rewards r
+        left join categories c 
+        on r.category_id = c.id
         left join reward_images ri 
         on ri.reward_id = r.id 
         and ri.is_primary = true
         where r.is_active = true
-        order by r.created_at desc`
-        const response = await pool.query(sql)
-        return response.rows
+        `
+
+        const conditions: string[] = []
+        const values: any[] = []
+        let paramIndex = 1
+
+        // point filter
+        if (points && points !== "any") {
+
+            if (points.includes("-")) {
+                const [min, max] = points.split("-")
+
+                conditions.push(`r.points_required between $${paramIndex} and $${paramIndex + 1}`)
+                values.push(Number(min), Number(max))
+
+                paramIndex += 2
+            } else if (points.includes("+")) {
+
+                const min = points.replace("+", "")
+
+                conditions.push(`r.points_required <= $${paramIndex}`)
+                values.push(Number(points))
+
+                paramIndex++
+            }
+        }
+
+        // category filter
+        if (category) {
+            conditions.push(`r.category_id = $${paramIndex}`)
+            values.push(category)
+            paramIndex++
+        }
+
+        if (conditions.length > 0) {
+            sql += ` and ${conditions.join(" and ")}`
+        }
+
+        sql += ` order by r.created_at desc limit $${paramIndex} offset $${paramIndex + 1}`
+
+        values.push(limit, offset)
+
+        const response = await pool.query(sql, values)
+        const total = response.rows[0]?.total_count ?? 0
+        const rows = response.rows.map(({ total_count, ...rest }) => rest)
+        return {
+            rewards: rows,
+            total
+        }
     }
 }
 
