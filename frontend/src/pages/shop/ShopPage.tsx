@@ -40,7 +40,6 @@ export default function ShopPage() {
         })
         setProducts(res.data.products)
         setTotal(res.data.total)
-
     }
 
     useEffect(() => {
