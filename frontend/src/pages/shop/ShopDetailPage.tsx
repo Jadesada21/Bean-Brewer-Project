@@ -236,14 +236,14 @@ export default function ShopDetailPage() {
                     <button
                         onClick={handleAddToCart}
                         disabled={!product}
-                        className="mt-6 w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition-transform duration-150 active:scale-90 hover:scale-105"
+                        className="cursor-pointer mt-6 w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         Add to Cart
                     </button>
 
                     <button
                         onClick={handleBuyNow}
-                        className="mt-6 w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition-transform duration-150 active:scale-90 hover:scale-105"
+                        className="cursor-pointer mt-6 w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         Buy Now
                     </button>
