@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { FilterSidebar } from '../../components/FilterSidebar'
 import RoastLevelFilter from "./filter-details/RoastlevelFilter"
 import PriceFilter from "./filter-details/PriceFilter"
-// import { ItemCard } from "../../components/ItemCard";
+
 import { api } from "../../AxiosInstance"
 
 interface Product {
@@ -16,6 +16,8 @@ interface Product {
 }
 
 export default function PremiumPage() {
+
+    const isComingSoon = true
 
     const [searchParams, setSearchParams] = useSearchParams()
 
@@ -35,8 +37,9 @@ export default function PremiumPage() {
     }
 
     useEffect(() => {
+        if (isComingSoon) return
         fetchPremiums()
-    }, [searchParams])
+    }, [searchParams.toString()])
 
 
     const filters = [
@@ -54,7 +57,7 @@ export default function PremiumPage() {
 
     return (
         <>
-            <main className="w-full h-full px-60 py-15 mb-10 md:px-30 font-baskerville">
+            <main className="w-full h-full py-15 mb-10 px-30 font-baskerville">
                 {/* Upper */}
                 <div className="flex  items-center">
                     <Link to='/'>Home</Link>
@@ -109,41 +112,33 @@ export default function PremiumPage() {
                     </div>
 
                     {/* Product Grid */}
-                    <div className="grid xl:grid-cols-4 gap-10  md:grid-cols-3">
-                        {premiums.map((premiun) => (
-                            <Link key={premiun.id} to={`/shops/${premiun.id}`}>
-                                {/* <ItemCard
-                                    image={product.image_url}
-                                    name={product.name}
-                                    subtitle={product.taste}
-                                    price={product.price}
-                                /> */}
-                            </Link>
-                        ))}
-                    </div>
+                    {isComingSoon ? (
+                        <div className="pl-100">
+                            <div className="relative">
+                                <img src="//www.drinktrade.com/cdn/shop/files/Star_7.svg?v=1768508731&width=480"
+                                    alt=""
+                                />
 
-                    <div className="pl-100">
-                        <div className="relative">
-                            <img src="//www.drinktrade.com/cdn/shop/files/Star_7.svg?v=1768508731&width=480"
-                                alt=""
-                            />
-
-                            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <img src="//www.drinktrade.com/cdn/shop/files/Ico-Coffee_d87007bd-3e01-4163-a2e7-70a51863d656.svg?v=1768508733&width=80"
-                                    className="pb-3"
-                                    alt="" />
-                                <p className="pb-2">Premium Products </p>
-                                <p>Coming Soon</p>
+                                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                    <img src="//www.drinktrade.com/cdn/shop/files/Ico-Coffee_d87007bd-3e01-4163-a2e7-70a51863d656.svg?v=1768508733&width=80"
+                                        className="pb-3"
+                                        alt="" />
+                                    <p className="pb-2">Premium Products </p>
+                                    <p>Coming Soon</p>
+                                </div>
                             </div>
                         </div>
+                    ) : (
+                        <div className="grid gap-10 grid-cols-3">
+                            {premiums.map((premium) => (
+                                <Link key={premium.id} to={`/shops/${premium.id}`}>
 
-                    </div>
-
+                                </Link>
+                            ))}
+                        </div>
+                    )}
                 </section>
-
             </main>
-
-
         </>
     )
 }

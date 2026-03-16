@@ -64,7 +64,7 @@ export default function ShopPage() {
 
     return (
         <>
-            <main className="w-full h-full  py-15 mb-10 px-30 font-baskerville">
+            <main className="w-full h-full py-15 mb-10 px-30 font-baskerville">
                 {/* Upper */}
                 <div className="flex items-center">
                     <Link to='/'>Home</Link>
