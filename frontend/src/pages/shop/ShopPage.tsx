@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Link, useSearchParams } from "react-router-dom";
 import { FilterSidebar } from '../../components/FilterSidebar'
-import RoastLevelFilter from "./Filter-details/RoastlevelFilter"
-import PriceFilter from "./Filter-details/PriceFilter"
+import RoastLevelFilter from "./filter-details/RoastlevelFilter"
+import PriceFilter from "./filter-details/PriceFilter"
 import { ItemCard } from "../../components/ItemCard";
 import { api } from "../../AxiosInstance"
 
