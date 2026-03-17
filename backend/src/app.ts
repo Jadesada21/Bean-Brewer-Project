@@ -8,7 +8,7 @@ const app: Application = express()
 
 app.use(cookieParser())
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:6060', 'https://fullstack-project-phi-nine.vercel.app', 'https://beanbrew.vercel.app/shops'],
+    origin: ['http://localhost:5173', 'http://localhost:6060', 'https://fullstack-project-phi-nine.vercel.app', 'https://beanbrew.vercel.app/'],
     credentials: true
 }))
 app.use(express.json({ limit: "50mb" }))
