@@ -18,9 +18,8 @@ interface Product {
 export default function ShopPage() {
 
     const [searchParams, setSearchParams] = useSearchParams()
-
     const [products, setProducts] = useState<Product[]>([])
-
+    const [openFilter, setOpenFilter] = useState(false)
     const [page, setPage] = useState(1)
     const [total, setTotal] = useState(0)
 
@@ -31,6 +30,7 @@ export default function ShopPage() {
     const roast_level = searchParams.get("roast_level") ?? undefined
 
     const fetchProducts = async () => {
+
         const res = await api.get(`/products`, {
             params: {
                 price,
@@ -38,6 +38,7 @@ export default function ShopPage() {
                 page
             }
         })
+
         setProducts(res.data.products)
         setTotal(res.data.total)
     }
@@ -64,102 +65,161 @@ export default function ShopPage() {
 
     return (
         <>
-            <main className="w-full h-full py-15 mb-10 px-30 font-baskerville">
-                {/* Upper */}
-                <div className="flex items-center">
-                    <Link to='/' className="transition-transform duration-150 active:scale-90 hover:scale-105">
-                        Home
-                    </Link>
+            <main className="font-baskerville w-full py-10">
+                <div className="max-w-7xl mx-auto px-4 md:px-8 xl:px-12 ">
+                    {/* Upper */}
+                    <div className="flex items-center text-sm md:text-base">
+                        <Link to='/'
+                            className="transition-transform duration-150 active:scale-90 hover:scale-105"
+                        >
+                            Home
+                        </Link>
 
-                    <img src="https://res.cloudinary.com/dbraczg5a/image/upload/v1773165802/right-arrow-svgrepo-com_mhdnwz.svg"
-                        alt="right-vector"
-                        className="pl-2 h-6 w-7" />
-                    <p className="pl-2 font-semibold">All Specialty Coffee</p>
-                </div>
+                        <img src="https://res.cloudinary.com/dbraczg5a/image/upload/v1773165802/right-arrow-svgrepo-com_mhdnwz.svg"
+                            alt="right-vector"
+                            className="pl-2 h-6 w-7" />
+                        <p className="pl-2 font-semibold">All Specialty Coffee</p>
+                    </div>
 
-                <div className="mt-40 text-6xl">
-                    All Specialty Coffee
-                </div>
+                    <div className="mt-16 md:mt-24 xl:mt-32 text-4xl md:text-5xl xl:text-6xl leading-tight">
+                        All Specialty Coffee
+                    </div>
 
-                <div className="mt-6">
-                    Explore our collection of specialty coffee beans, carefully sourced and roasted fresh for the perfect cup.
-                </div>
+                    <div className="mt-4 md:mt-6 max-w-2xl text-sm md:text-base">
+                        Explore our collection of specialty coffee beans, carefully sourced and roasted fresh for the perfect cup.
+                    </div>
 
-                <div className="flex-1 mx-auto gap-10 ">
-                    <div className="mt-25 h-20 flex justify-between">
-                        <div className="flex items-center justify-between w-75">
-                            <div className="flex items-center gap-4">
-                                <img src="https://res.cloudinary.com/dbraczg5a/image/upload/v1773164370/filter-list-add-svgrepo-com_wfzplr.svg"
-                                    alt="filter-icon"
-                                    className="w-10 h-10"
+                    <div className="mt-16 md:mt-20 flex xl:flex-row  gap-6">
+
+                        {/* < xl (mobile + tablet + md) */}
+                        <div className="flex xl:hidden justify-center w-full">
+                            <button
+                                onClick={() => setOpenFilter(true)}
+                                className="flex items-center gap-3 px-6 py-2 border-t border-b w-full h-15 justify-center hover:text-white transition"
+                            >
+                                <img
+                                    src="https://res.cloudinary.com/dbraczg5a/image/upload/v1773164370/filter-list-add-svgrepo-com_wfzplr.svg"
+                                    className="w-5 h-5"
                                 />
+                                Filters
+                            </button>
+                        </div>
 
+
+                        {/* ≥ xl (desktop ใหญ่) */}
+                        <div className="hidden xl:flex items-center justify-between w-full xl:w-75">
+                            <div className="flex items-center gap-3">
+                                <img
+                                    src="https://res.cloudinary.com/dbraczg5a/image/upload/v1773164370/filter-list-add-svgrepo-com_wfzplr.svg"
+                                    alt="filter-icon"
+                                    className="w-8 h-8"
+                                />
                                 <p className="text-xl font-semibold">Filters</p>
-
                             </div>
 
                             <button
                                 onClick={() => setSearchParams({})}
-                                className="text-xl font-semibold text-[#f45048] underline cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                                className="text-base font-semibold text-[#f45048] underline"
                             >
                                 Clear
                             </button>
                         </div>
+                    </div>
 
+                    {/* Product Section */}
+                    <section className="mt-10 flex flex-col xl:flex-row gap-8 xl:gap-12">
 
-                        <div className="flex gap-6 pt-4 mr-18">
+                        {/* Filter Sidebar */}
+                        <div className="hidden xl:block w-full xl:w-70">
+                            <FilterSidebar
+                                filters={filters}
+                                searchParams={searchParams}
+                                setSearchParams={setSearchParams}
+                            />
+                        </div>
 
+                        <div className="flex-1 flex flex-col">
+                            {/* Product Grid */}
+                            <div className="flex-1 grid gap-6 grid-cols-1 justify-items-center md:grid-cols-2 md:justify-items-center xl:justify-items-center xl:grid-cols-2 2xl:grid-cols-3">
+                                {products.map((product) => (
+                                    <Link key={product.id} to={`/shops/${product.id}`}>
+                                        <ItemCard
+                                            variant="product"
+                                            image={product.image_url}
+                                            name={product.name}
+                                            subtitle={product.taste}
+                                            points={product.reward_points}
+                                            price={product.price}
+                                        />
+                                    </Link>
+                                ))}
+                            </div>
+
+                            <div className="mt-12 flex justify-center">
+                                <div className="flex gap-4 md:gap-6 items-center">
+                                    <button
+                                        disabled={page === 1}
+                                        onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                                        className="px-3 py-1 md:px-4 md:py-2 bg-gray-200 rounded disabled:opacity-50disabled:cursor-not-allowed cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                                    >
+                                        Prev
+                                    </button>
+
+                                    <span className="px-4 py-2 flex items-center">
+                                        {page} / {totalPages || 1}
+                                    </span>
+
+                                    <button
+                                        disabled={page >= totalPages}
+                                        onClick={() => setPage(prev => prev + 1)}
+                                        className="px-3 py-1 md:px-4 md:py-2 bg-gray-200 rounded disabled:opacity-50disabled:cursor-not-allowed cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                                    >
+                                        Next
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                {openFilter && (
+                    <div className="fixed inset-0 z-50 flex xl:hidden">
+
+                        {/* overlay */}
+                        <div
+                            className="absolute inset-0 bg-black/40"
+                            onClick={() => setOpenFilter(false)}
+                        />
+
+                        {/* drawer */}
+                        <div className="relative ml-auto w-75 h-full bg-white p-6 overflow-y-auto">
+
+                            {/* header */}
+                            <div className="flex justify-between items-center mb-6">
+                                <h2 className="text-xl font-semibold">Filters</h2>
+
+                                <button onClick={() => setOpenFilter(false)}>
+                                    ✕
+                                </button>
+                            </div>
+
+                            {/* filter */}
+                            <FilterSidebar
+                                filters={filters}
+                                searchParams={searchParams}
+                                setSearchParams={setSearchParams}
+                            />
+
+                            {/* clear */}
                             <button
-                                disabled={page === 1}
-                                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                                className="cursor-pointer px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed transition-transform duration-150 active:scale-90 hover:scale-105"
+                                onClick={() => setSearchParams({})}
+                                className="mt-6 text-red-500 underline"
                             >
-                                Prev
-                            </button>
-
-                            <span className="px-4 py-2 flex items-center">
-                                {page}
-                            </span>
-
-                            <button
-                                disabled={page >= totalPages}
-                                onClick={() => setPage(prev => prev + 1)}
-                                className="cursor-pointer px-4 py-2 bg-gray-200 rounded disabled:opacity-50 disabled:cursor-not-allowed transition-transform duration-150 active:scale-90 hover:scale-105"
-                            >
-                                Next
+                                Clear Filters
                             </button>
                         </div>
                     </div>
-                </div>
-
-                {/* Product Section */}
-                <section className="flex gap-12 pt-8">
-
-                    {/* Filter Sidebar */}
-                    <div className="w-75">
-                        <FilterSidebar
-                            filters={filters}
-                            searchParams={searchParams}
-                            setSearchParams={setSearchParams}
-                        />
-                    </div>
-
-                    {/* Product Grid */}
-                    <div className="grid gap-10 grid-cols-3">
-                        {products.map((product) => (
-                            <Link key={product.id} to={`/shops/${product.id}`}>
-                                <ItemCard
-                                    variant="product"
-                                    image={product.image_url}
-                                    name={product.name}
-                                    subtitle={product.taste}
-                                    points={product.reward_points}
-                                    price={product.price}
-                                />
-                            </Link>
-                        ))}
-                    </div>
-                </section>
+                )}
             </main >
         </>
     )

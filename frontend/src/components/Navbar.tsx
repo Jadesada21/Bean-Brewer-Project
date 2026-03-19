@@ -15,6 +15,7 @@ export default function Navbar({ setOpenSearch }: any) {
 
     const [openBoxModal, setOpenBoxModal] = useState(false)
 
+    const [openMenu, setOpenMenu] = useState(false)
 
     const [openCart, setOpenCart] = useState(false)
 
@@ -38,76 +39,102 @@ export default function Navbar({ setOpenSearch }: any) {
     )
 
     return (
-        <div className="flex items-center justify-between py-5 px-10 w-full h-20 border-b border-gray-400 bg-[#f7f5ef] ">
-            <div className="flex justify-center gap-15 items-center ml-20 ">
-                <Link to="/">
-                    <p
-                        className="font-bold text-4xl font-baskerville transition-transform duration-150 active:scale-90 hover:scale-105">
-                        BEAN
-                    </p>
-                </Link>
+        <div className="w-full bg-[#f7f5ef] border-b border-gray-300 font-baskerville">
+            <div className="px-4 sm:px-6 lg:px-10 flex items-center justify-between h-20 relative">
 
-                <OpenBox label="Shop" >
-                    <ShopDropdown />
-                </OpenBox>
+                {/* Left Menu */}
+                <div className="flex items-center md:gap-4 xl:gap-10">
+                    {/* HAMBURGER (mobile only) */}
+                    <button
+                        className="lg:hidden flex flex-col gap-1 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                        onClick={() => setOpenMenu(!openMenu)}
+                    >
+                        <span className="w-5 h-0.5 bg-black"></span>
+                        <span className="w-5 h-0.5 bg-black"></span>
+                        <span className="w-5 h-0.5 bg-black"></span>
+                    </button>
 
-                <Link to="/rewards">
-                    <p className="font-baskerville text-[18px] relative inline-block 
-                    after:content-[''] after:absolute after:left-0 after:-bottom-px
-                    after:h-px after:w-0 after:bg-black 
-                    after:transition-all after:duration-300 
-                    hover:after:w-full">
-                        Rewards
-                    </p>
-                </Link>
+                    {/* LOGO */}
+                    <Link
+                        to="/"
+                        className="absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0"
+                    >
+                        <p
+                            className="font-bold text-3xl whitespace-nowrap">
+                            BEAN
+                        </p>
+                    </Link>
 
-                <Link to="/about-us">
-                    <p className="font-baskerville text-[18px] relative inline-block 
-                    after:content-[''] after:absolute after:left-0 after:-bottom-px
-                    after:h-px after:w-0 after:bg-black 
-                    after:transition-all after:duration-300 
-                    hover:after:w-full" >
-                        About Us</p>
-                </Link>
-            </div>
+                    {/* MENU (tablet ขึ้นไป) */}
+                    <div className="hidden lg:flex items-center gap-8 ml-8">
 
-            <div className="flex justify-center gap-15  items-center mr-20">
-                <button onClick={() => setOpenSearch(true)}>
-                    <img
-                        src={searchIcon}
-                        alt="search"
-                        className="w-9 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
-                    />
-                </button>
+                        <OpenBox label="Shop" >
+                            <ShopDropdown />
+                        </OpenBox>
 
-                <button onClick={() => handleProfileClick()}>
-                    <img
-                        src={profile}
-                        alt="profile"
-                        className="w-8 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
-                    />
-                </button>
+                        <Link to="/rewards">
+                            <p className="text-sm lg:text-base relative inline-block 
+                                after:content-[''] after:absolute after:left-0 after:-bottom-1
+                                after:h-px after:w-0 after:bg-black 
+                                after:transition-all after:duration-300 
+                                hover:after:w-full whitespace-nowrap"
+                            >
+                                Rewards
+                            </p>
+                        </Link>
 
-                <div className="relative">
+                        <Link to="/about-us">
+                            <p className="text-sm lg:text-base relative inline-block 
+                                after:content-[''] after:absolute after:left-0 after:-bottom-1
+                                after:h-px after:w-0 after:bg-black 
+                                after:transition-all after:duration-300 
+                                hover:after:w-full whitespace-nowrap"
+                            >
+                                About Us
+                            </p>
+                        </Link>
+                    </div>
+                </div>
+
+
+                {/* Right Icons */}
+                <div className="flex items-center gap-3 sm:gap-4 md:gap-8 lg:gap-10">
+                    <button onClick={() => setOpenSearch(true)}>
+                        <img
+                            src={searchIcon}
+                            alt="search"
+                            className="w-7 xl:w-9 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                        />
+                    </button>
+
+                    <button onClick={() => handleProfileClick()}>
+                        <img
+                            src={profile}
+                            alt="profile"
+                            className="w-6 xl:w-8 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                        />
+                    </button>
+
                     <button onClick={() => setOpenCart(true)}>
                         <img
                             src={Cart}
                             alt="cart"
-                            className="cursor-pointer w-9 transition-transform duration-150 active:scale-90 hover:scale-105"
+                            className="w-7 xl:w-9 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         />
                     </button>
 
                     {totalItems > 0 && (
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                        <span className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white text-xs w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-full">
                             {totalItems}
                         </span>
                     )}
                 </div>
-                <CartDrawer
-                    open={openCart}
-                    onClose={() => setOpenCart(false)}
-                />
             </div>
+
+            <CartDrawer
+                open={openCart}
+                onClose={() => setOpenCart(false)}
+            />
 
             {/* BoxModal */}
             {
@@ -115,6 +142,30 @@ export default function Navbar({ setOpenSearch }: any) {
                     <BoxModal close={() => setOpenBoxModal(false)} />
                 )
             }
+
+            {openMenu && (
+                <div className="lg:hidden bg-[#f7f5ef] border-t border-gray-200  flex justify-center gap-6">
+                    <OpenBox label="Shop">
+                        <ShopDropdown />
+                    </OpenBox>
+
+                    <Link
+                        to="/rewards"
+                        onClick={() => setOpenMenu(false)}
+                        className="h-17 flex items-center justify-center text-[18px]"
+                    >
+                        Rewards
+                    </Link>
+
+                    <Link
+                        to="/about-us"
+                        onClick={() => setOpenMenu(false)}
+                        className="h-17 flex items-center justify-center text-[18px]"
+                    >
+                        About Us
+                    </Link>
+                </div>
+            )}
         </div >
     )
 }
