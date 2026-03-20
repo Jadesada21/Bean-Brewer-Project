@@ -54,7 +54,6 @@ export default function AppRouter() {
 
     const [openSearch, setOpenSearch] = useState(false)
 
-
     if (loading) {
         return <div>Loading...</div>
     }
@@ -80,15 +79,14 @@ export default function AppRouter() {
                         </main>
 
                         <Footer />
-
                     </div>
                 }>
 
                     <Route path="/" element={<HomePage />} />
 
                     <Route path="/shops" element={<ShopPage />} />
-                    <Route path="/shops/:id" element={<ShopDetailPage />} />
                     <Route path="/shops/special" element={<PremiumPage />} />
+                    <Route path="/shops/:id" element={<ShopDetailPage />} />
 
                     <Route path="/rewards" element={<RewardPage />} />
                     <Route path='/rewards/:id' element={<RewardDetailPage />} />
@@ -118,8 +116,6 @@ export default function AppRouter() {
 
                     </Route>
 
-
-
                     <Route path="/term" element={<TermPage />} />
                     <Route path="/cookies" element={<CookiesPage />} />
                     <Route path="/privacy" element={<PrivacyPage />} />
@@ -135,7 +131,6 @@ export default function AppRouter() {
                         </AdminRoute>
                     }
                 >
-
                     <Route index element={<AdminDashboard />} />
                     <Route path="orders" element={<AdminOrders />} />
                     <Route path="orders/detail/:id" element={<AdminOrderDetails />} />
@@ -143,9 +138,6 @@ export default function AppRouter() {
                     {/* <Route path="rewards" element={<AdminRewards />} />
                      <Route path="users" element={<AdminUsers />} />  */}
                 </Route>
-
-
-
 
             </Routes>
         </BrowserRouter >

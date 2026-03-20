@@ -30,7 +30,7 @@ interface Redeem {
     items: redeemItem[]
 }
 
-export default function ShopDetailPage() {
+export default function RewardDetailPage() {
     const { id } = useParams()
 
     const { user } = useAuth()
@@ -56,11 +56,18 @@ export default function ShopDetailPage() {
 
     const handleRedeem = async () => {
         try {
-
             if (!user) {
                 setOpenLoginModal(true)
                 return
             }
+
+            const totalPoints = qty * (reward?.points_required ?? 0)
+
+            if ((user.points ?? 0) < totalPoints) {
+                alert("!Not Enough Points")
+                return
+            }
+
 
             const res = await api.post("/redeems", {
                 items: [

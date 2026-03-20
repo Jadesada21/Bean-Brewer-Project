@@ -39,11 +39,7 @@ export default function RedeemDetailModal({
 
             await api.patch(`/redeems/${redeem.id}/status`, {
                 status: 'cancelled'
-            }
-
-            )
-
-
+            })
             navigate('/profile/rewards-redeem')
         } catch (err) {
             console.error(err)
@@ -122,7 +118,7 @@ export default function RedeemDetailModal({
                     <div className="gap-3 mt-6">
                         <button
                             onClick={onClose}
-                            className="px-4 py-2 border rounded-lg"
+                            className="px-4 py-2 border rounded-lg transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Close
                         </button>
@@ -131,14 +127,14 @@ export default function RedeemDetailModal({
                         <div className="flex gap-3 mt-6">
                             <button
                                 onClick={handleCancel}
-                                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Cancel Redeem
                             </button>
 
                             <button
                                 onClick={handleRedeemNow}
-                                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Redeem Now
                             </button>

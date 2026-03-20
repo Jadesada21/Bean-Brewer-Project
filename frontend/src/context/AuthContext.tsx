@@ -4,6 +4,7 @@ import { api } from '../AxiosInstance'
 type User = {
     id: number
     username: string
+    points: number
     role: string
 }
 

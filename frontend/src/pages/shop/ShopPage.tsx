@@ -61,8 +61,6 @@ export default function ShopPage() {
         }
     ]
 
-
-
     return (
         <>
             <main className="font-baskerville w-full py-10">
