@@ -4,10 +4,7 @@ import { AppError } from '../../util/AppError'
 import {
     OrderResponse,
     CreateOrderInput,
-    Status
 } from '../../types/order.type'
-import { Role } from '../../types/users.type'
-
 
 //ad
 export const getAllOrderService = async (page: number) => {
@@ -351,13 +348,13 @@ export const createOrderFromCartService = async (
 
         // ดึง cart items
         const cartResult = await client.query(`
-           select 
+            SELECT 
                 ci.product_id,
                 ci.quantity
-            from carts c
-            join cart_items ci 
-            on ci.cart_id = c.id
-            where c.user_id = $1
+            FROM cart c
+            JOIN cart_items ci 
+                ON ci.cart_id = c.id
+            WHERE c.user_id = $1
             `, [loginUserId])
 
         const items = cartResult.rows
@@ -367,23 +364,28 @@ export const createOrderFromCartService = async (
         }
 
         const product_ids = [...new Set(items.map(i => i.product_id))]
-
+        console.log("product_ids:", product_ids)
         // lock product rows
         const productResult = await client.query(`
             select id , price , name , reward_points , stock , is_active
             from products
-            where id = any($1)
+            where id = any($1::int[])
             `, [product_ids])
 
         const productMap = new Map(
             productResult.rows.map(p => [p.id, p])
         )
+        console.log("productResult.rows:", productResult.rows)
 
         let totalPrice = 0
         let totalPoints = 0
 
         for (const item of items) {
             const product = productMap.get(item.product_id)
+
+            if (!product) {
+                throw new AppError(`Product not found: ${item.product_id}`, 404)
+            }
 
             if (!product.is_active) {
                 throw new AppError("Product inactive", 400)
@@ -401,7 +403,7 @@ export const createOrderFromCartService = async (
 
         const orderResult = await client.query(`
             insert into orders
-            (user_id ,total_price , earned_points , status)
+                (user_id ,total_price , earned_points , status)
             values($1,$2,$3,'pending')
             returning *
             `, [loginUserId, totalPrice, totalPoints])
@@ -410,12 +412,11 @@ export const createOrderFromCartService = async (
 
         // create order items
         for (const item of items) {
-
             const product = productMap.get(item.product_id)
 
             await client.query(`
                 insert into order_items
-                (order_id , product_id , quantity, price , total_points)
+                    (order_id , product_id , quantity, price , total_points)
                 values($1,$2,$3,$4,$5)
                 `, [
                 order.id,
@@ -430,7 +431,7 @@ export const createOrderFromCartService = async (
         await client.query(`
           delete from cart_items
             where cart_id = (
-                select id from carts where user_id = $1
+                select id from cart where user_id = $1
             )
             `, [loginUserId])
 
@@ -439,6 +440,9 @@ export const createOrderFromCartService = async (
         return order
     } catch (err) {
         await client.query("ROLLBACK")
+
+        console.error("createOrderFromCartService error:", err)
+
         throw err
     } finally {
         client.release()

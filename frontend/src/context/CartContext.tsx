@@ -31,16 +31,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         setCart(res.data.data)
     }
     const addToCart = async (productId: number, quantity: number) => {
-        console.log({
-            product_id: productId,
-            quantity
-        })
-
         await api.post("/carts/items", {
             product_id: productId,
             quantity
         })
-
         fetchCart()
     }
 

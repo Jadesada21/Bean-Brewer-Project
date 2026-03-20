@@ -23,7 +23,7 @@ export const getAllOrder = async (req: Request, res: Response, next: NextFunctio
         const data = await getAllOrderService(page)
         return res.status(200).json({ status: "Success", data })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
 
@@ -37,7 +37,7 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
         )
         return res.status(201).json({ status: "Success", data })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
 
@@ -52,7 +52,7 @@ export const cancelOrder = async (req: Request<{ id: string }, {}, { status: Sta
         const data = await cancelOrderService(orderId, req.user)
         return res.status(200).json({ status: "Success", data })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
 
@@ -67,7 +67,7 @@ export const getOrderById = async (req: Request, res: Response, next: NextFuncti
         const data = await getOrderByidService(orderId)
         return res.status(200).json({ status: "Success", data })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
 
@@ -82,7 +82,7 @@ export const getOrderDetailsById = async (req: Request, res: Response, next: Nex
         const data = await getOrderDetailsByIdService(orderId)
         return res.status(200).json({ data })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
 
@@ -93,7 +93,7 @@ export const getAllOrderByLoginUser = async (req: Request, res: Response, next: 
         const data = await getAllOrderByLoginUserService(loginUserId)
         return res.status(200).json({ status: "Success", data })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
 
@@ -109,19 +109,18 @@ export const getOrderByIdByLoginUser = async (req: Request, res: Response, next:
         const data = await getOrderByIdByLoginUserService(orderId, loginUserId)
         return res.status(200).json({ status: "Success", data })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
 
 export const createOrderFromCart = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
+        console.log("🔥 controller start")
         const loginUserId = req.user!.id
 
         const order = await createOrderFromCartService(loginUserId)
-
-        res.status(201).json({ Status: "Success", data: order })
+        return res.status(201).json({ Status: "Success", data: order })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
