@@ -113,7 +113,7 @@ export default function ShopDetailPage() {
 
         setOpen(false)
 
-        // ** อย่าลืมเปลี่ยน path หลังสร้าง redeem reward his เสร็จ
+
         navigate(`/payments/${redeem.id}`)
     }
 

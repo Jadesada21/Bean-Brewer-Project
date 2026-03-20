@@ -98,7 +98,7 @@ export default function Navbar({ setOpenSearch }: any) {
 
 
                 {/* Right Icons */}
-                <div className="flex items-center gap-3 sm:gap-4 md:gap-8 lg:gap-10">
+                <div className="relative flex items-center gap-3 sm:gap-4 md:gap-8 lg:gap-10">
                     <button onClick={() => setOpenSearch(true)}>
                         <img
                             src={searchIcon}
@@ -124,7 +124,8 @@ export default function Navbar({ setOpenSearch }: any) {
                     </button>
 
                     {totalItems > 0 && (
-                        <span className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white text-xs w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-full">
+                        <span
+                            className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white text-xs w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-full">
                             {totalItems}
                         </span>
                     )}

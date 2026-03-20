@@ -351,12 +351,12 @@ export const createOrderFromCartService = async (
 
         // ดึง cart items
         const cartResult = await client.query(`
-            select 
+           select 
                 ci.product_id,
                 ci.quantity
             from carts c
             join cart_items ci 
-            on ci.cart.id = c.id
+            on ci.cart_id = c.id
             where c.user_id = $1
             `, [loginUserId])
 
@@ -416,7 +416,7 @@ export const createOrderFromCartService = async (
             await client.query(`
                 insert into order_items
                 (order_id , product_id , quantity, price , total_points)
-                values($1,$2,$3,$4)
+                values($1,$2,$3,$4,$5)
                 `, [
                 order.id,
                 item.product_id,
@@ -428,8 +428,8 @@ export const createOrderFromCartService = async (
 
         // clear cart
         await client.query(`
-            delete from cart_items
-            where card_id = (
+          delete from cart_items
+            where cart_id = (
                 select id from carts where user_id = $1
             )
             `, [loginUserId])

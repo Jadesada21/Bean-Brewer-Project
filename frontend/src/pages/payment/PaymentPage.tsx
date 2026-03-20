@@ -68,11 +68,11 @@ export default function PaymentPage() {
         if (!id) return
 
         const createPayment = async () => {
-
             try {
-
                 await api.post(`/payments/${id}`)
 
+                const updatedOrder = await api.get(`/orders/${id}`)
+                setOrder(updatedOrder.data.data)
             } catch (err) {
                 console.log(err)
             }
@@ -124,7 +124,7 @@ export default function PaymentPage() {
 
             <div className="px-16 py-12 border-r border-gray-200 border-b  ">
 
-                <h1 className="text-3xl font-semibold mb-10 text-center">
+                <h1 className="text-xl font-semibold mb-10 text-center">
                     Checkout
                 </h1>
 
@@ -182,10 +182,10 @@ export default function PaymentPage() {
 
             {/* RIGHT SIDE */}
 
-            <div className="bg-[#d8d8d885] px-16 py-12 w-130 border-b border-gray-200">
+            <div className="bg-[#d8d8d885] px-16 py-12 w-100 border-b border-gray-200">
 
-                <h2 className="text-xl font-semibold mb-6">
-                    Order Summary
+                <h2 className="text-xl font-semibold mb-6 ">
+                    Summary
                 </h2>
 
                 {/* ITEMS */}
@@ -196,12 +196,12 @@ export default function PaymentPage() {
 
                         <div
                             key={i}
-                            className="flex justify-between"
+                            className="flex justify-center xl:justify-between"
                         >
 
-                            <div className="flex gap-6 ">
+                            <div className="flex flex-col xl:flex-row gap-4 xl:gap-6 items-center xl:items-start text-center xl:text-left">
                                 <img src={item.image_url}
-                                    className="w-16 h-16 object-cover rounded border border-white"
+                                    className="w-20 h-20 xl:w-16 xl:h-16 object-cover rounded border border-white"
                                 />
 
                                 <div>
@@ -211,11 +211,6 @@ export default function PaymentPage() {
                                     </p>
                                 </div>
                             </div>
-
-                            <p>
-                                {item.quantity * item.price} ฿
-                            </p>
-
                         </div>
 
                     ))}
@@ -224,7 +219,7 @@ export default function PaymentPage() {
 
                 {/* TOTAL */}
 
-                <div className="flex justify-between mt-6 text-lg font-semibold">
+                <div className="flex flex-col xl:flex-row items-center xl:items-center text-center xl:text-left xl:justify-between gap-2 xl:gap-0  mt-6 text-lg font-semibold">
 
                     <p>Total</p>
                     <p>{order.total_price} ฿</p>

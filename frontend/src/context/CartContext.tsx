@@ -17,6 +17,7 @@ interface CartContextType {
     fetchCart: () => void
     addToCart: (productId: number, quantity: number) => Promise<void>
     removeItem: (cartItemId: number) => Promise<void>
+    checkout: () => Promise<void>
 }
 
 const CartContext = createContext<CartContextType | null>(null)
@@ -56,8 +57,20 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, [user])
 
+    const checkout = async () => {
+        try {
+            const res = await api.post('/orders/checkout')
+
+            return res.data.data.id
+
+        } catch (err) {
+            console.error("checkout error:", err)
+            throw err
+        }
+    }
+
     return (
-        <CartContext.Provider value={{ cart, fetchCart, addToCart, removeItem }}>
+        <CartContext.Provider value={{ cart, fetchCart, addToCart, removeItem, checkout }}>
             {children}
         </CartContext.Provider>
     )
