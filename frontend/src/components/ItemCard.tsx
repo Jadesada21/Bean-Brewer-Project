@@ -35,13 +35,13 @@ export function ItemCard({
             {variant === 'product' && (
                 <>
                     <div className="mt-4">
-                        <div className="flex justify-between mt-1">
-                            <h3 className="font-semibold text-[20px] line-clamp-2">
+                        <div className="flex justify-between mt-1 gap-2">
+                            <h3 className="font-semibold text-[20px] truncate flex-1 min-w-0">
                                 {name}
                             </h3>
 
                             {price && (
-                                <p className="font-semibold text-[16px]">
+                                <p className="font-semibold text-[16px] whitespace-nowrap">
                                     ฿ {price}
                                 </p>
                             )}
@@ -67,7 +67,7 @@ export function ItemCard({
             {variant === 'reward' && (
                 <div className="mt-4">
                     <div className="flex flex-col mt-1">
-                        <h3 className="font-semibold text-[20px] line-clamp-2 h-18">
+                        <h3 className="font-semibold text-[20px] truncate h-18">
                             {name}
                         </h3>
 
