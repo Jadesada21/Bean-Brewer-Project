@@ -23,7 +23,7 @@ export default function CartDrawer({ open, onClose }: any) {
             )}
 
             <div
-                className={`fixed right-0 top-0 h-full w-105 bg-white z-50
+                className={`fixed right-0 top-0 h-full w-105 bg-white z-60
         transition-transform duration-300
         ${open ? "translate-x-0" : "translate-x-full"}`}
             >

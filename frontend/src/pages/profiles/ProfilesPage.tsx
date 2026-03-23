@@ -21,13 +21,13 @@ export default function ProfilesPage() {
     }
 
     const isActive = (path: string) => {
-        return location.pathname.startsWith(path)
+        return location.pathname === path
     }
 
     const menuClass = (path: string) => {
         return `cursor-pointer text-lg pt-3 font-baskerville border-b transition-all duration-150 
         active:scale-95 hover:scale-105
-        ${isActive(path) ? "border-black" : "border-transparent hover:border-black"}`
+        ${isActive(path) ? "border-black" : "border-transparent"}`
     }
 
     const go = (path: string) => {
@@ -58,7 +58,7 @@ export default function ProfilesPage() {
 
             {/* sidebar */}
             <aside className={`
-                fixed top-0 left-0 h-screen w-64 bg-white pt-20 px-4 z-40
+                fixed top-0 left-0 h-screen w-64 bg-white pt-20 px-4 z-30
                 transform transition-transform duration-300
                 ${openSidebar ? "translate-x-0" : "-translate-x-full"}
                 lg:translate-x-0 lg:sticky lg:top-0
