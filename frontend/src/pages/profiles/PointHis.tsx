@@ -41,7 +41,7 @@ export default function PointsHistory() {
 
     return (
         <div>
-            <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-xl mb-10 h-full">
+            <div className="mt-10 bg-white p-8 rounded-xl shadow-sm w-125 mb-10 h-full">
 
                 <table className="w-full border-collapse">
                     <thead>
