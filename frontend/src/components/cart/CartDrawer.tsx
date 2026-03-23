@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useCart } from "../../context/CartContext"
+import { useState } from "react"
 
 
 export default function CartDrawer({ open, onClose }: any) {
@@ -8,9 +9,10 @@ export default function CartDrawer({ open, onClose }: any) {
     const { cart, removeItem, checkout } = useCart()
 
     const total = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
+        (sum, item) => sum + item.price * item.quantity, 0
     )
+
+
 
     return (
         <div className="font-baskerville">
@@ -97,7 +99,7 @@ export default function CartDrawer({ open, onClose }: any) {
                         onClick={async () => {
                             try {
                                 const orderId = await checkout()
-                                navigate(`/payment/${orderId}`)
+                                navigate(`/profile/orders/${orderId}`)
                             } catch (err) {
                                 alert("Checkout failed")
                             }

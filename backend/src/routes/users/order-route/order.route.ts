@@ -29,8 +29,7 @@ router.route('/me')
 router.route('/checkout')
     .post(authorize(['customer']), createOrderFromCart)
 
-router.route('/:id')
-    .get(authorize(['customer']), getOrderByIdByLoginUser)
+
 
 
 router.route('/:id/cancel')
@@ -38,6 +37,9 @@ router.route('/:id/cancel')
 
 router.route('/:orderId/payment')
     .post(authorize(['customer']), createPayment)
+
+router.route('/:id')
+    .get(authorize(['customer']), getOrderByIdByLoginUser)
 
 
 // ******************** order_items

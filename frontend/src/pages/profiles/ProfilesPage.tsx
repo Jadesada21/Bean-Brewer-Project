@@ -41,7 +41,7 @@ export default function ProfilesPage() {
             {/* ✅ Mobile menu */}
             <button
                 onClick={() => setOpenSidebar(true)}
-                className="lg:hidden absolute left-4 z-40 bg-white px-4 py-2 rounded-lg shadow 
+                className="lg:hidden absolute left-4 z-30 bg-white px-4 py-2 rounded-lg shadow 
                 font-semibold transition active:scale-90 hover:scale-105 mt-5"
             >
                 Menu
@@ -51,14 +51,14 @@ export default function ProfilesPage() {
             {openSidebar && (
                 <div
                     onClick={() => setOpenSidebar(false)}
-                    className="fixed inset-0 bg-black/30 z-40 xl:hidden"
+                    className="fixed inset-0 bg-black/30 z-30 xl:hidden"
                 />
             )}
 
 
             {/* sidebar */}
             <aside className={`
-                fixed top-0 left-0 h-screen w-64 bg-white pt-20 px-4 z-50
+                fixed top-0 left-0 h-screen w-64 bg-white pt-20 px-4 z-40
                 transform transition-transform duration-300
                 ${openSidebar ? "translate-x-0" : "-translate-x-full"}
                 lg:translate-x-0 lg:sticky lg:top-0
@@ -137,8 +137,8 @@ export default function ProfilesPage() {
 
             {/* content */}
             <main className="mt-25 max-w-3xl w-full 
-                    pl-4 pr-4 md:pl-6 lg:pl-0 
-                    mx-auto xl:mx-0 xl:ml-10 space-y-6">
+                    pl-4 md:pl-6 xl:pl-8 lg:pl-10 
+                    md:ml-6 xl:ml-20">
 
                 <div className="text-2xl font-bold">
                     Hi, {capitalize(user?.username)} 👋

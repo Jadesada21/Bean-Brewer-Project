@@ -114,11 +114,12 @@ export const getOrderByIdByLoginUser = async (req: Request, res: Response, next:
 }
 
 export const createOrderFromCart = async (req: Request, res: Response, next: NextFunction) => {
+
     try {
-        console.log("🔥 controller start")
         const loginUserId = req.user!.id
 
         const order = await createOrderFromCartService(loginUserId)
+
         return res.status(201).json({ Status: "Success", data: order })
     } catch (err) {
         return next(err)

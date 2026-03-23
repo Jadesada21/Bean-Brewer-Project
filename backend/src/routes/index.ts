@@ -79,5 +79,4 @@ router.use('/admin/promo-codes', adminPromoCodeRoute)
 router.use('/admin/promo-code-usages', adminPromoCodeUsagedRoute)
 
 
-
 export default router

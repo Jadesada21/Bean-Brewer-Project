@@ -364,7 +364,6 @@ export const createOrderFromCartService = async (
         }
 
         const product_ids = [...new Set(items.map(i => i.product_id))]
-        console.log("product_ids:", product_ids)
         // lock product rows
         const productResult = await client.query(`
             select id , price , name , reward_points , stock , is_active
@@ -375,7 +374,6 @@ export const createOrderFromCartService = async (
         const productMap = new Map(
             productResult.rows.map(p => [p.id, p])
         )
-        console.log("productResult.rows:", productResult.rows)
 
         let totalPrice = 0
         let totalPoints = 0
@@ -414,6 +412,8 @@ export const createOrderFromCartService = async (
         for (const item of items) {
             const product = productMap.get(item.product_id)
 
+
+
             await client.query(`
                 insert into order_items
                     (order_id , product_id , quantity, price , total_points)
@@ -429,20 +429,17 @@ export const createOrderFromCartService = async (
 
         // clear cart
         await client.query(`
-          delete from cart_items
-            where cart_id = (
-                select id from cart where user_id = $1
-            )
+           DELETE FROM cart_items ci
+            USING cart c
+            WHERE ci.cart_id = c.id
+            AND c.user_id = $1
             `, [loginUserId])
 
         await client.query("COMMIT")
 
         return order
-    } catch (err) {
+    } catch (err: any) {
         await client.query("ROLLBACK")
-
-        console.error("createOrderFromCartService error:", err)
-
         throw err
     } finally {
         client.release()

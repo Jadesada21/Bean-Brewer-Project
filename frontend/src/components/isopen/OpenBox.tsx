@@ -28,7 +28,7 @@ export default function OpenBox({ label, children }: OpenBoxProps) {
     }
 
     return (
-        <p className="h-17 flex items-center justify-center text-[18px]">
+        <div className="z-60 h-17 flex items-center justify-center text-[18px]">
             <span className="relative inline-block font-baskerville"
                 onMouseEnter={openDropdown}
                 onMouseLeave={closeDropdown}
@@ -56,6 +56,6 @@ export default function OpenBox({ label, children }: OpenBoxProps) {
                     </div>
                 )}
             </span>
-        </p>
+        </div>
     )
 }

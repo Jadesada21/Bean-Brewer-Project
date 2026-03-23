@@ -20,7 +20,7 @@ export const getAllProductService = async ({
     page: number,
 }) => {
 
-    const limit = 5
+    const limit = 10
     const offset = (page - 1) * limit
 
     if (role === 'admin') {
