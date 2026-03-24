@@ -37,16 +37,18 @@ export const getAllProductService = async ({
         p.is_active,
         p.created_at,
         p.updated_at,
+        pi.image_urls,
         count(*) over() as total_count,
-        coalesce(img.total_images , 0) as total_images
-    from products p 
+        coalesce(pi.total_images , 0) as total_images
+    from products p     
     left join (
         select 
             product_id,
+            json_agg(image_url) filter (where image_url is not null) as image_urls,
             count(*) as total_images
         from product_images
         group by product_id 
-    ) img on img.product_id = p.id
+    ) pi on pi.product_id = p.id
     order by p.created_at desc
     limit $1 offset $2
         `, [limit, offset])
@@ -286,5 +288,63 @@ export const getAllRestockProductHisService = async (productId: number) => {
         order by created_at desc
         `, [productId])
 
+    if (response.rowCount === 0) {
+        throw new AppError("Product not found", 404)
+    }
+
     return response.rows
+}
+
+export const getProductByIdAdminService = async (productId: number) => {
+    const response = await pool.query(`
+        select
+        p.id,
+        p.name,
+        p.description,
+        p.price,
+        p.stock,
+        p.bag_size,
+        p.reward_points,
+        p.roast_level,
+        p.taste,
+        p.category_id,
+        p.is_active,
+        p.created_at,
+        p.updated_at,
+
+        c.id as category_id,
+        c.name as category_name,
+        c.type as category_type,
+
+        pi.images,
+        coalesce(pi.total_images, 0) as total_images
+       
+    from products p  
+    
+    left join categories c
+        on c.id = p.category_id
+        
+    left join (
+        select 
+            product_id,
+            json_agg(
+                json_build_object(
+                    'id', id,
+                    'image_url', image_url,
+                    'is_primary', is_primary
+            )
+        ) filter (where image_url is not null) as images,
+
+            count(*) as total_images
+
+        from product_images
+        group by product_id 
+    )   pi on pi.product_id = p.id
+    where p.id = $1
+    `, [productId])
+
+    if (response.rowCount === 0) {
+        throw new AppError("Product not found", 404)
+    }
+    return response.rows[0]
 }

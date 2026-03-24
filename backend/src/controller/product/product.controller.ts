@@ -6,7 +6,8 @@ import {
     getProductByIdService,
     toggleProductActiveService,
     restockProductByIdService,
-    getAllRestockProductHisService
+    getAllRestockProductHisService,
+    getProductByIdAdminService
 } from '../../service/product/product.service'
 
 import {
@@ -141,5 +142,22 @@ export const getAllRestockProductHis = async (req: Request, res: Response, next:
         res.status(200).json({ data })
     } catch (err) {
         next(err)
+    }
+}
+
+export const getProductByIdAdmin = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+
+        const productId = Number(id)
+
+        if (Number.isNaN(productId)) {
+            throw new AppError("Invalid product id", 400)
+        }
+
+        const data = await getProductByIdAdminService(productId)
+        res.status(200).json({ data })
+    } catch (err) {
+        return next(err)
     }
 }

@@ -57,7 +57,6 @@ export default function AdminOrder() {
             setOrders([res.data.data])
             setIsSearchResult(true)
         } catch (err: any) {
-
             if (err.response?.status === 404) {
                 setOrders([])
                 setError("Order not found")
@@ -129,7 +128,7 @@ export default function AdminOrder() {
 
                         {orders.map(order => (
 
-                            <tr key={order.id} className="border-t">
+                            <tr key={order.id} className="border-t border-gray-300">
 
                                 <td className="pl-2 py-4 ">
                                     {order.id}

@@ -146,11 +146,11 @@ export default function AddressForm() {
 
 
     return (
-        <div>
+        <div className="font-baskerville">
             <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-3xl mb-10">
                 {/* header */}
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold font-baskerville"
+                    <h2 className="text-2xl font-bold "
                     >Personal Addresses
                     </h2>
 
@@ -160,7 +160,7 @@ export default function AddressForm() {
                                 setEditingId(defaultAddress?.id || null)
                                 setIsEditing(true)
                             }}
-                            className="border px-4 py-2 rounded font-baskerville cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                            className="border px-4 py-2 rounded  cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Edit
                         </button>
@@ -171,7 +171,7 @@ export default function AddressForm() {
                 <div className="space-y-4">
 
                     <div>
-                        <label className="block mb-2 font-baskerville">address</label>
+                        <label className="block mb-2 ">address</label>
                         <input
                             type='text'
                             name="address_line"
@@ -180,13 +180,13 @@ export default function AddressForm() {
                             placeholder='address'
                             maxLength={60}
                             disabled={!isEditing}
-                            className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                            className="w-full rounded border border-gray-300 h-10 pl-2 "
                         />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block mb-2 font-baskerville">subdistrict</label>
+                            <label className="block mb-2 ">subdistrict</label>
                             <input
                                 type='text'
                                 name="subdistrict"
@@ -195,11 +195,11 @@ export default function AddressForm() {
                                 placeholder='subdistrict'
                                 maxLength={30}
                                 disabled={!isEditing}
-                                className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                                className="w-full rounded border border-gray-300 h-10 pl-2 "
                             />
                         </div>
                         <div>
-                            <label className="block mb-2 font-baskerville">district</label>
+                            <label className="block mb-2 ">district</label>
                             <input
                                 type='text'
                                 name="district"
@@ -208,7 +208,7 @@ export default function AddressForm() {
                                 placeholder='district'
                                 maxLength={20}
                                 disabled={!isEditing}
-                                className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                                className="w-full rounded border border-gray-300 h-10 pl-2 "
                             />
                         </div>
                     </div>
@@ -217,7 +217,7 @@ export default function AddressForm() {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block mb-2 font-baskerville">province</label>
+                            <label className="block mb-2 ">province</label>
                             <input
                                 type='text'
                                 name="province"
@@ -226,12 +226,12 @@ export default function AddressForm() {
                                 placeholder='province'
                                 maxLength={20}
                                 disabled={!isEditing}
-                                className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                                className="w-full rounded border border-gray-300 h-10 pl-2 "
                             />
                         </div>
 
                         <div>
-                            <label className="block mb-2 font-baskerville">postal_code</label>
+                            <label className="block mb-2 ">postal_code</label>
                             <input
                                 type='text'
                                 name="postal_code"
@@ -240,13 +240,13 @@ export default function AddressForm() {
                                 placeholder='postalcode'
                                 maxLength={5}
                                 disabled={!isEditing}
-                                className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                                className="w-full rounded border border-gray-300 h-10 pl-2 "
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block mb-2 font-baskerville">country</label>
+                        <label className="block mb-2 ">country</label>
                         <input
                             type='text'
                             name="country"
@@ -255,7 +255,7 @@ export default function AddressForm() {
                             placeholder='country'
                             maxLength={30}
                             disabled={!isEditing}
-                            className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                            className="w-full rounded border border-gray-300 h-10 pl-2 "
                         />
                     </div>
                 </div>
@@ -266,14 +266,14 @@ export default function AddressForm() {
 
                         <button
                             onClick={handleSubmit}
-                            className="bg-black text-white px-6 py-2 rounded font-baskerville cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                            className="bg-black text-white px-6 py-2 rounded  cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Save
                         </button>
 
                         <button
                             onClick={() => setIsEditing(false)}
-                            className="border px-6 py-2 rounded font-baskerville cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                            className="border px-6 py-2 rounded  cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Cancel
                         </button>
@@ -295,14 +295,14 @@ export default function AddressForm() {
                                 {/* header */}
                                 {showOtherHeader && (
                                     <div className="flex justify-between items-center">
-                                        <h3 className="text-2xl font-bold font-baskerville">Other Address</h3>
+                                        <h3 className="text-2xl font-bold ">Other Address</h3>
 
                                         <button
                                             onClick={() => {
                                                 setShowOtherHeader(false)
                                                 setEditingId(addr.id)
                                             }}
-                                            className="border px-4 py-2 rounded font-baskerville cursor-pointer"
+                                            className="border px-4 py-2 rounded  cursor-pointer"
                                         >
                                             Edit
                                         </button>
@@ -311,7 +311,7 @@ export default function AddressForm() {
 
                                 {/* address line */}
                                 <div>
-                                    <label className="block mb-2 font-baskerville">address</label>
+                                    <label className="block mb-2 ">address</label>
                                     {isAddressEditing ? (
                                         <input
                                             type="text"
@@ -321,17 +321,16 @@ export default function AddressForm() {
                                             }
                                             placeholder='Address'
                                             maxLength={100}
-                                            className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                                            className="w-full rounded border border-gray-300 h-10 pl-2 "
                                         />
-                                    ) :
-                                        (
-                                            <p className="font-baskerville">{addr.address_line}</p>
-                                        )}
+                                    ) : (
+                                        <p className="">{addr.address_line}</p>
+                                    )}
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block mb-2 font-baskerville">subdistrict</label>
+                                        <label className="block mb-2 ">subdistrict</label>
                                         {isAddressEditing ? (
                                             <input
                                                 type='text'
@@ -341,7 +340,7 @@ export default function AddressForm() {
                                                 }
                                                 placeholder='subdistrict'
                                                 maxLength={30}
-                                                className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                                                className="w-full rounded border border-gray-300 h-10 pl-2 "
                                             />
                                         ) : (
                                             <p>{addr.subdistrict}</p>
@@ -350,7 +349,7 @@ export default function AddressForm() {
                                     </div>
 
                                     <div>
-                                        <label className="block mb-2 font-baskerville">district</label>
+                                        <label className="block mb-2 ">district</label>
                                         {isAddressEditing ? (
                                             <input
                                                 type='text'
@@ -360,7 +359,7 @@ export default function AddressForm() {
                                                 }
                                                 placeholder='district'
                                                 maxLength={20}
-                                                className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                                                className="w-full rounded border border-gray-300 h-10 pl-2 "
                                             />
                                         ) : (
                                             <p>{addr.district}</p>
@@ -370,7 +369,7 @@ export default function AddressForm() {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block mb-2 font-baskerville">province</label>
+                                        <label className="block mb-2 ">province</label>
                                         {isAddressEditing ? (
                                             <input
                                                 type='text'
@@ -380,16 +379,16 @@ export default function AddressForm() {
                                                 }
                                                 placeholder='province'
                                                 maxLength={20}
-                                                className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                                                className="w-full rounded border border-gray-300 h-10 pl-2 "
                                             />
                                         ) : (
-                                            <p className="font-baskerville">{addr.province}</p>
+                                            <p className="">{addr.province}</p>
                                         )}
 
                                     </div>
 
                                     <div>
-                                        <label className="block mb-2 font-baskerville">postal_code</label>
+                                        <label className="block mb-2 ">postal_code</label>
                                         {isAddressEditing ? (
                                             <input
                                                 type='text'
@@ -399,17 +398,17 @@ export default function AddressForm() {
                                                 }
                                                 placeholder='postalcode'
                                                 maxLength={5}
-                                                className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                                                className="w-full rounded border border-gray-300 h-10 pl-2 "
                                             />
                                         ) : (
-                                            <p className="font-baskerville">{addr.postal_code}</p>
+                                            <p className="">{addr.postal_code}</p>
                                         )}
 
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="block mb-2 font-baskerville">country</label>
+                                    <label className="block mb-2 ">country</label>
                                     {isAddressEditing ? (
                                         <input
                                             type='text'
@@ -419,10 +418,10 @@ export default function AddressForm() {
                                             }
                                             placeholder='country'
                                             maxLength={30}
-                                            className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                                            className="w-full rounded border border-gray-300 h-10 pl-2 "
                                         />
                                     ) : (
-                                        <p className="font-baskerville">{addr.country}</p>
+                                        <p className="">{addr.country}</p>
                                     )}
                                 </div>
 
@@ -435,7 +434,7 @@ export default function AddressForm() {
                                                 setEditingId(null)
                                                 setShowOtherHeader(true)
                                             }}
-                                            className="bg-black text-white px-6 py-2 rounded font-baskerville cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                                            className="bg-black text-white px-6 py-2 rounded  cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                                         >
                                             Save
                                         </button>
@@ -445,7 +444,7 @@ export default function AddressForm() {
                                                 setEditingId(null)
                                                 setShowOtherHeader(true)
                                             }}
-                                            className="border px-6 py-2 rounded font-baskerville cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                                            className="border px-6 py-2 rounded  cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                                         >
                                             Cancel
                                         </button>

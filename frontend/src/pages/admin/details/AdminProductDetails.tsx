@@ -2,49 +2,55 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 
-
-interface OrderItem {
-    product_id: number
-    name: string
-    quantity: string
-    price_per_items: number
-    total_points: number
-}
-
-interface OrderUser {
+interface ProductDetail {
     id: number
-    first_name: string
-    last_name: string
-    email: string
-}
-
-interface OrderDetail {
-    order_id: number
-    order_number: number
-    status: string
-    total_price: number
-    earned_points: number
+    name: string
+    price: number
+    stock: number
+    description: string
+    reward_points: number
+    taste: string
+    roast_level: string
+    bag_size: string
+    category_id: number
+    is_active: boolean
     created_at: string
-    user: OrderUser
-    items: OrderItem[]
+    updated_at: string
+
+    category_name: string
+    category_type: string
+
+    images?: ProductImage[]
+    total_images: number
+}
+
+export interface ProductImage {
+    id: number
+    image_url?: string
+    is_primary: boolean
 }
 
 
-export default function AdminOrderDetails() {
+
+
+
+export default function AdminProductDetails() {
 
     const { id } = useParams()
 
     // const navigate = useNavigate()
 
-    const [order, setOrder] = useState<OrderDetail | null>(null)
+    const [isEditing, setIsEditing] = useState(false)
+    const [products, setProducts] = useState<ProductDetail | null>(null)
     const [loading, setLoading] = useState(true)
 
-    const fetchOrderDetail = async () => {
+    const fetchProductsDetail = async () => {
         try {
-            const { data } = await api.get(`/admin/orders/detail/${id}`)
-            setOrder(data.data)
+            const { data } = await api.get(`/admin/products/${id}`)
+            setProducts(data.data)
+            console.log(data)
         } catch (err) {
-            console.error('Error fetching order detail:', err)
+            console.error('Error fetching product detail:', err)
         } finally {
             setLoading(false)
         }
@@ -52,32 +58,32 @@ export default function AdminOrderDetails() {
 
     useEffect(() => {
         if (id) {
-            fetchOrderDetail()
+            fetchProductsDetail()
         }
     }, [id])
 
-    // const formatDate = (date: string) => {
-    //     return new Date(date).toLocaleDateString('en-GB')
-    // }
+    if (!products) return <div>Product not found</div>
 
-    // const formatPrice = (price: number) => {
-    //     return price.toLocaleString()
-    // }
 
-    // const getStatusStyle = (status: string) => {
-    //     switch (status) {
-    //         case "completed":
-    //             return "text-green-600"
-    //         case "cancelled":
-    //             return "text-red-600"
-    //         case "pending":
-    //             return "text-yellow-600"
-    //         default:
-    //             return "text-gray-600"
-    //     }
-    // }
+    const formatDate = (date: string) => {
+        return new Date(date).toLocaleDateString('en-GB')
+    }
 
-    if (!order) return <div>Order not found</div>
+    const formatNumeric = (price: number) => {
+        return price.toLocaleString()
+    }
+
+    const getImages = (products: ProductDetail) => {
+        if (products.images && products.images.length > 0) {
+            return (
+                products.images?.find(img => img.is_primary)?.image_url ||
+                products.images?.[0]?.image_url
+            )
+        }
+        return (products as any).image_url
+    }
+
+    const primaryImage = getImages(products)
 
 
     if (loading) {
@@ -86,6 +92,274 @@ export default function AdminOrderDetails() {
 
 
     return (
-        <div></div>
+        <div className="p-6">
+
+            <div className="flex justify-between">
+                <div className="flex gap-10 pb-10 text-2xl">
+                    <span>ID# {products.id}</span>
+                    <span>{products.name}</span>
+                </div>
+
+                <div>
+                    {!isEditing && (
+                        <button
+                            onClick={() => setIsEditing(true)}
+                            className="px-4 py-2 bg-blue-500 text-white rounded"
+                        >
+                            Edit
+                        </button>
+                    )}
+                </div>
+            </div>
+
+
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* 🔵 LEFT: Images */}
+                <div className="space-y-4">
+                    {/* Main Image */}
+                    <div className="w-full h-100 bg-gray-200 rounded flex items-center justify-center">
+                        {primaryImage ? (
+                            <img
+                                src={primaryImage}
+                                className="h-full object-cover rounded"></img>
+                        ) : (
+                            <span className="text-gray-400">No Image</span>
+                        )}
+                    </div>
+
+                    {/* Thumbnails */}
+                    <div className="flex gap-2 flex-wrap">
+                        {products.images && products.images.length > 0 ? (
+                            products.images.map((img) => (
+                                <img
+                                    key={img.id}
+                                    src={img.image_url}
+                                    className="w-20 h-20 object-cover rounded"
+                                />
+                            ))
+                        ) : (
+                            <span className="text-gray-400 text-sm">No images</span>
+                        )}
+                    </div>
+
+                    {/* Upload Button */}
+                    <div>
+                        <button className="px-4 py-2 bg-blue-500 text-white rounded">
+                            Upload Images
+                        </button>
+                    </div>
+                </div>
+
+
+                {/* 🟢 RIGHT: Form */}
+                <div className="space-y-4">
+
+                    {/* Name */}
+                    <div>
+                        <label className="block text-sm font-medium">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Product name"
+                            value={products.name}
+                            // onChange={}
+                            maxLength={60}
+                            disabled={!isEditing}
+                            className="w-full border rounded px-3 py-2 mt-1"
+                        />
+                    </div>
+
+                    {/* category name + type */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium">Category Name</label>
+                            <input
+                                type="text"
+                                name="category_name"
+                                value={products.category_name}
+                                // onChange={}
+                                placeholder="Category Name"
+                                maxLength={60}
+                                disabled={!isEditing}
+                                className="w-full border rounded px-3 py-2 mt-1"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium">Category Type</label>
+                            <input
+                                type="text"
+                                name="category_type"
+                                value={products.category_type}
+                                // onChange={}
+                                placeholder="Category Type"
+                                maxLength={60}
+                                disabled={!isEditing}
+                                className="w-full border rounded px-3 py-2 mt-1"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Price + Stock */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium">Price</label>
+                            <input
+                                type="number"
+                                name="price"
+                                value={formatNumeric(products.price)}
+                                // onChange={}
+                                placeholder="Price"
+                                maxLength={20}
+                                disabled={!isEditing}
+                                className="w-full border rounded px-3 py-2 mt-1"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium">Stock</label>
+                            <input
+                                type="number"
+                                name="stock"
+                                value={formatNumeric(products.stock)}
+                                // onChange={}
+                                placeholder="Stock"
+                                maxLength={20}
+                                disabled={!isEditing}
+                                className="w-full border rounded px-3 py-2 mt-1"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Reward Points + Roast Level */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium">Reward Points</label>
+                            <input
+                                type="number"
+                                name="reward_points"
+                                value={formatNumeric(products.reward_points)}
+                                // onChange={}
+                                placeholder="Taste"
+                                maxLength={60}
+                                disabled={!isEditing}
+                                className="w-full border rounded px-3 py-2 mt-1"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium">Roast Level</label>
+                            {isEditing ? (
+                                <select
+                                    value={products.roast_level}
+                                    onChange={(e) => {
+                                        setProducts(prev => prev && {
+                                            ...prev,
+                                            roast_level: e.target.value
+                                        })
+                                    }}
+                                    className="w-full border rounded px-3 py-2 mt-1"
+                                >
+                                    <option value="light">light</option>
+                                    <option value="medium">medium</option>
+                                    <option value="dark">dark</option>
+                                </select>
+                            ) : (
+                                <p className="mt-1 px-3 py-2 bg-gray-100 rounded">
+                                    {products.roast_level}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Taste + Bag Size*/}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium">Taste</label>
+                            <input
+                                type="text"
+                                name="taste"
+                                value={products.taste}
+                                // onChange={}
+                                placeholder="Taste"
+                                maxLength={60}
+                                disabled={!isEditing}
+                                className="w-full border rounded px-3 py-2 mt-1"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium">Bag Size</label>
+                            <input
+                                type="text"
+                                name="bag_size"
+                                value={products.bag_size}
+                                // onChange={}
+                                placeholder="Bag Size"
+                                maxLength={60}
+                                disabled={!isEditing}
+                                className="w-full border rounded px-3 py-2 mt-1"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                        <label className="block text-sm font-medium">Description</label>
+                        <textarea
+                            rows={2}
+                            name="description"
+                            value={products.description}
+                            // onChange={}
+                            placeholder="Description"
+                            maxLength={60}
+                            disabled={!isEditing}
+                            className="w-full border rounded px-3 py-2 mt-1"
+                        />
+                    </div>
+
+                    {/* Created + Updated */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium">Created At</label>
+                            <p className="w-full border rounded px-3 py-2 mt-1 bg-gray-400">
+                                {formatDate(products.created_at)}
+
+
+                            </p>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium">Updated At</label>
+                            <p className="w-full border rounded px-3 py-2 mt-1 bg-gray-400">
+                                {formatDate(products.updated_at)}
+                            </p>
+                        </div>
+                    </div>
+
+
+                    {/* Actions */}
+                    {isEditing && (
+                        <div className="mt-auto pt-6 flex justify-end gap-3">
+                            <button
+                                // onClick={handleSave}
+                                className="px-4 py-2 bg-green-500 text-white rounded"
+                            >
+                                Save
+                            </button>
+
+                            <button
+                                onClick={() => setIsEditing(false)}
+                                className="px-4 py-2 bg-gray-300 rounded"
+                            >
+                                Cancel
+                            </button>
+
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
     )
 }

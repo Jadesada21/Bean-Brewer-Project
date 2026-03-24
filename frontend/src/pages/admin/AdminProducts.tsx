@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
+import { useNavigate } from 'react-router-dom'
 
 interface Product {
     id: number
@@ -14,20 +15,24 @@ interface Product {
     total_images: number
     created_at: string
     updated_at: string
+    image_urls: string[]
 }
 
 export default function AdminProduct() {
+    const navigate = useNavigate()
 
     const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
     const [search, setSearch] = useState("")
+    const [isSearchResult, setIsSearchResult] = useState(false)
     const [error, setError] = useState("")
+
 
     const fetchProducts = async () => {
         try {
             const res = await api.get(`/products?page=${page}`)
-            setProducts(res.data.data)
+            setProducts(res.data.products)
 
         } catch (err) {
             console.error(err)
@@ -45,14 +50,15 @@ export default function AdminProduct() {
             setError("")
 
             if (!search.trim()) {
-                const res = await api.get('/products?page=1')
+                const res = await api.get('/admin/products?page=1')
                 setProducts(res.data.data)
+                setIsSearchResult(false)
                 return
             }
-
-            const res = await api.get(`/products/${search}`)
+            const res = await api.get(`/admin/products/${search}`)
 
             setProducts([res.data.data])
+            setIsSearchResult(true)
         } catch (err: any) {
 
             if (err.response?.status === 404) {
@@ -60,8 +66,6 @@ export default function AdminProduct() {
                 setError("Product not found")
             }
         }
-
-
     }
 
     if (loading) {
@@ -99,24 +103,15 @@ export default function AdminProduct() {
 
             <div className="bg-white rounded-xl shadow overflow-hidden">
 
-                <div className="">
-                    {products.length === 0 && error && (
-                        <tr>
-                            <td colSpan={3} className="p-6 text-gray-500">
-                                Product not found
-                            </td>
-                        </tr>
-                    )}
-                </div>
-
                 <div className="bg-white rounded-xl shadow overflow-hidden">
 
                     <table className="w-full">
 
                         <thead className="bg-gray-100 h-15">
                             <tr>
-                                <th className="text-left pl-2">Product ID</th>
-                                <th className="text-left pl-2">Product Name</th>
+                                <th className="text-left pl-2">ID</th>
+                                <th className="text-left pl-2">Image</th>
+                                <th className="text-left pl-2">Name</th>
                                 <th className="text-left pl-2">Price</th>
                                 <th className="text-left pl-2">Stock</th>
                                 <th className="text-left pl-2">Reward Points</th>
@@ -124,21 +119,32 @@ export default function AdminProduct() {
                                 <th className="text-left pl-2">Is Active</th>
                                 <th className="text-left pl-2">Create</th>
                                 <th className="text-left pl-2">Update</th>
-                                <th className="text-left pl-2">Image</th>
                             </tr>
                         </thead>
 
-
+                        <div className="">
+                            {products.length === 0 && error && (
+                                <tr>
+                                    <td colSpan={3} className="p-6 text-gray-500">
+                                        Product not found
+                                    </td>
+                                </tr>
+                            )}
+                        </div>
 
                         {products.map(product => (
 
                             <tr key={product.id} className="border-t border-gray-300">
 
-                                <td className="py-4 px-2 ">
+                                <td className="py-4 px-2">
                                     {product.id}
                                 </td>
 
                                 <td className="py-4 px-2">
+                                    {product.total_images}
+                                </td>
+
+                                <td className="max-w-45 py-4 px-2 truncate">
                                     {product.name}
                                 </td>
 
@@ -170,9 +176,7 @@ export default function AdminProduct() {
                                     {new Date(product.updated_at).toLocaleDateString()}
                                 </td>
 
-                                <td className="py-4 px-2">
-                                    {product.total_images}
-                                </td>
+
 
                             </tr>
 
@@ -181,26 +185,47 @@ export default function AdminProduct() {
                     </table>
                 </div>
             </div>
-            <div className="flex gamt-6 pt-4">
 
-                <button
-                    onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                    className="px-4 py-2 bg-gray-200 rounded"
-                >
-                    Prev
-                </button>
+            <div className="flex justify-between">
 
-                <span className="px-4 py-2">
-                    Page {page}
-                </span>
+                {isSearchResult && products.length > 0 && (
+                    <button
+                        onClick={() => navigate(`/admin/products/detail/${products[0].id}`)}
+                        className="bg-blue-500 text-white px-3 py-1 rounded mt-4"
+                    >
+                        view Details
+                    </button>
 
-                <button
-                    onClick={() => setPage(prev => prev + 1)}
-                    className="px-4 py-2 bg-gray-200 rounded"
-                >
-                    Next
-                </button>
 
+
+                )}
+
+                <div className="flex gap-6 pt-4">
+
+                    {!isSearchResult && (
+                        <>
+                            <button
+                                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                                className="px-4 py-2 bg-gray-200 rounded"
+                            >
+                                Prev
+                            </button>
+
+                            <span className="px-4 py-2">
+                                Page {page}
+                            </span>
+
+                            <button
+                                onClick={() => setPage(prev => prev + 1)}
+                                className="px-4 py-2 bg-gray-200 rounded"
+                            >
+                                Next
+                            </button>
+                        </>
+                    )}
+
+
+                </div>
             </div>
 
 
