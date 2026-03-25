@@ -170,37 +170,6 @@ export default function AdminProductDetails() {
                         />
                     </div>
 
-                    {/* category name + type */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium">Category Name</label>
-                            <input
-                                type="text"
-                                name="category_name"
-                                value={products.category_name}
-                                // onChange={}
-                                placeholder="Category Name"
-                                maxLength={60}
-                                disabled={!isEditing}
-                                className="w-full border rounded px-3 py-2 mt-1"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium">Category Type</label>
-                            <input
-                                type="text"
-                                name="category_type"
-                                value={products.category_type}
-                                // onChange={}
-                                placeholder="Category Type"
-                                maxLength={60}
-                                disabled={!isEditing}
-                                className="w-full border rounded px-3 py-2 mt-1"
-                            />
-                        </div>
-                    </div>
-
                     {/* Price + Stock */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
@@ -317,6 +286,23 @@ export default function AdminProductDetails() {
                             disabled={!isEditing}
                             className="w-full border rounded px-3 py-2 mt-1"
                         />
+                    </div>
+
+                    {/* category name + type */}
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium">Category Name</label>
+                            <p className="w-full border rounded px-3 py-2 mt-1 bg-gray-400">
+                                {products.category_name}
+                            </p>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium">Category Type</label>
+                            <p className="w-full border rounded px-3 py-2 mt-1 bg-gray-400">
+                                {products.category_type}
+                            </p>
+                        </div>
                     </div>
 
                     {/* Created + Updated */}

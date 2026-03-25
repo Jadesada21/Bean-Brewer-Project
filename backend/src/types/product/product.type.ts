@@ -27,3 +27,18 @@ export interface CreateProductInput {
     bag_size: string
 }
 
+export interface UpdateProductPayload {
+    id?: number
+    name?: string
+    description?: string
+    price?: number
+    stock?: number
+    category_id?: number
+    is_active?: boolean
+    reward_points?: number
+    roast_level?: string
+    taste?: string
+    bag_size?: string
+}
+
+

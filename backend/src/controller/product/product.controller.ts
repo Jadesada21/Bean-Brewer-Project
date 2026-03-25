@@ -7,12 +7,14 @@ import {
     toggleProductActiveService,
     restockProductByIdService,
     getAllRestockProductHisService,
-    getProductByIdAdminService
+    getProductByIdAdminService,
+    updateProductByIdAdminService
 } from '../../service/product/product.service'
 
 import {
     CreateProductInput,
-    RoastLevel
+    RoastLevel,
+    UpdateProductPayload
 } from '../../types/product/product.type'
 import { AppError } from '../../util/AppError'
 
@@ -145,7 +147,7 @@ export const getAllRestockProductHis = async (req: Request, res: Response, next:
     }
 }
 
-export const getProductByIdAdmin = async (req: Request, res: Response, next: NextFunction) => {
+export const getProductByIdAdmin = async (req: Request<{ id: string }, {}, UpdateProductPayload>, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params
 
@@ -155,7 +157,32 @@ export const getProductByIdAdmin = async (req: Request, res: Response, next: Nex
             throw new AppError("Invalid product id", 400)
         }
 
+
+
         const data = await getProductByIdAdminService(productId)
+        res.status(200).json({ data })
+    } catch (err) {
+        return next(err)
+    }
+}
+
+export const updateProductByIdAdmin = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.params.id)
+
+        if (Number.isNaN(id)) {
+            throw new AppError("Invalid product id", 400)
+        }
+
+        const validRoastLevels: RoastLevel[] = ['light', 'medium', 'dark']
+
+        const { roast_level } = req.body
+
+        if (roast_level !== undefined && !validRoastLevels.includes(roast_level)) {
+            throw new AppError("Invalid Roast Level", 400)
+        }
+
+        const data = await updateProductByIdAdminService(id, req.body)
         res.status(200).json({ data })
     } catch (err) {
         return next(err)

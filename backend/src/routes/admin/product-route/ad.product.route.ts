@@ -5,7 +5,8 @@ import {
     toggleProductActive,
     restockProductByid,
     getAllRestockProductHis,
-    getProductByIdAdmin
+    getProductByIdAdmin,
+    updateProductByIdAdmin
 } from '../../../controller/product/product.controller'
 
 import adminImageProductRoute from './ad.image.product.route'
@@ -23,9 +24,12 @@ router.route('/:id/restock')
 router.route('/:id/stock-history')
     .get(getAllRestockProductHis)
 
-router.route('/:id')
+router.route('/:id/toggle-active')
     .patch(toggleProductActive)
+
+router.route('/:id')
     .get(getProductByIdAdmin)
+    .patch(updateProductByIdAdmin)
 
 // ********************** image_product
 

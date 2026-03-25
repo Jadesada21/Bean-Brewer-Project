@@ -3,10 +3,14 @@ import { AppError } from '../../util/AppError'
 
 import {
     ProductResponse,
-    CreateProductInput
+    CreateProductInput,
+    UpdateProductPayload,
+
 } from '../../types/product/product.type'
 
 import { Role } from '../../types/users.type'
+
+import { DBValues } from '../../types/product.type'
 
 export const getAllProductService = async ({
     role,
@@ -345,6 +349,52 @@ export const getProductByIdAdminService = async (productId: number) => {
 
     if (response.rowCount === 0) {
         throw new AppError("Product not found", 404)
+    }
+    return response.rows[0]
+}
+
+export const updateProductByIdAdminService = async (id: number, body: UpdateProductPayload) => {
+
+    const allowed = [
+        "name",
+        "price",
+        "stock",
+        "reward_points",
+        "roast_level",
+        "taste",
+        "bag_size",
+        "description"
+    ]
+
+    const fields: string[] = []
+    const values: DBValues[] = []
+    let index = 1
+
+    for (const [key, value] of Object.entries(body)) {
+        // check allowed FIRST (สำคัญมาก)
+        if (!allowed.includes(key)) continue
+        // check empty
+        if (value === undefined || value === "") continue
+        fields.push(`${key} = $${index++}`)
+        values.push(value)
+    }
+
+    if (fields.length === 0) {
+        throw new AppError("No valid fields to update", 400)
+    }
+
+    values.push(id)
+
+
+    const response = await pool.query(`
+        update products set
+            ${fields.join(", ")}
+            where id = $${index}
+            returning * 
+         `, values)
+
+    if (response.rowCount === 0) {
+        throw new AppError("Product not found", 400)
     }
     return response.rows[0]
 }

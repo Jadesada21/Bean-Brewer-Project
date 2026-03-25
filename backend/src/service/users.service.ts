@@ -149,7 +149,6 @@ export const createUsersAddressByIdService = async (userId: number, body: AddUse
 export const updateAddressUserByLoginUserService = async (userId: number, id: number, body: UpdateUsersAddressInput) => {
     const client = await pool.connect()
     try {
-
         await client.query("BEGIN")
 
         if (body.is_default === true) {
