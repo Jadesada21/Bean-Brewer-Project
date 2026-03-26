@@ -138,7 +138,7 @@ export default function ProfilesPage() {
             {/* content */}
             <main className="mt-25 max-w-3xl w-full 
                     pl-4 md:pl-6 xl:pl-8 lg:pl-10 
-                    md:ml-6 xl:ml-20">
+                    md:ml-6 xl:ml-50">
 
                 <div className="text-2xl font-bold">
                     Hi, {capitalize(user?.username)} 👋
