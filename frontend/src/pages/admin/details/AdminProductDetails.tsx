@@ -32,13 +32,9 @@ export interface ProductImage {
 
 
 
-
-
 export default function AdminProductDetails() {
 
     const { id } = useParams()
-
-    // const navigate = useNavigate()
 
     const [isEditing, setIsEditing] = useState(false)
     const [products, setProducts] = useState<ProductDetail | null>(null)
@@ -61,6 +57,54 @@ export default function AdminProductDetails() {
             fetchProductsDetail()
         }
     }, [id])
+
+
+    const [form, setForm] = useState({
+        name: "",
+        price: 0,
+        stock: 0,
+        reward_points: 0,
+        roast_level: "",
+        taste: "",
+        bag_size: "",
+        description: ""
+    })
+
+    useEffect(() => {
+        if (products) {
+            setForm({
+                name: products.name ?? "",
+                price: products.price ?? 0,
+                stock: products.stock ?? 0,
+                reward_points: products.reward_points ?? 0,
+                roast_level: products.roast_level ?? "",
+                taste: products.taste ?? "",
+                bag_size: products.bag_size ?? "",
+                description: products.description ?? ""
+            })
+        }
+    }, [products])
+
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value, type } = e.target
+
+        setForm(prev => ({
+            ...prev,
+            [name]: type === "number" ? Number(value) : value
+        }))
+    }
+
+    const patchProductDetail = async () => {
+        try {
+            await api.patch(`/admin/products/${id}`, form)
+            alert("Update success")
+            window.location.reload()
+        } catch (err) {
+            console.error('Error patching product detail:', err)
+
+        }
+    }
 
     if (!products) return <div>Product not found</div>
 
@@ -154,36 +198,49 @@ export default function AdminProductDetails() {
 
                 {/* 🟢 RIGHT: Form */}
                 <div className="space-y-4">
-
                     {/* Name */}
                     <div>
                         <label className="block text-sm font-medium">Name</label>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Product name"
-                            value={products.name}
-                            // onChange={}
-                            maxLength={60}
-                            disabled={!isEditing}
-                            className="w-full border rounded px-3 py-2 mt-1"
-                        />
+                        {isEditing ? (
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Product name"
+                                value={form.name}
+                                onChange={handleChange}
+                                maxLength={60}
+                                disabled={!isEditing}
+                                className="w-full border rounded px-3 py-2 mt-1"
+                            />
+                        ) : (
+                            <p className="mt-1 border p-2 rounded">
+                                {products.name}
+                            </p>
+                        )}
+
                     </div>
 
                     {/* Price + Stock */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium">Price</label>
-                            <input
-                                type="number"
-                                name="price"
-                                value={formatNumeric(products.price)}
-                                // onChange={}
-                                placeholder="Price"
-                                maxLength={20}
-                                disabled={!isEditing}
-                                className="w-full border rounded px-3 py-2 mt-1"
-                            />
+                            {isEditing ? (
+                                <input
+                                    type="number"
+                                    name="price"
+                                    value={form.price}
+                                    onChange={handleChange}
+                                    placeholder="Price"
+                                    maxLength={20}
+                                    disabled={!isEditing}
+                                    className="w-full border rounded px-3 py-2 mt-1"
+                                />
+                            ) : (
+                                <p className="mt-1 border p-2 rounded">
+                                    {formatNumeric(products.price)}
+                                </p>
+                            )}
+
                         </div>
 
                         <div>
@@ -205,16 +262,23 @@ export default function AdminProductDetails() {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium">Reward Points</label>
-                            <input
-                                type="number"
-                                name="reward_points"
-                                value={formatNumeric(products.reward_points)}
-                                // onChange={}
-                                placeholder="Taste"
-                                maxLength={60}
-                                disabled={!isEditing}
-                                className="w-full border rounded px-3 py-2 mt-1"
-                            />
+                            {isEditing ? (
+                                <input
+                                    type="number"
+                                    name="reward_points"
+                                    value={form.reward_points}
+                                    onChange={handleChange}
+                                    placeholder="Taste"
+                                    maxLength={60}
+                                    disabled={!isEditing}
+                                    className="w-full border rounded px-3 py-2 mt-1"
+                                />
+                            ) : (
+                                <p className="mt-1 border p-2 rounded">
+                                    {formatNumeric(products.reward_points)}
+                                </p>
+                            )}
+
                         </div>
 
                         <div>
@@ -227,6 +291,7 @@ export default function AdminProductDetails() {
                                             ...prev,
                                             roast_level: e.target.value
                                         })
+                                        window.location.reload()
                                     }}
                                     className="w-full border rounded px-3 py-2 mt-1"
                                 >
@@ -235,7 +300,7 @@ export default function AdminProductDetails() {
                                     <option value="dark">dark</option>
                                 </select>
                             ) : (
-                                <p className="mt-1 px-3 py-2 bg-gray-100 rounded">
+                                <p className="mt-1 px-3 py-2 border p-2 rounded">
                                     {products.roast_level}
                                 </p>
                             )}
@@ -246,46 +311,67 @@ export default function AdminProductDetails() {
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium">Taste</label>
-                            <input
-                                type="text"
-                                name="taste"
-                                value={products.taste}
-                                // onChange={}
-                                placeholder="Taste"
-                                maxLength={60}
-                                disabled={!isEditing}
-                                className="w-full border rounded px-3 py-2 mt-1"
-                            />
+                            {isEditing ? (
+                                <input
+                                    type="text"
+                                    name="taste"
+                                    value={form.taste}
+                                    onChange={handleChange}
+                                    placeholder="Taste"
+                                    maxLength={60}
+                                    disabled={!isEditing}
+                                    className="w-full border rounded px-3 py-2 mt-1"
+                                />
+                            ) : (
+                                <p className="mt-1 px-3 py-2 bg-gray-100 rounded">
+                                    {products.taste}
+                                </p>
+                            )}
+
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium">Bag Size</label>
-                            <input
-                                type="text"
-                                name="bag_size"
-                                value={products.bag_size}
-                                // onChange={}
-                                placeholder="Bag Size"
-                                maxLength={60}
-                                disabled={!isEditing}
-                                className="w-full border rounded px-3 py-2 mt-1"
-                            />
+                            {isEditing ? (
+                                <input
+                                    type="text"
+                                    name="bag_size"
+                                    value={form.bag_size}
+                                    onChange={handleChange}
+                                    placeholder="Bag Size"
+                                    maxLength={60}
+                                    disabled={!isEditing}
+                                    className="w-full border rounded px-3 py-2 mt-1"
+                                />
+                            ) : (
+                                <p className="mt-1 px-3 py-2 bg-gray-100 rounded">
+                                    {products.taste}
+                                </p>
+                            )}
+
                         </div>
                     </div>
 
                     {/* Description */}
                     <div>
                         <label className="block text-sm font-medium">Description</label>
-                        <textarea
-                            rows={2}
-                            name="description"
-                            value={products.description}
-                            // onChange={}
-                            placeholder="Description"
-                            maxLength={60}
-                            disabled={!isEditing}
-                            className="w-full border rounded px-3 py-2 mt-1"
-                        />
+                        {isEditing ? (
+                            <textarea
+                                rows={2}
+                                name="description"
+                                value={form.description}
+                                onChange={handleChange}
+                                placeholder="Description"
+                                maxLength={60}
+                                disabled={!isEditing}
+                                className="w-full border rounded px-3 py-2 mt-1"
+                            />
+                        ) : (
+                            <p className="mt-1 px-3 py-2 bg-gray-100 rounded">
+                                {products.taste}
+                            </p>
+                        )}
+
                     </div>
 
                     {/* category name + type */}
@@ -325,11 +411,13 @@ export default function AdminProductDetails() {
                     </div>
 
 
+
+
                     {/* Actions */}
                     {isEditing && (
                         <div className="mt-auto pt-6 flex justify-end gap-3">
                             <button
-                                // onClick={handleSave}
+                                onClick={patchProductDetail}
                                 className="px-4 py-2 bg-green-500 text-white rounded"
                             >
                                 Save
