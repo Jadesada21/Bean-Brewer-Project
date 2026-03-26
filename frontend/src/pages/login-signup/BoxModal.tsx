@@ -28,7 +28,7 @@ export default function BoxModal({ close }: { close: () => void }) {
                             className="flex-1 flex flex-col gap-2.5 items-center cursor-pointer">
                             <button
                                 type="button"
-                                className={`text-body-14 text-gray-400 w-full text-center font-baskerville
+                                className={`text-body-14 text-gray-400 w-full text-center font-baskerville cursor-pointer
                                     ${selectedModal === "login" ? "text-gray-600" : "text-gray-400"}`}
                             >Login
                             </button>
@@ -45,7 +45,7 @@ export default function BoxModal({ close }: { close: () => void }) {
                             className="flex-1 flex flex-col gap-2.5 items-center cursor-pointer">
                             <button
                                 type="button"
-                                className={`text-body-14 text-gray-400 w-full text-center font-baskerville
+                                className={`text-body-14 text-gray-400 w-full text-center font-baskerville cursor-pointer
                                 ${selectedModal === "signup" ? "text-gray-600" : "text-gray-400"}`}
                             >Sign up
                             </button>

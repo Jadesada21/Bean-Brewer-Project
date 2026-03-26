@@ -93,7 +93,9 @@ export const addUsersAddressById = async (req: Request<{}, {}, AddUsersAddressBy
             throw new AppError("Missing required field", 400)
         }
 
-        if (address_line || country || province || district || subdistrict || postal_code.length > 50) {
+        const fields = [address_line, country, province, district, subdistrict, postal_code]
+
+        if (fields.some(fields => fields.length > 50)) {
             throw new AppError("Input must not exceed 50 characters", 400)
         }
 

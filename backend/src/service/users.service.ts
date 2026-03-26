@@ -114,8 +114,18 @@ export const createUsersAddressByIdService = async (userId: number, body: AddUse
 
         const { address_line, country, province, district, subdistrict, postal_code, is_default } = body
 
+        const existingAddress = await client.query(`
+            select id from users_addresses where user_id = $1
+            `, [userId])
+
+        let finalIsDefault = is_default ?? false
+
+        if (existingAddress.rowCount === 0) {
+            finalIsDefault = true
+        }
+
         // if default set default
-        if (is_default) {
+        if (finalIsDefault) {
             await client.query(
                 `update users_addresses
                 set is_default = false
@@ -131,7 +141,7 @@ export const createUsersAddressByIdService = async (userId: number, body: AddUse
             values($1,$2,$3,$4,$5,$6,$7,$8)
             returning 
             id, user_id , address_line ,country, province, district, subdistrict, postal_code , is_default , created_at ,updated_at `,
-            [userId, address_line, country, province, district, subdistrict, postal_code, is_default ?? false]
+            [userId, address_line, country, province, district, subdistrict, postal_code, finalIsDefault]
         )
 
         await client.query("COMMIT")

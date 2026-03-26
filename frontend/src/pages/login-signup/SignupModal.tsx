@@ -267,13 +267,13 @@ export default function SignupModal({ close }: { close: () => void }) {
                     <div className="flex flex-col gap-4">
                         <button
                             type="submit"
-                            className="w-full h-13 px-6 bg-black  text-body-16 rounded-lg hover:bg-gray-500 transition-colors flex items-center justify-center text-white font-baskerville"
+                            className="w-full h-13 px-6 bg-black  text-body-16 rounded-lg hover:bg-gray-500 transition-all flex items-center justify-center text-white font-baskerville cursor-pointer duration-150 active:scale-90 hover:scale-105"
                         >Create Account</button>
 
                         <button
                             type='button'
                             onClick={close}
-                            className="w-full h-13 px-6 border border-[rgba(37,37,37,0.25)] text-gray-600 text-body-16 rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center font-baskerville"
+                            className="w-full h-13 px-6 border border-[rgba(37,37,37,0.25)] text-gray-600 text-body-16 rounded-lg hover:bg-gray-50 transition-all flex items-center justify-center font-baskerville cursor-pointer duration-150 active:scale-90 hover:scale-105"
                         > Close
                         </button>
                     </div>
