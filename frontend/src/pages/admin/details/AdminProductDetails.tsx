@@ -39,6 +39,7 @@ export default function AdminProductDetails() {
     const [isEditing, setIsEditing] = useState(false)
     const [products, setProducts] = useState<ProductDetail | null>(null)
     const [loading, setLoading] = useState(true)
+    const [primaryImage, setPrimaryImage] = useState<string | null>(null)
 
     const fetchProductsDetail = async () => {
         try {
@@ -106,7 +107,33 @@ export default function AdminProductDetails() {
         }
     }
 
-    if (!products) return <div>Product not found</div>
+    const handleSelectImage = async (img: ProductImage) => {
+        const prev = primaryImage
+
+        setPrimaryImage(img.image_url || null)
+
+        try {
+            await api.patch(`/admin/products/${id}/images/primary`, {
+                image_id: img.id
+            })
+            console.log(img.id)
+
+            setProducts(prevProducts => {
+                if (!prevProducts) return prevProducts
+
+                return {
+                    ...prevProducts,
+                    images: prevProducts.images?.map(i => ({
+                        ...i,
+                        is_primary: i.id === img.id
+                    }))
+                }
+            })
+        } catch (err) {
+            console.error(err)
+            setPrimaryImage(prev)
+        }
+    }
 
 
     const formatDate = (date: string) => {
@@ -117,23 +144,21 @@ export default function AdminProductDetails() {
         return price.toLocaleString()
     }
 
-    const getImages = (products: ProductDetail) => {
-        if (products.images && products.images.length > 0) {
-            return (
-                products.images?.find(img => img.is_primary)?.image_url ||
-                products.images?.[0]?.image_url
-            )
+    useEffect(() => {
+        if (products) {
+            const img =
+                products.images?.find(i => i.is_primary)?.image_url ||
+                products.images?.[0]?.image_url || null
+
+            setPrimaryImage(img)
         }
-        return (products as any).image_url
-    }
-
-    const primaryImage = getImages(products)
-
+    }, [products])
 
     if (loading) {
         return <div>loading...</div>
     }
 
+    if (!products) return <div>Product not found</div>
 
     return (
         <div className="p-6">
@@ -148,7 +173,7 @@ export default function AdminProductDetails() {
                     {!isEditing && (
                         <button
                             onClick={() => setIsEditing(true)}
-                            className="px-4 py-2 bg-blue-500 text-white rounded"
+                            className="px-4 py-2 text-black rounded border cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Edit
                         </button>
@@ -175,13 +200,22 @@ export default function AdminProductDetails() {
                     {/* Thumbnails */}
                     <div className="flex gap-2 flex-wrap">
                         {products.images && products.images.length > 0 ? (
-                            products.images.map((img) => (
-                                <img
-                                    key={img.id}
-                                    src={img.image_url}
-                                    className="w-20 h-20 object-cover rounded"
-                                />
-                            ))
+                            products.images.map((img) => {
+                                const isActive = primaryImage === img.image_url
+
+                                return (
+                                    < img
+                                        key={img.id}
+                                        src={img.image_url}
+                                        onClick={() => handleSelectImage(img)}
+                                        className={`w-20 h-20 object-cover rounded cursor-pointer border-2 transition
+                                                ${isActive
+                                                ? "border-blue-500 scale-105"
+                                                : "border-transparent hover:scale-105"}
+                                        `}
+                                    />
+                                )
+                            })
                         ) : (
                             <span className="text-gray-400 text-sm">No images</span>
                         )}
@@ -189,7 +223,7 @@ export default function AdminProductDetails() {
 
                     {/* Upload Button */}
                     <div>
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded">
+                        <button className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105">
                             Upload Images
                         </button>
                     </div>
@@ -323,7 +357,7 @@ export default function AdminProductDetails() {
                                     className="w-full border rounded px-3 py-2 mt-1"
                                 />
                             ) : (
-                                <p className="mt-1 px-3 py-2 bg-gray-100 rounded">
+                                <p className="mt-1 border p-2 rounded">
                                     {products.taste}
                                 </p>
                             )}
@@ -344,7 +378,7 @@ export default function AdminProductDetails() {
                                     className="w-full border rounded px-3 py-2 mt-1"
                                 />
                             ) : (
-                                <p className="mt-1 px-3 py-2 bg-gray-100 rounded">
+                                <p className="mt-1 border p-2 rounded">
                                     {products.taste}
                                 </p>
                             )}
@@ -367,8 +401,8 @@ export default function AdminProductDetails() {
                                 className="w-full border rounded px-3 py-2 mt-1"
                             />
                         ) : (
-                            <p className="mt-1 px-3 py-2 bg-gray-100 rounded">
-                                {products.taste}
+                            <p className="mt-1 border p-2 rounded">
+                                {products.description}
                             </p>
                         )}
 
@@ -411,21 +445,19 @@ export default function AdminProductDetails() {
                     </div>
 
 
-
-
                     {/* Actions */}
                     {isEditing && (
                         <div className="mt-auto pt-6 flex justify-end gap-3">
                             <button
                                 onClick={patchProductDetail}
-                                className="px-4 py-2 bg-green-500 text-white rounded"
+                                className="px-4 py-2 bg-green-500 text-white rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Save
                             </button>
 
                             <button
                                 onClick={() => setIsEditing(false)}
-                                className="px-4 py-2 bg-gray-300 rounded"
+                                className="px-4 py-2 bg-gray-300 rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Cancel
                             </button>

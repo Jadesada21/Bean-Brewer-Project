@@ -145,36 +145,55 @@ export const getImageProductByIdService = async (id: number) => {
 }
 
 
-export const updatePrimaryImagesByIdService = async (product_id: number, body: setPrimaryImageInput) => {
-    const { image_id } = body
+export const updatePrimaryImagesByIdService = async (
+    product_id: number,
+    body: setPrimaryImageInput
+) => {
+    const image_id = Number(body.image_id)
 
     const client = await pool.connect()
 
     try {
         await client.query("BEGIN")
 
+        // checkImg
         const checkImage = await client.query(
             `select id from product_images 
             where id = $1 and product_id = $2`,
             [image_id, product_id]
         )
 
+
         if (checkImage.rowCount === 0) {
             throw new AppError("Image not found in this product", 400)
         }
 
+        // shift sort กันชน constraint
+        await client.query(`
+            update product_images
+            set sort_order = sort_order + 1000,
+                is_primary = false
+            where product_id = $1
+            `, [product_id])
 
-        // reset Primary and update primary
+
+        // set primary
         const result = await client.query(`
             update product_images
-            set is_primary = case
-            when id = $1 then true
-            else false 
-            end 
-            where product_id = $2
+            set 
+                is_primary = true,
+                sort_order = 1 
+            where id = $1 and product_id = $2
             returning *
+            `, [image_id, product_id])
+
+        // normalize ตัวอื่นๆ
+        await client.query(`
+           update product_images
+                set sort_order = sort_order - 999
+                where product_id = $1 AND id != $2
             `,
-            [image_id, product_id]
+            [product_id, image_id]
         )
 
         if (result.rowCount === 0) {
@@ -183,12 +202,14 @@ export const updatePrimaryImagesByIdService = async (product_id: number, body: s
 
         await client.query("COMMIT")
 
-        const primaryImage = result.rows.find(r => r.id === image_id)
 
-        return primaryImage
+        return result.rows[0]
 
-    } catch (err) {
+    } catch (err: any) {
         await client.query("ROLLBACK")
+        console.error(err.detail)
+        console.error(err.constraint)
+        console.error("🔥 ERROR:", err)
         throw err
     } finally {
         client.release()

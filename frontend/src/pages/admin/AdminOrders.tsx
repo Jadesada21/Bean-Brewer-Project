@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
+import Pagination from '../../components/Pagination'
 
 interface Order {
     id: number
@@ -23,12 +24,17 @@ export default function AdminOrder() {
     const [search, setSearch] = useState("")
     const [isSearchResult, setIsSearchResult] = useState(false)
     const [error, setError] = useState("")
+    const [total, setTotal] = useState(0)
 
+
+    const limit = 10
+    const totalPages = Math.ceil(total / limit)
 
     const fetchOrders = async () => {
         try {
             const res = await api.get(`/admin/orders?page=${page}`)
             setOrders(res.data.data)
+            setTotal(res.data.total)
 
         } catch (err) {
             console.error(err)
@@ -79,22 +85,29 @@ export default function AdminOrder() {
                     Orders
                 </h1>
 
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Search Order ID"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="border px-3 py-2 rounded"
-                    />
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        handleSearch()
+                    }}
+                >
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Search Order ID"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="border px-3 py-2 rounded"
+                        />
 
-                    <button
-                        onClick={handleSearch}
-                        className="bg-emerald-500 text-white px-4 py-2 rounded ml-5"
-                    >
-                        Search
-                    </button>
-                </div>
+                        <button
+                            onClick={handleSearch}
+                            className="bg-emerald-500 text-white px-4 py-2 rounded ml-5 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                        >
+                            Search
+                        </button>
+                    </div>
+                </form>
             </div>
 
 
@@ -185,27 +198,13 @@ export default function AdminOrder() {
 
 
                 )}
+                <div className="pt-4">
 
-                <div className="flex gap-6 pt-4">
-
-                    <button
-                        onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                        className="px-4 py-2 bg-gray-200 rounded"
-                    >
-                        Prev
-                    </button>
-
-                    <span className="px-4 py-2">
-                        Page {page}
-                    </span>
-
-                    <button
-                        onClick={() => setPage(prev => prev + 1)}
-                        className="px-4 py-2 bg-gray-200 rounded"
-                    >
-                        Next
-                    </button>
-
+                    <Pagination
+                        page={page}
+                        totalPages={totalPages}
+                        onPageChange={(newPage) => setPage(newPage)}
+                    />
                 </div>
             </div>
 

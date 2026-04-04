@@ -62,7 +62,7 @@ export default function Search({ open, setOpen }: SearchProps) {
 
                     <button
                         onClick={() => setOpen(false)}
-                        className="text-xl"
+                        className="text-xl cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         ✕
                     </button>

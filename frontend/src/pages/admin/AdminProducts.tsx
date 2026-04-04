@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
+import Pagination from '../../components/Pagination'
 
 interface Product {
     id: number
@@ -27,12 +28,17 @@ export default function AdminProduct() {
     const [search, setSearch] = useState("")
     const [isSearchResult, setIsSearchResult] = useState(false)
     const [error, setError] = useState("")
+    const [total, setTotal] = useState(0)
+
+    const limit = 10
+    const totalPages = Math.ceil(total / limit)
 
 
     const fetchProducts = async () => {
         try {
             const res = await api.get(`/products?page=${page}`)
             setProducts(res.data.products)
+            setTotal(res.data.total)
 
         } catch (err) {
             console.error(err)
@@ -76,29 +82,34 @@ export default function AdminProduct() {
         <div className="font-baskerville">
 
             <div className="flex justify-between  mb-6">
-
                 <h1 className="text-2xl font-semibold">
                     Products
                 </h1>
 
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Search Product ID"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="border px-3 py-2 rounded"
-                    />
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        handleSearch()
+                    }}
+                >
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="Search Product ID"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="border px-3 py-2 rounded"
+                        />
 
-                    <button
-                        onClick={handleSearch}
-                        className="bg-emerald-500 text-white px-4 py-2 rounded ml-5"
-                    >
-                        Search
-                    </button>
-                </div>
+                        <button
+                            onClick={handleSearch}
+                            className="bg-emerald-500 text-white px-4 py-2 rounded ml-5 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                        >
+                            Search
+                        </button>
+                    </div>
+                </form>
             </div>
-
 
 
             <div className="bg-white rounded-xl shadow overflow-hidden">
@@ -185,9 +196,7 @@ export default function AdminProduct() {
                     </table>
                 </div>
             </div>
-
             <div className="flex justify-between">
-
                 {isSearchResult && products.length > 0 && (
                     <button
                         onClick={() => navigate(`/admin/products/detail/${products[0].id}`)}
@@ -195,40 +204,20 @@ export default function AdminProduct() {
                     >
                         view Details
                     </button>
-
-
-
                 )}
-
                 <div className="flex gap-6 pt-4">
 
                     {!isSearchResult && (
                         <>
-                            <button
-                                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                                className="px-4 py-2 bg-gray-200 rounded"
-                            >
-                                Prev
-                            </button>
-
-                            <span className="px-4 py-2">
-                                Page {page}
-                            </span>
-
-                            <button
-                                onClick={() => setPage(prev => prev + 1)}
-                                className="px-4 py-2 bg-gray-200 rounded"
-                            >
-                                Next
-                            </button>
+                            <Pagination
+                                page={page}
+                                totalPages={totalPages}
+                                onPageChange={(newPage) => setPage(newPage)}
+                            />
                         </>
                     )}
-
-
                 </div>
             </div>
-
-
         </div>
     )
 }

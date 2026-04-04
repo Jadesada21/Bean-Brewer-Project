@@ -5,6 +5,7 @@ import { FilterSidebar } from '../../components/FilterSidebar'
 import { ItemCard } from "../../components/ItemCard";
 import PointsFilter from "./filter-details/PointFilter";
 import CategoryFilter from "./filter-details/CategoryFilter";
+import Pagination from "../../components/Pagination";
 
 
 interface Reward {
@@ -149,27 +150,11 @@ export default function RewardPage() {
                             </div>
 
                             <div className="mt-12 flex justify-center">
-                                <div className="flex gap-4 md:gap-6 items-center">
-                                    <button
-                                        disabled={page === 1}
-                                        onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                                        className="px-3 py-1 md:px-4 md:py-2 bg-gray-200 rounded disabled:opacity-50disabled:cursor-not-allowed cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
-                                    >
-                                        Prev
-                                    </button>
-
-                                    <span className="px-4 py-2 flex items-center">
-                                        {page} / {totalPages || 1}
-                                    </span>
-
-                                    <button
-                                        disabled={page >= totalPages}
-                                        onClick={() => setPage(prev => prev + 1)}
-                                        className="px-3 py-1 md:px-4 md:py-2 bg-gray-200 rounded disabled:opacity-50disabled:cursor-not-allowed cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
-                                    >
-                                        Next
-                                    </button>
-                                </div>
+                                <Pagination
+                                    page={page}
+                                    totalPages={totalPages}
+                                    onPageChange={(newPage) => setPage(newPage)}
+                                />
                             </div>
                         </div>
                     </section>

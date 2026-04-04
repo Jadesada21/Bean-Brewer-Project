@@ -6,7 +6,7 @@ export default function AdminLayout() {
     const linkClass = ({ isActive }: { isActive: boolean }) =>
         `block px-4 py-2 rounded-md transition ${isActive
             ? "bg-emerald-500 text-white"
-            : "text-gray-700 hover:bg-gray-200"
+            : "text-gray-700 hover:bg-gray-200 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
         }`
 
     const navigate = useNavigate()
@@ -26,7 +26,7 @@ export default function AdminLayout() {
                     Admin Panel
                 </h2>
 
-                <nav className="space-y-2 ml-10">
+                <nav className="space-y-2 ml-10 ">
 
                     <NavLink to="/admin" end className={linkClass}>
                         Dashboard
@@ -51,7 +51,7 @@ export default function AdminLayout() {
                     <div className="pt-4">
                         <button
                             onClick={handleLogout}
-                            className="cursor-pointer border px-4 py-2 rounded font-bold font-baskerville"
+                            className="border px-4 py-2 rounded font-bold cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Log Out
                         </button>

@@ -20,8 +20,8 @@ export const getAllOrder = async (req: Request, res: Response, next: NextFunctio
     try {
         const page = Number(req.query.page) || 1
 
-        const data = await getAllOrderService(page)
-        return res.status(200).json({ status: "Success", data })
+        const { data, total } = await getAllOrderService(page)
+        return res.status(200).json({ data, total })
     } catch (err) {
         return next(err)
     }

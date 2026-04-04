@@ -86,10 +86,13 @@ export default function AdminOrderDetails() {
 
 
 
-
     return (
         <div className="font-baskerville">
             <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-3xl mb-10 h-full">
+
+                <h2 className="text-xl font-semibold mb-6">
+                    Order {order.order_number}
+                </h2>
 
                 <div className="grid grid-cols-[160px_160px]">
                     <h2 className="text-xl font-semibold">
@@ -122,7 +125,7 @@ export default function AdminOrderDetails() {
                     {order.user.email}
                 </p>
 
-                <h2 className="text-xl font-semibold mb-4 mt-4">
+                <h2 className="text-xl font-semibold mb-2 mt-4">
                     Product
                 </h2>
 
@@ -136,8 +139,8 @@ export default function AdminOrderDetails() {
                     ))}
                 </div>
 
-                <h2 className="text-xl font-semibold mb-4 mt-4">
-                    Order {order.order_number}
+                <h2 className="text-xl font-semibold mb-2 mt-4">
+                    Status
                 </h2>
 
                 <p className={`mb-2 ${getStatusStyle(order.status)}`}>
@@ -187,11 +190,8 @@ export default function AdminOrderDetails() {
                         >
                             Back
                         </button>
-
-
                     </div>
                 )}
-
             </div>
         </div>
     )

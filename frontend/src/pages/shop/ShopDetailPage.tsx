@@ -218,7 +218,7 @@ export default function ShopDetailPage() {
                     <div className="mt-4 flex items-center gap-4 border rounded-lg w-30 mx-auto xl:mx-0">
                         <button
                             onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
-                            className="w-10 h-10 text-2xl pb-1 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105 "
+                            className="w-10 h-10 text-2xl pb-1 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             -
                         </button>

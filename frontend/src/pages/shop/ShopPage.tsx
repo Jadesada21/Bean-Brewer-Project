@@ -5,6 +5,7 @@ import RoastLevelFilter from "./filter-details/RoastlevelFilter"
 import PriceFilter from "./filter-details/PriceFilter"
 import { ItemCard } from "../../components/ItemCard";
 import { api } from "../../AxiosInstance"
+import Pagination from "../../components/Pagination";
 
 interface Product {
     id: number
@@ -154,27 +155,13 @@ export default function ShopPage() {
                             </div>
 
                             <div className="mt-12 flex justify-center">
-                                <div className="flex gap-4 md:gap-6 items-center">
-                                    <button
-                                        disabled={page === 1}
-                                        onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                                        className="px-3 py-1 md:px-4 md:py-2 bg-gray-200 rounded disabled:opacity-50disabled:cursor-not-allowed cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
-                                    >
-                                        Prev
-                                    </button>
 
-                                    <span className="px-4 py-2 flex items-center">
-                                        {page} / {totalPages || 1}
-                                    </span>
+                                <Pagination
+                                    page={page}
+                                    totalPages={totalPages}
+                                    onPageChange={(newPage) => setPage(newPage)}
+                                />
 
-                                    <button
-                                        disabled={page >= totalPages}
-                                        onClick={() => setPage(prev => prev + 1)}
-                                        className="px-3 py-1 md:px-4 md:py-2 bg-gray-200 rounded disabled:opacity-50disabled:cursor-not-allowed cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
-                                    >
-                                        Next
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </section>
