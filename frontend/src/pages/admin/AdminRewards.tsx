@@ -144,7 +144,7 @@ export default function AdminReward() {
                             <tr
                                 key={reward.id}
                                 className="border-t border-gray-300 transition-all duration-100 hover:shadow-xl cursor-pointer  "
-                                onClick={() => navigate(`/admin/rewards/detail/${rewards[0].id}`)}
+                                onClick={() => navigate(`/admin/rewards/detail/${reward.id}`)}
                             >
 
                                 <td className="py-4 px-2">

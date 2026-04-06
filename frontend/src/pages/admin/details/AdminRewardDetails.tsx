@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 import { ToggleActiveBtn } from "../../../components/IsActive"
+import { RestockBtn } from "../../../components/Restock"
 
 interface RewardsDetail {
     id: number
@@ -123,7 +124,6 @@ export default function AdminRewardDetails() {
             setPrimaryImage(prev)
         }
     }
-
 
     const formatDate = (date: string) => {
         return new Date(date).toLocaleDateString('en-GB')
@@ -373,6 +373,27 @@ export default function AdminRewardDetails() {
                     </div>
 
 
+                    {/* restock */}
+                    <div>
+                        <label className="block text-sm font-medium pb-2">Category Name</label>
+
+                        <RestockBtn
+                            id={rewards.id}
+                            resource="rewards"
+                            onSuccess={(qty) => {
+                                setRewards(prev => {
+                                    if (!prev) return prev
+
+                                    return {
+                                        ...prev,
+                                        stock: prev.stock + qty
+                                    }
+                                })
+                            }}
+                        />
+                    </div>
+
+
                     {/* Actions */}
                     {isEditing && (
                         <div className="mt-auto pt-6 flex justify-end gap-3">
@@ -394,6 +415,6 @@ export default function AdminRewardDetails() {
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

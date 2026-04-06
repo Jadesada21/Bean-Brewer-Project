@@ -144,7 +144,7 @@ export default function AdminOrder() {
                             <tr
                                 key={order.id}
                                 className="border-t border-gray-300 transition-all duration-100 hover:shadow-xl cursor-pointer "
-                                onClick={() => navigate(`/admin/orders/detail/${orders[0].id}`)}
+                                onClick={() => navigate(`/admin/orders/detail/${order.id}`)}
                             >
 
                                 <td className="pl-2 py-4">

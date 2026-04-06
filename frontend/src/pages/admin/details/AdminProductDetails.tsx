@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 import { ToggleActiveBtn } from "../../../components/IsActive"
+import { RestockBtn } from "../../../components/Restock"
 
 interface ProductDetail {
     id: number
@@ -132,24 +133,13 @@ export default function AdminProductDetails() {
         }
     }
 
-    // const handleChangeIsActive = async () => {
-    //     try {
-    //         await api.patch(`/admin/products/${id}/toggle-active`)
+    const uploadImage = async () => {
+        try {
 
-    //         setProducts(prev => {
-    //             if (!prev) return prev
-
-    //             return {
-    //                 ...prev,
-    //                 is_active: !prev.is_active
-    //             }
-    //         })
-
-    //     } catch (err) {
-    //         console.error(err)
-    //     }
-    // }
-
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     const formatDate = (date: string) => {
         return new Date(date).toLocaleDateString('en-GB')
@@ -468,6 +458,26 @@ export default function AdminProductDetails() {
                                 {formatDate(products.updated_at)}
                             </p>
                         </div>
+                    </div>
+
+                    {/* restock */}
+                    <div>
+                        <label className="block text-sm font-medium pb-2">Category Name</label>
+
+                        <RestockBtn
+                            id={products.id}
+                            resource="products"
+                            onSuccess={(qty) => {
+                                setProducts(prev => {
+                                    if (!prev) return prev
+
+                                    return {
+                                        ...prev,
+                                        stock: prev.stock + qty
+                                    }
+                                })
+                            }}
+                        />
                     </div>
 
 
