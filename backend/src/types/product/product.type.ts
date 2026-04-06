@@ -1,5 +1,8 @@
 export type RoastLevel = 'light' | 'medium' | 'dark'
 
+export type DBValues = string | number | boolean | null
+
+
 export interface ProductResponse {
     id: number
     name: string

@@ -5,12 +5,11 @@ import {
     ProductResponse,
     CreateProductInput,
     UpdateProductPayload,
-
+    DBValues,
 } from '../../types/product/product.type'
 
 import { Role } from '../../types/users.type'
 
-import { DBValues } from '../../types/product.type'
 
 export const getAllProductService = async ({
     role,
@@ -135,7 +134,6 @@ export const getAllProductService = async ({
     }
 }
 
-
 export const createProductService = async (
     body: CreateProductInput
 ): Promise<ProductResponse> => {
@@ -159,7 +157,6 @@ export const createProductService = async (
     )
     return response.rows[0]
 }
-
 
 export const getProductByIdService = async (id: number, role?: Role | 'guest') => {
     if (role === 'admin') {
@@ -220,7 +217,6 @@ export const getProductByIdService = async (id: number, role?: Role | 'guest') =
     }
 
 }
-
 
 export const toggleProductActiveService = async (id: number) => {
     const response = await pool.query(`update products set is_active = not is_active

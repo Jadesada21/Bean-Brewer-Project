@@ -3,7 +3,9 @@ import { AppError } from '../../util/AppError'
 
 import {
     RewardResponse,
-    CreateRewardInput
+    CreateRewardInput,
+    UpdateRewardPayload,
+    DBValues
 } from '../../types/reward/reward.type'
 
 import { Role } from '../../types/users.type'
@@ -218,3 +220,159 @@ export const toggleRewardActiveService = async (id: number) => {
     return response.rows[0]
 }
 
+export const restockRewardByIdService = async (
+    RewardId: number,
+    quantity: number
+) => {
+    const client = await pool.connect()
+
+    try {
+        await client.query("BEGIN")
+
+        // check reward exist
+        const rewardResult = await client.query(`
+            select id from rewards where id = $1
+            `, [RewardId])
+
+        if (rewardResult.rowCount === 0) {
+            throw new AppError("Reward not found", 400)
+        }
+
+        // update reward stock
+        await client.query(
+            `
+      update rewards
+      set stock = stock + $1
+      where id = $2
+      `,
+            [quantity, RewardId]
+        )
+
+        // insert stock movement
+        const movementResult = await client.query(`
+            insert into stock_movements
+            (item_type , item_id , quantity , movement_type , reference_type)
+            values('reward' , $1 , $2 ,'restock' , 'admin')
+            returning *
+            `, [RewardId, quantity])
+
+        await client.query("COMMIT")
+
+        return movementResult.rows[0]
+    } catch (err) {
+        await client.query("ROLLBACK")
+        throw err
+    } finally {
+        client.release()
+    }
+}
+
+export const getAllRestockRewardHisService = async (rewardId: number) => {
+    const response = await pool.query(`
+        select *
+            from stock_movements
+        where item_type = 'reward'
+        and item_id = $1
+        and movement_type = 'restock'
+        order by created_at desc
+        `, [rewardId])
+
+    if (response.rowCount === 0) {
+        throw new AppError("Rewards not found", 404)
+    }
+
+    return response.rows
+}
+
+export const getRewardByIdAdminService = async (rewardId: number) => {
+    const response = await pool.query(`
+        select
+        r.id,
+        r.name,
+        r.description,
+        r.short_description,
+        r.points_required,
+        r.stock,
+        r.category_id,
+        r.is_active,
+        r.created_at,
+        r.updated_at,
+
+        c.id as category_id,
+        c.name as category_name,
+        c.type as category_type,
+
+        ri.images,
+        coalesce(ri.total_images, 0) as total_images
+       
+    from rewards r  
+    
+    left join categories c
+        on c.id = r.category_id
+        
+    left join (
+        select 
+            reward_id,
+            json_agg(
+                json_build_object(
+                    'id', id,
+                    'image_url', image_url,
+                    'is_primary', is_primary
+            )
+        ) filter (where image_url is not null) as images,
+
+            count(*) as total_images
+
+        from reward_images
+        group by reward_id 
+    )   ri on ri.reward_id = r.id
+    where r.id = $1
+    `, [rewardId])
+
+    if (response.rowCount === 0) {
+        throw new AppError("Reward not found", 404)
+    }
+    return response.rows[0]
+}
+
+export const updateRewardByIdAdminService = async (id: number, body: UpdateRewardPayload) => {
+
+    const allowed = [
+        "name",
+        "description",
+        "short_description",
+        "points_required",
+    ]
+
+    const fields: string[] = []
+    const values: DBValues[] = []
+    let index = 1
+
+    for (const [key, value] of Object.entries(body)) {
+        // check allowed FIRST (สำคัญมาก)
+        if (!allowed.includes(key)) continue
+        // check empty
+        if (value === undefined || value === "") continue
+        fields.push(`${key} = $${index++}`)
+        values.push(value)
+    }
+
+    if (fields.length === 0) {
+        throw new AppError("No valid fields to update", 400)
+    }
+
+    values.push(id)
+
+
+    const response = await pool.query(`
+        update rewards set
+            ${fields.join(", ")}
+            where id = $${index}
+            returning * 
+         `, values)
+
+    if (response.rowCount === 0) {
+        throw new AppError("Reward not found", 404)
+    }
+    return response.rows[0]
+}

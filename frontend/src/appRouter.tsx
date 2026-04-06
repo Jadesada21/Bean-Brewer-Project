@@ -47,7 +47,8 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminOrderDetails from "./pages/admin/details/AdminOrderDetails";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AdminProductDetails from "./pages/admin/details/AdminProductDetails";
-
+import AdminRewards from "./pages/admin/AdminRewards";
+import AdminRewardDetails from "./pages/admin/details/AdminRewardDetails"
 
 
 export default function AppRouter() {
@@ -137,8 +138,9 @@ export default function AppRouter() {
                     <Route path="orders/detail/:id" element={<AdminOrderDetails />} />
                     <Route path="products" element={<AdminProducts />} />
                     <Route path="products/detail/:id" element={<AdminProductDetails />} />
-                    {/* <Route path="rewards" element={<AdminRewards />} />
-                     <Route path="users" element={<AdminUsers />} />  */}
+                    <Route path="rewards" element={<AdminRewards />} />
+                    <Route path="rewards/detail/:id" element={<AdminRewardDetails />} />
+                    {/* <Route path="users" element={<AdminUsers />} />  */}
                 </Route>
 
             </Routes>

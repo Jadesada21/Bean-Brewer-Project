@@ -45,6 +45,10 @@ export default function AdminLayout() {
                     </NavLink>
 
                     <NavLink to="/admin/users" className={linkClass}>
+                        Redeem Code
+                    </NavLink>
+
+                    <NavLink to="/admin/users" className={linkClass}>
                         Users
                     </NavLink>
 

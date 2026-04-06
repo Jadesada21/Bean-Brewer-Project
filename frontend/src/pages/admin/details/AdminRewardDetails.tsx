@@ -3,28 +3,26 @@ import { useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 import { ToggleActiveBtn } from "../../../components/IsActive"
 
-interface ProductDetail {
+interface RewardsDetail {
     id: number
     name: string
-    price: number
-    stock: number
     description: string
-    reward_points: number
-    taste: string
-    roast_level: string
-    bag_size: string
+    short_description: string
+    points_required: number
+    stock: number
     category_id: number
     is_active: boolean
     created_at: string
     updated_at: string
+
     category_name: string
     category_type: string
 
-    images?: ProductImage[]
+    images?: RewardImage[]
     total_images: number
 }
 
-export interface ProductImage {
+export interface RewardImage {
     id: number
     image_url?: string
     is_primary: boolean
@@ -32,22 +30,21 @@ export interface ProductImage {
 
 
 
-export default function AdminProductDetails() {
+export default function AdminRewardDetails() {
 
     const { id } = useParams()
 
     const [isEditing, setIsEditing] = useState(false)
-    const [products, setProducts] = useState<ProductDetail | null>(null)
+    const [rewards, setRewards] = useState<RewardsDetail | null>(null)
     const [loading, setLoading] = useState(true)
     const [primaryImage, setPrimaryImage] = useState<string | null>(null)
 
-    const fetchProductsDetail = async () => {
+    const fetchRewardsDetail = async () => {
         try {
-            const { data } = await api.get(`/admin/products/${id}`)
-            setProducts(data.data)
-            console.log(data)
+            const { data } = await api.get(`/admin/rewards/${id}`)
+            setRewards(data.data)
         } catch (err) {
-            console.error('Error fetching product detail:', err)
+            console.error('Error fetching reward detail:', err)
         } finally {
             setLoading(false)
         }
@@ -55,34 +52,29 @@ export default function AdminProductDetails() {
 
     useEffect(() => {
         if (id) {
-            fetchProductsDetail()
+            fetchRewardsDetail()
         }
     }, [id])
 
 
     const [form, setForm] = useState({
         name: "",
-        price: 0,
-        reward_points: 0,
-        roast_level: "",
-        taste: "",
-        bag_size: "",
-        description: ""
+        description: "",
+        short_description: "",
+        points_required: 0,
+
     })
 
     useEffect(() => {
-        if (products && !isEditing) {
+        if (rewards) {
             setForm({
-                name: products.name ?? "",
-                price: products.price ?? 0,
-                reward_points: products.reward_points ?? 0,
-                roast_level: products.roast_level ?? "",
-                taste: products.taste ?? "",
-                bag_size: products.bag_size ?? "",
-                description: products.description ?? ""
+                name: rewards.name ?? "",
+                description: rewards.description ?? "",
+                short_description: rewards.short_description ?? "",
+                points_required: rewards.points_required ?? 0
             })
         }
-    }, [products])
+    }, [rewards])
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -94,33 +86,33 @@ export default function AdminProductDetails() {
         }))
     }
 
-    const patchProductDetail = async () => {
+    const patchRewardDetail = async () => {
         try {
-            await api.patch(`/admin/products/${id}`, form)
+            await api.patch(`/admin/rewards/${id}`, form)
             alert("Update success")
             window.location.reload()
         } catch (err) {
-            console.error('Error patching product detail:', err)
+            console.error('Error patching Reward detail:', err)
+
         }
     }
 
-    const handleSelectImage = async (img: ProductImage) => {
+    const handleSelectImage = async (img: RewardImage) => {
         const prev = primaryImage
 
         setPrimaryImage(img.image_url || null)
 
         try {
-            await api.patch(`/admin/products/${id}/images/primary`, {
+            await api.patch(`/admin/rewards/${id}/images/primary`, {
                 image_id: img.id
             })
-            console.log(img.id)
 
-            setProducts(prevProducts => {
-                if (!prevProducts) return prevProducts
+            setRewards(prevRewards => {
+                if (!prevRewards) return prevRewards
 
                 return {
-                    ...prevProducts,
-                    images: prevProducts.images?.map(i => ({
+                    ...prevRewards,
+                    images: prevRewards.images?.map(i => ({
                         ...i,
                         is_primary: i.id === img.id
                     }))
@@ -132,24 +124,6 @@ export default function AdminProductDetails() {
         }
     }
 
-    // const handleChangeIsActive = async () => {
-    //     try {
-    //         await api.patch(`/admin/products/${id}/toggle-active`)
-
-    //         setProducts(prev => {
-    //             if (!prev) return prev
-
-    //             return {
-    //                 ...prev,
-    //                 is_active: !prev.is_active
-    //             }
-    //         })
-
-    //     } catch (err) {
-    //         console.error(err)
-    //     }
-    // }
-
 
     const formatDate = (date: string) => {
         return new Date(date).toLocaleDateString('en-GB')
@@ -160,28 +134,28 @@ export default function AdminProductDetails() {
     }
 
     useEffect(() => {
-        if (products) {
+        if (rewards) {
             const img =
-                products.images?.find(i => i.is_primary)?.image_url ||
-                products.images?.[0]?.image_url || null
+                rewards.images?.find(i => i.is_primary)?.image_url ||
+                rewards.images?.[0]?.image_url || null
 
             setPrimaryImage(img)
         }
-    }, [products])
+    }, [rewards])
 
     if (loading) {
         return <div>loading...</div>
     }
 
-    if (!products) return <div>Product not found</div>
+    if (!rewards) return <div>Reward not found</div>
 
     return (
         <div className="p-6">
 
             <div className="flex justify-between">
                 <div className="flex gap-10 pb-10 text-2xl">
-                    <span>ID# {products.id}</span>
-                    <span>{products.name}</span>
+                    <span>ID# {rewards.id}</span>
+                    <span>{rewards.name}</span>
                 </div>
 
                 <div>
@@ -214,8 +188,8 @@ export default function AdminProductDetails() {
 
                     {/* Thumbnails */}
                     <div className="flex gap-2 flex-wrap">
-                        {products.images && products.images.length > 0 ? (
-                            products.images.map((img) => {
+                        {rewards.images && rewards.images.length > 0 ? (
+                            rewards.images.map((img) => {
                                 const isActive = primaryImage === img.image_url
 
                                 return (
@@ -245,15 +219,15 @@ export default function AdminProductDetails() {
 
                     {/* Is Active  */}
                     <div className="pt-2 text-xl">
-                        Status: {products.is_active ? "Active" : "Inactive"}
+                        Status: {rewards.is_active ? "Active" : "Inactive"}
                     </div>
 
                     <ToggleActiveBtn
-                        id={products.id}
-                        resource="products"
-                        isActive={products.is_active}
+                        id={rewards.id}
+                        resource="rewards"
+                        isActive={rewards.is_active}
                         onChange={(val) => {
-                            setProducts(prev => prev ? { ...prev, is_active: val } : prev)
+                            setRewards(prev => prev ? { ...prev, is_active: val } : prev)
                         }}
                     />
                 </div>
@@ -268,7 +242,7 @@ export default function AdminProductDetails() {
                             <input
                                 type="text"
                                 name="name"
-                                placeholder="Product name"
+                                placeholder="Reward name"
                                 value={form.name}
                                 onChange={handleChange}
                                 maxLength={60}
@@ -277,21 +251,20 @@ export default function AdminProductDetails() {
                             />
                         ) : (
                             <p className="mt-1 border p-2 rounded">
-                                {products.name}
+                                {rewards.name}
                             </p>
                         )}
-
                     </div>
 
-                    {/* Price + Stock */}
+                    {/* Points Required + Stock */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium">Price</label>
+                            <label className="block text-sm font-medium">Points Required</label>
                             {isEditing ? (
                                 <input
                                     type="number"
-                                    name="price"
-                                    value={form.price}
+                                    name="points_required"
+                                    value={form.points_required}
                                     onChange={handleChange}
                                     placeholder="Price"
                                     maxLength={20}
@@ -300,7 +273,7 @@ export default function AdminProductDetails() {
                                 />
                             ) : (
                                 <p className="mt-1 border p-2 rounded">
-                                    {formatNumeric(products.price)}
+                                    {formatNumeric(rewards.points_required)}
                                 </p>
                             )}
 
@@ -311,8 +284,7 @@ export default function AdminProductDetails() {
                             <input
                                 type="number"
                                 name="stock"
-                                value={formatNumeric(products.stock)}
-                                // onChange={}
+                                value={formatNumeric(rewards.stock)}
                                 placeholder="Stock"
                                 maxLength={20}
                                 disabled={!isEditing}
@@ -321,97 +293,26 @@ export default function AdminProductDetails() {
                         </div>
                     </div>
 
-                    {/* Reward Points + Roast Level */}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium">Reward Points</label>
-                            {isEditing ? (
-                                <input
-                                    type="number"
-                                    name="reward_points"
-                                    value={form.reward_points}
-                                    onChange={handleChange}
-                                    placeholder="Taste"
-                                    maxLength={60}
-                                    disabled={!isEditing}
-                                    className="w-full border rounded px-3 py-2 mt-1"
-                                />
-                            ) : (
-                                <p className="mt-1 border p-2 rounded">
-                                    {formatNumeric(products.reward_points)}
-                                </p>
-                            )}
 
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium">Roast Level</label>
-                            {isEditing ? (
-                                <select
-                                    value={products.roast_level}
-                                    onChange={(e) => {
-                                        setProducts(prev => prev && {
-                                            ...prev,
-                                            roast_level: e.target.value
-                                        })
-                                    }}
-                                    className="w-full border rounded px-3 py-2 mt-1"
-                                >
-                                    <option value="light">light</option>
-                                    <option value="medium">medium</option>
-                                    <option value="dark">dark</option>
-                                </select>
-                            ) : (
-                                <p className="mt-1 px-3 py-2 border p-2 rounded">
-                                    {products.roast_level}
-                                </p>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Taste + Bag Size*/}
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-sm font-medium">Taste</label>
-                            {isEditing ? (
-                                <input
-                                    type="text"
-                                    name="taste"
-                                    value={form.taste}
-                                    onChange={handleChange}
-                                    placeholder="Taste"
-                                    maxLength={60}
-                                    disabled={!isEditing}
-                                    className="w-full border rounded px-3 py-2 mt-1"
-                                />
-                            ) : (
-                                <p className="mt-1 border p-2 rounded">
-                                    {products.taste}
-                                </p>
-                            )}
-
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium">Bag Size</label>
-                            {isEditing ? (
-                                <input
-                                    type="text"
-                                    name="bag_size"
-                                    value={form.bag_size}
-                                    onChange={handleChange}
-                                    placeholder="Bag Size"
-                                    maxLength={60}
-                                    disabled={!isEditing}
-                                    className="w-full border rounded px-3 py-2 mt-1"
-                                />
-                            ) : (
-                                <p className="mt-1 border p-2 rounded">
-                                    {products.taste}
-                                </p>
-                            )}
-
-                        </div>
+                    {/* Short Description  */}
+                    <div>
+                        <label className="block text-sm font-medium">Short Description</label>
+                        {isEditing ? (
+                            <textarea
+                                rows={2}
+                                name="short_description"
+                                value={form.short_description}
+                                onChange={handleChange}
+                                placeholder="Short Description"
+                                maxLength={80}
+                                disabled={!isEditing}
+                                className="w-full border rounded px-3 py-2 mt-1"
+                            />
+                        ) : (
+                            <p className="mt-1 border p-2 rounded">
+                                {rewards.short_description}
+                            </p>
+                        )}
                     </div>
 
                     {/* Description */}
@@ -419,9 +320,9 @@ export default function AdminProductDetails() {
                         <label className="block text-sm font-medium">Description</label>
                         {isEditing ? (
                             <textarea
-                                rows={2}
+                                rows={5}
                                 name="description"
-                                value={form.description}
+                                value={form.description ?? ""}
                                 onChange={handleChange}
                                 placeholder="Description"
                                 maxLength={1000}
@@ -429,24 +330,25 @@ export default function AdminProductDetails() {
                             />
                         ) : (
                             <p className="mt-1 border p-2 rounded">
-                                {products.description}
+                                {rewards.description}
                             </p>
                         )}
                     </div>
+
 
                     {/* category name + type */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium">Category Name</label>
                             <p className="w-full border rounded px-3 py-2 mt-1 bg-gray-400">
-                                {products.category_name}
+                                {rewards.category_name}
                             </p>
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium">Category Type</label>
                             <p className="w-full border rounded px-3 py-2 mt-1 bg-gray-400">
-                                {products.category_type}
+                                {rewards.category_type}
                             </p>
                         </div>
                     </div>
@@ -456,7 +358,7 @@ export default function AdminProductDetails() {
                         <div>
                             <label className="block text-sm font-medium">Created At</label>
                             <p className="w-full border rounded px-3 py-2 mt-1 bg-gray-400">
-                                {formatDate(products.created_at)}
+                                {formatDate(rewards.created_at)}
 
 
                             </p>
@@ -465,7 +367,7 @@ export default function AdminProductDetails() {
                         <div>
                             <label className="block text-sm font-medium">Updated At</label>
                             <p className="w-full border rounded px-3 py-2 mt-1 bg-gray-400">
-                                {formatDate(products.updated_at)}
+                                {formatDate(rewards.updated_at)}
                             </p>
                         </div>
                     </div>
@@ -475,7 +377,7 @@ export default function AdminProductDetails() {
                     {isEditing && (
                         <div className="mt-auto pt-6 flex justify-end gap-3">
                             <button
-                                onClick={patchProductDetail}
+                                onClick={patchRewardDetail}
                                 className="px-4 py-2 bg-green-500 text-white rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Save

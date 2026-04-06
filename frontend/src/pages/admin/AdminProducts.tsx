@@ -145,7 +145,11 @@ export default function AdminProduct() {
 
                         {products.map(product => (
 
-                            <tr key={product.id} className="border-t border-gray-300">
+                            <tr
+                                key={product.id}
+                                className="border-t border-gray-300 transition-all duration-100 hover:shadow-xl cursor-pointer  "
+                                onClick={() => navigate(`/admin/products/detail/${products[0].id}`)}
+                            >
 
                                 <td className="py-4 px-2">
                                     {product.id}
@@ -190,9 +194,7 @@ export default function AdminProduct() {
 
 
                             </tr>
-
                         ))}
-
                     </table>
                 </div>
             </div>

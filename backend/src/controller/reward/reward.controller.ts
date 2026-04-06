@@ -4,11 +4,16 @@ import {
     getAllRewardService,
     createRewardService,
     getRewardByIdService,
-    toggleRewardActiveService
+    toggleRewardActiveService,
+    restockRewardByIdService,
+    getAllRestockRewardHisService,
+    getRewardByIdAdminService,
+    updateRewardByIdAdminService
 } from '../../service/reward/reward.service'
 
 import {
     CreateRewardInput,
+    UpdateRewardPayload,
 } from '../../types/reward/reward.type'
 
 import { AppError } from '../../util/AppError'
@@ -97,5 +102,78 @@ export const toggleRewardActive = async (req: Request, res: Response, next: Next
 
     } catch (err) {
         next(err)
+    }
+}
+
+export const restockRewardByid = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+        const { quantity } = req.body
+
+        const rewardId = Number(id)
+
+        if (isNaN(Number(rewardId))) {
+            throw new AppError("Invalid reward id", 400)
+        }
+
+        const data = await restockRewardByIdService(rewardId, quantity)
+        res.status(200).json({ data })
+
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const getAllRestockRewardHis = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+
+        const rewardId = Number(id)
+
+        if (Number.isNaN(rewardId)) {
+            throw new AppError("Invalid reward id ", 400)
+        }
+
+        const data = await getAllRestockRewardHisService(rewardId)
+
+        res.status(200).json({ data })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const getRewardByIdAdmin = async (req: Request<{ id: string }, {}, UpdateRewardPayload>, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params
+
+        const rewardId = Number(id)
+
+        if (Number.isNaN(rewardId)) {
+            throw new AppError("Invalid reward id", 400)
+        }
+
+        const data = await getRewardByIdAdminService(rewardId)
+        res.status(200).json({ data })
+    } catch (err) {
+        return next(err)
+    }
+}
+
+export const updateRewardByIdAdmin = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.params.id)
+
+        if (Number.isNaN(id)) {
+            throw new AppError("Invalid reward id", 400)
+        }
+
+        if (!req.body || Object.keys(req.body).length === 0) {
+            throw new AppError("Request body is empty", 400)
+        }
+
+        const data = await updateRewardByIdAdminService(id, req.body)
+        res.status(200).json({ data })
+    } catch (err) {
+        return next(err)
     }
 }

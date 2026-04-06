@@ -141,9 +141,13 @@ export default function AdminOrder() {
 
                         {orders.map(order => (
 
-                            <tr key={order.id} className="border-t border-gray-300">
+                            <tr
+                                key={order.id}
+                                className="border-t border-gray-300 transition-all duration-100 hover:shadow-xl cursor-pointer "
+                                onClick={() => navigate(`/admin/orders/detail/${orders[0].id}`)}
+                            >
 
-                                <td className="pl-2 py-4 ">
+                                <td className="pl-2 py-4">
                                     {order.id}
                                 </td>
 

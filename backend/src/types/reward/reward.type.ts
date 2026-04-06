@@ -1,3 +1,4 @@
+export type DBValues = string | number | boolean | null
 
 
 export interface RewardResponse {
@@ -22,3 +23,15 @@ export interface CreateRewardInput {
     category_id: number
 }
 
+export interface UpdateRewardPayload {
+    id?: number
+    name?: string
+    description?: string
+    short_description?: string
+    stock?: number
+    points_required?: number
+    category_id?: number
+    is_active?: boolean
+    created_at?: string
+    updated_at?: string
+}
