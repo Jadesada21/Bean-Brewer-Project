@@ -1,37 +1,15 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
+
 import { ToggleActiveBtn } from "../../../components/IsActive"
 import { RestockBtn } from "../../../components/Restock"
+import { DeleteImagesModal } from "../../../components/adminModal/DeleteImagesModal"
+import { UploadModal } from "../../../components/adminModal/UploadImagesModal"
+import { formatDate } from "../../../components/FormatDate"
+import { formatNumeric } from "../../../components/FormatPrice"
 
-interface ProductDetail {
-    id: number
-    name: string
-    price: number
-    stock: number
-    description: string
-    reward_points: number
-    taste: string
-    roast_level: string
-    bag_size: string
-    category_id: number
-    is_active: boolean
-    created_at: string
-    updated_at: string
-    category_name: string
-    category_type: string
-
-    images?: ProductImage[]
-    total_images: number
-}
-
-export interface ProductImage {
-    id: number
-    image_url?: string
-    is_primary: boolean
-}
-
-
+import type { ProductDetail, ProductImage } from "../../../type/AdminProductDetail.type"
 
 export default function AdminProductDetails() {
 
@@ -42,11 +20,11 @@ export default function AdminProductDetails() {
     const [loading, setLoading] = useState(true)
     const [primaryImage, setPrimaryImage] = useState<string | null>(null)
 
+
     const fetchProductsDetail = async () => {
         try {
             const { data } = await api.get(`/admin/products/${id}`)
             setProducts(data.data)
-            console.log(data)
         } catch (err) {
             console.error('Error fetching product detail:', err)
         } finally {
@@ -133,22 +111,6 @@ export default function AdminProductDetails() {
         }
     }
 
-    const uploadImage = async () => {
-        try {
-
-        } catch (err) {
-            console.error(err)
-        }
-    }
-
-    const formatDate = (date: string) => {
-        return new Date(date).toLocaleDateString('en-GB')
-    }
-
-    const formatNumeric = (price: number) => {
-        return price.toLocaleString()
-    }
-
     useEffect(() => {
         if (products) {
             const img =
@@ -226,12 +188,46 @@ export default function AdminProductDetails() {
                         )}
                     </div>
 
-                    {/* Upload Button */}
-                    <div>
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105">
-                            Upload Images
-                        </button>
+                    {/* Delete Button + Upload Button */}
+                    <div className="flex gap-10 pt-3">
+                        <div>
+                            <DeleteImagesModal
+                                id={products.id}
+                                resource="products"
+                                images={
+                                    products.images?.map((img) => ({
+                                        id: img.id,
+                                        url: img.image_url ?? "",
+                                        name: `Image ${img.id}`,
+                                    })) ?? []
+                                }
+                                onImagesUpdate={(updatedImages) => {
+                                    const newImages: ProductImage[] =
+                                        updatedImages.map((img) => {
+                                            const old = products.images?.find((p) => p.id === img.id);
+                                            return {
+                                                id: img.id,
+                                                image_url: img.url,
+                                                is_primary: old?.is_primary || false,
+                                            };
+                                        }) ?? [];
+
+                                    setProducts((prev) =>
+                                        prev ? { ...prev, images: newImages } : prev
+                                    );
+                                }}
+                                onClose={() => { }}
+                            />
+                        </div>
+
+                        <div>
+                            <UploadModal
+                                id={products.id}
+                                resource="products"
+                            />
+                        </div>
                     </div>
+
 
                     {/* Is Active  */}
                     <div className="pt-2 text-xl">
@@ -302,7 +298,6 @@ export default function AdminProductDetails() {
                                 type="number"
                                 name="stock"
                                 value={formatNumeric(products.stock)}
-                                // onChange={}
                                 placeholder="Stock"
                                 maxLength={20}
                                 disabled={!isEditing}
@@ -480,7 +475,6 @@ export default function AdminProductDetails() {
                         />
                     </div>
 
-
                     {/* Actions */}
                     {isEditing && (
                         <div className="mt-auto pt-6 flex justify-end gap-3">
@@ -502,6 +496,6 @@ export default function AdminProductDetails() {
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

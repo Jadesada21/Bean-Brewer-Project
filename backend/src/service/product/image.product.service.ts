@@ -60,7 +60,7 @@ export const uploadImageProductByIdService = async (
 
         // get max sort auto run 
         const maxSortResult = await client.query(`
-            select coalesce(max(sort_order), 0)as masx
+            select coalesce(max(sort_order), 0)as max
             from product_images
             where product_id = $1`,
             [product_id]
@@ -93,6 +93,7 @@ export const uploadImageProductByIdService = async (
             }
 
             const safeSortOrder = Number(meta.sort_order) || 0
+
 
             const uploadResult = await cloudinary.uploader.upload(
                 `data:${file.mimetype};base64,${file.buffer.toString("base64")}`,

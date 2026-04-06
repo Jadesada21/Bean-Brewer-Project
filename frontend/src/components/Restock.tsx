@@ -49,7 +49,7 @@ export const RestockBtn = ({ id, resource, onSuccess }: Props) => {
 
             <button
                 onClick={handleBtn}
-                className="bg-blue-500 text-white px-3 py-2 rounded"
+                className="bg-blue-500 text-white px-3 py-2 rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
             >
                 Add
             </button>

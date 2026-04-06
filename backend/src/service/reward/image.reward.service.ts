@@ -60,7 +60,7 @@ export const uploadImageRewardByIdService = async (
 
         // get max sort auto run 
         const maxSortResult = await client.query(`
-            select coalesce(max(sort_order), 0)as masx
+            select coalesce(max(sort_order), 0)as max
             from reward_images
             where reward_id = $1`,
             [reward_id]

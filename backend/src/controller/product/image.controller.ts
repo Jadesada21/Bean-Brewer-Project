@@ -23,6 +23,7 @@ export const uploadImageByProductId = async (
 
         const files = req.files as Express.Multer.File[]
 
+
         let imagesMeta = []
         if (req.body.imageMeta) {
             try {
@@ -38,7 +39,6 @@ export const uploadImageByProductId = async (
         return res.status(201).json({ status: "Success", data })
     } catch (err) {
         next(err)
-
     }
 }
 

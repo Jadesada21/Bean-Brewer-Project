@@ -34,7 +34,7 @@ export const ToggleActiveBtn = ({ id, resource, isActive = true, onChange }: Pro
             onClick={handleToggle}
             className="border py-2 px-4 rounded-2xl bg-red-400 text-white cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105  "
         >
-            switch status
+            Switch Status
         </button>
     )
 

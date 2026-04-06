@@ -3,32 +3,12 @@ import { useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 import { ToggleActiveBtn } from "../../../components/IsActive"
 import { RestockBtn } from "../../../components/Restock"
+import { formatNumeric } from "../../../components/FormatPrice"
+import { formatDate } from "../../../components/FormatDate"
+import { DeleteImagesModal } from "../../../components/adminModal/DeleteImagesModal"
+import { UploadModal } from "../../../components/adminModal/UploadImagesModal"
 
-interface RewardsDetail {
-    id: number
-    name: string
-    description: string
-    short_description: string
-    points_required: number
-    stock: number
-    category_id: number
-    is_active: boolean
-    created_at: string
-    updated_at: string
-
-    category_name: string
-    category_type: string
-
-    images?: RewardImage[]
-    total_images: number
-}
-
-export interface RewardImage {
-    id: number
-    image_url?: string
-    is_primary: boolean
-}
-
+import type { RewardImage, RewardsDetail } from "../../../type/AdminRewardDetail.type"
 
 
 export default function AdminRewardDetails() {
@@ -125,14 +105,6 @@ export default function AdminRewardDetails() {
         }
     }
 
-    const formatDate = (date: string) => {
-        return new Date(date).toLocaleDateString('en-GB')
-    }
-
-    const formatNumeric = (price: number) => {
-        return price.toLocaleString()
-    }
-
     useEffect(() => {
         if (rewards) {
             const img =
@@ -210,12 +182,46 @@ export default function AdminRewardDetails() {
                         )}
                     </div>
 
-                    {/* Upload Button */}
-                    <div>
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105">
-                            Upload Images
-                        </button>
+                    {/* Delete Button + Upload Button */}
+                    <div className="flex gap-10 pt-3">
+                        <div>
+                            <DeleteImagesModal
+                                id={rewards.id}
+                                resource="rewards"
+                                images={
+                                    rewards.images?.map((img) => ({
+                                        id: img.id,
+                                        url: img.image_url ?? "",
+                                        name: `Image ${img.id}`,
+                                    })) ?? []
+                                }
+                                onImagesUpdate={(updatedImages) => {
+                                    const newImages: RewardImage[] =
+                                        updatedImages.map((img) => {
+                                            const old = rewards.images?.find((p) => p.id === img.id);
+                                            return {
+                                                id: img.id,
+                                                image_url: img.url,
+                                                is_primary: old?.is_primary || false,
+                                            };
+                                        }) ?? [];
+
+                                    setRewards((prev) =>
+                                        prev ? { ...prev, images: newImages } : prev
+                                    );
+                                }}
+                                onClose={() => { }}
+                            />
+                        </div>
+
+                        <div>
+                            <UploadModal
+                                id={rewards.id}
+                                resource="rewards"
+                            />
+                        </div>
                     </div>
+
 
                     {/* Is Active  */}
                     <div className="pt-2 text-xl">
