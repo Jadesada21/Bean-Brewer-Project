@@ -44,8 +44,8 @@ export default function AdminLayout() {
                         Rewards
                     </NavLink>
 
-                    <NavLink to="/admin/users" className={linkClass}>
-                        Redeem Code
+                    <NavLink to="/admin/redeem-rewards" className={linkClass}>
+                        Redeem Rewards
                     </NavLink>
 
                     <NavLink to="/admin/users" className={linkClass}>

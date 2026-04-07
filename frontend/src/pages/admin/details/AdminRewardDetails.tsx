@@ -381,7 +381,7 @@ export default function AdminRewardDetails() {
 
                     {/* restock */}
                     <div>
-                        <label className="block text-sm font-medium pb-2">Category Name</label>
+                        <label className="block text-sm font-medium pb-2">ReStock</label>
 
                         <RestockBtn
                             id={rewards.id}

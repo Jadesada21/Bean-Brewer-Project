@@ -1,42 +1,40 @@
-import { useEffect, useState } from 'react'
-import { api } from '../../AxiosInstance'
-import { useNavigate } from 'react-router-dom'
-import Pagination from '../../components/Pagination'
-import { formatDate } from '../../components/FormatDate'
+import { useEffect, useState } from "react"
+import { api } from "../../AxiosInstance"
+import { useNavigate } from "react-router-dom"
+import { formatDate } from "../../components/FormatDate"
+import Pagination from "../../components/Pagination"
 
-interface Order {
+interface RedeemRewardsProps {
     id: number
     user_id: number
-    order_number: number
-    total_price: number
-    earned_points: number
+    total_points_used: number
     created_at: string
+    redeem_number: string
     updated_at: string
     status: string
 }
 
-export default function AdminOrder() {
+export default function AdminRedeemRewards() {
 
     const navigate = useNavigate()
 
-    const [orders, setOrders] = useState<Order[]>([])
-    const [loading, setLoading] = useState(true)
+    const [redeemRewards, setRedeemRewards] = useState<RedeemRewardsProps[]>([])
+    const [total, setTotal] = useState(0)
     const [page, setPage] = useState(1)
+    const [error, setErorr] = useState("")
     const [search, setSearch] = useState("")
     const [isSearchResult, setIsSearchResult] = useState(false)
-    const [error, setError] = useState("")
-    const [total, setTotal] = useState(0)
-
+    const [loading, setLoading] = useState(true)
 
     const limit = 10
     const totalPages = Math.ceil(total / limit)
 
-    const fetchOrders = async () => {
+    const fetchRedeemRewards = async () => {
         try {
-            const res = await api.get(`/admin/orders?page=${page}`)
-            setOrders(res.data.data)
-            setTotal(res.data.total)
+            const res = await api.get(`/admin/redeems`)
 
+            setRedeemRewards(res.data.data)
+            setTotal(res.data.total)
         } catch (err) {
             console.error(err)
         } finally {
@@ -45,45 +43,41 @@ export default function AdminOrder() {
     }
 
     useEffect(() => {
-        fetchOrders()
+        fetchRedeemRewards()
     }, [page])
 
     const handleSearch = async () => {
         try {
-            setError("")
+            setErorr("")
 
             if (!search.trim()) {
-                const res = await api.get('/admin/orders?page=1')
-                setOrders(res.data.data)
+                const res = await api.get(`/admin/redeems?page=1`)
+                setRedeemRewards(res.data.data)
                 setIsSearchResult(false)
                 return
             }
 
-            const res = await api.get(`/admin/orders/${search}`)
-
-            setOrders([res.data.data])
+            const res = await api.get(`/admin/redeems/${search}`)
+            setRedeemRewards(res.data.data)
             setIsSearchResult(true)
         } catch (err: any) {
             if (err.response?.status === 404) {
-                setOrders([])
-                setError("Order not found")
+                setRedeemRewards([])
+                setErorr("Redeem reward not found")
             }
         }
-
-
     }
 
     if (loading) {
         return <div>Loading...</div>
     }
-
     return (
         <div className="font-baskerville">
 
             <div className="flex justify-between  mb-6">
 
                 <h1 className="text-2xl font-semibold">
-                    Orders
+                    Redeem Rewards
                 </h1>
 
                 <form
@@ -95,10 +89,10 @@ export default function AdminOrder() {
                     <div>
                         <input
                             type="text"
-                            placeholder="Search Order ID"
+                            placeholder="Search Redeem Rewards ID"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="border px-3 py-2 rounded"
+                            className="border px-3 py-2 rounded w-70"
                         />
 
                         <button
@@ -119,11 +113,10 @@ export default function AdminOrder() {
 
                     <thead className="bg-gray-100 h-15">
                         <tr>
-                            <th className="text-left pl-2">Order ID</th>
+                            <th className="text-left pl-2">Redeem Reward ID</th>
                             <th className="text-left pl-2">User ID</th>
-                            <th className="text-left pl-2">Order Number</th>
-                            <th className="text-left pl-2">Price</th>
-                            <th className="text-left pl-2">Point</th>
+                            <th className="text-left pl-2">Total Points Used</th>
+                            <th className="text-left pl-2">Redeem Number</th>
                             <th className="text-left pl-2">Status</th>
                             <th className="text-left pl-2">Create</th>
                             <th className="text-left pl-2">Update</th>
@@ -132,55 +125,49 @@ export default function AdminOrder() {
 
                     <tbody>
 
-                        {orders.length === 0 && error && (
+                        {redeemRewards.length === 0 && error && (
                             <tr>
                                 <td colSpan={8} className="p-6 text-gray-500">
-                                    Order not found
+                                    Redeem reward not found
                                 </td>
                             </tr>
                         )}
 
-                        {orders.map(order => (
+                        {redeemRewards.map(redeemReward => (
 
                             <tr
-                                key={order.id}
+                                key={redeemReward.id}
                                 className="border-t border-gray-300 transition-all duration-100 hover:shadow-xl cursor-pointer "
-                                onClick={() => navigate(`/admin/orders/detail/${order.id}`)}
+                                onClick={() => navigate(`/admin/redeems/${redeemReward.id}`)}
                             >
 
                                 <td className="pl-2 py-4">
-                                    {order.id}
+                                    {redeemReward.id}
                                 </td>
 
                                 <td className="pl-2 py-4">
-                                    {order.user_id}
+                                    {redeemReward.user_id}
                                 </td>
 
                                 <td className="pl-2 py-4 w-45">
-                                    {order.order_number}
+                                    {redeemReward.total_points_used} pts
                                 </td>
 
                                 <td className="pl-2 py-4 w-">
-                                    ฿ {order.total_price}
+                                    {redeemReward.redeem_number}
                                 </td>
 
                                 <td className="pl-2 py-4">
-                                    {order.earned_points} pts
+                                    {redeemReward.status}
                                 </td>
 
                                 <td className="pl-2 py-4">
-                                    {order.status}
+                                    {formatDate(redeemReward.created_at)}
                                 </td>
 
                                 <td className="pl-2 py-4">
-                                    {formatDate(order.created_at)}
-
+                                    {formatDate(redeemReward.updated_at)}
                                 </td>
-
-                                <td className="pl-2 py-4">
-                                    {formatDate(order.updated_at)}
-                                </td>
-
                             </tr>
 
                         ))}
@@ -193,9 +180,9 @@ export default function AdminOrder() {
 
             <div className="flex justify-between">
 
-                {isSearchResult && orders.length > 0 && (
+                {isSearchResult && redeemRewards.length > 0 && (
                     <button
-                        onClick={() => navigate(`/admin/orders/detail/${orders[0].id}`)}
+                        onClick={() => navigate(`/admin/redeems/${redeemRewards[0].id}`)}
                         className="bg-blue-500 text-white px-3 py-1 rounded mt-4"
                     >
                         view Details
