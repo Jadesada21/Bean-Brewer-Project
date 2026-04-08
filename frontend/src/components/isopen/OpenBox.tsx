@@ -1,9 +1,7 @@
 import { useState, useRef } from 'react'
+import type { OpenBoxProps } from '../../type/OpenBox.type';
 
-interface OpenBoxProps {
-    label: string
-    children: React.ReactNode
-}
+
 
 export default function OpenBox({ label, children }: OpenBoxProps) {
     const [open, setOpen] = useState(false);

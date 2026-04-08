@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
+import type { ShopLinksProps } from "../../../type/ShopLink.type";
 
-interface ShopLinksProps {
-    title: String
-    links: { label: string; to: string }[]
-}
 
 export default function ShopLinks({ title, links }: ShopLinksProps) {
     return (

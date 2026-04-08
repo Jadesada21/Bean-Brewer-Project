@@ -1,27 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
+import type { Props } from "../../../type/OrderDetailModal.type"
 
 
-interface OrderItem {
-    product_name: string
-    price: number
-    quantity: number
-}
 
-interface Order {
-    id: number
-    status: string
-    created_at: string
-    total_amount: number
-    items: OrderItem[]
-}
-
-interface Props {
-    order: Order | null
-    onClose: () => void
-    onPay?: () => void
-    onCancel?: () => void
-}
 
 export default function OrderDetailModal({
     order,

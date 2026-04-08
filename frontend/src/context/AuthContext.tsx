@@ -1,23 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { api } from '../AxiosInstance'
+import type { AuthContextType, User } from '../type/AuthContext.type'
 
-type User = {
-    id: number
-    username: string
-    points: number
-    role: string
-}
 
-type AuthContextType = {
-    user: User | null
-    loginAndRedirect: (
-        username: string,
-        password: string,
-        navigate: (path: string) => void
-    ) => Promise<void>
-    logout: (navigate: (path: string) => void) => Promise<void>
-    loading: boolean
-}
 
 
 const AuthContext = createContext<AuthContextType | null>(null)

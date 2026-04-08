@@ -1,9 +1,7 @@
+import type { PriceFilterProps } from "../../../type/shop/PriceFilter.type"
 
 
-interface PriceFilterProps {
-    selected: string[]
-    onChange: (value: string[]) => void
-}
+
 
 export default function PriceFilter({
     selected,

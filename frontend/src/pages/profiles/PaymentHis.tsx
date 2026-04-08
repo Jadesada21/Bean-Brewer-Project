@@ -1,16 +1,9 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
+import type { Payment } from '../../type/profile/PaymentHis.type'
 
-interface Payment {
-    id: number
-    order_number: string
-    amount: number
-    transaction_ref: string
-    created_at: string
-    paid_at: string
-    status: string
-}
+
 
 export default function PaymentHistory() {
 

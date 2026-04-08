@@ -1,32 +1,11 @@
-
-
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 import { getStatusStyle } from "../../../components/StatusStyle"
 import { formatDate } from "../../../components/FormatDate"
 import { formatNumeric } from "../../../components/FormatNumeric"
+import type { PaymentDetail } from "../../../type/admin/detail/AdminPaymentDetail.type"
 
-
-
-interface PaymentUser {
-    id: number
-    first_name: string
-    last_name: string
-    email: string
-}
-
-interface PaymentDetail {
-    id: number
-    order_id: number
-    amount: number
-    transaction_ref: string
-    payment_provider: string
-    status: string
-    created_at: string
-    paid_at: string
-    user: PaymentUser
-}
 
 
 export default function AdminPaymentDetails() {

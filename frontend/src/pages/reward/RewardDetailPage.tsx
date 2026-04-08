@@ -4,31 +4,10 @@ import { api } from "../../AxiosInstance"
 import { useAuth } from "../../context/AuthContext"
 import BoxModal from "../login-signup/BoxModal"
 import RedeemDetailModal from "../modal/redeem/RedeemDetailModal"
+import type { Redeem, Reward } from "../../type/reward/RewardDetailPage.type"
 
 
-interface Reward {
-    id: number
-    name: string
-    description: string
-    short_description?: string
-    points_required: number
-    image_url: string
-    category: string
-}
 
-interface redeemItem {
-    reward_name: string
-    points_required: number
-    quantity: number
-}
-
-interface Redeem {
-    id: number
-    status: string
-    created_at: string
-    total_points_used: number
-    items: redeemItem[]
-}
 
 export default function RewardDetailPage() {
     const { id } = useParams()

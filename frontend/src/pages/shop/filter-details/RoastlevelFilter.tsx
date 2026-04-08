@@ -1,9 +1,6 @@
+import type { RoastLevelFilterProps } from "../../../type/shop/RoastLevelFilter.type"
 
 
-interface RoastLevelFilterProps {
-    selected: string[]
-    onChange: (value: string[]) => void
-}
 
 export default function RoastLevelFilter({
     selected,

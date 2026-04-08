@@ -1,12 +1,8 @@
 import { useState } from "react"
 import { api } from "../AxiosInstance"
+import type { Props } from "../type/IsActive.type"
 
-type Props = {
-    id: number
-    resource: 'products' | 'rewards'
-    isActive?: boolean
-    onChange?: (value: boolean) => void
-}
+
 
 export const ToggleActiveBtn = ({ id, resource, isActive = true, onChange }: Props) => {
 

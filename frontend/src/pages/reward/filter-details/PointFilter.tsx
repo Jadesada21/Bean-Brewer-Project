@@ -1,9 +1,7 @@
+import type { PointsFilterProps } from "../../../type/reward/PointFilter.type"
 
 
-interface PointsFilterProps {
-    selected: string[]
-    onChange: (value: string[]) => void
-}
+
 
 export default function PointsFilter({
     selected,

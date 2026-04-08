@@ -1,24 +1,9 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../../AxiosInstance'
 import { useParams, useNavigate } from 'react-router-dom'
+import type { OrderDetail } from '../../../type/profile/detail/OrderDetailPage.type'
 
-interface OrderDetail {
-    order_id: number
-    order_number: string
-    status: string
-    total_price: number
-    created_at: string
-    items: OrderItem[]
-}
 
-interface OrderItem {
-    product_id: number
-    product_name: string
-    quantity: number
-    price: number
-    price_per_items: number
-    total_points: number
-}
 
 export default function OrderDetails() {
 

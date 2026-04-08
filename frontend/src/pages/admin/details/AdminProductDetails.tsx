@@ -9,7 +9,7 @@ import { UploadModal } from "../../../components/adminModal/UploadImagesModal"
 import { formatDate } from "../../../components/FormatDate"
 import { formatNumeric } from "../../../components/FormatNumeric"
 
-import type { ProductDetail, ProductImage } from "../../../type/AdminProductDetail.type"
+import type { ProductDetail, ProductImage } from "../../../type/admin/detail/AdminProductDetail.type"
 
 export default function AdminProductDetails() {
 

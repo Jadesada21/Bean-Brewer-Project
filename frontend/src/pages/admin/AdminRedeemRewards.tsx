@@ -3,16 +3,8 @@ import { api } from "../../AxiosInstance"
 import { useNavigate } from "react-router-dom"
 import { formatDate } from "../../components/FormatDate"
 import Pagination from "../../components/Pagination"
+import type { RedeemRewardsProps } from "../../type/admin/AdminRedeemReward.type"
 
-interface RedeemRewardsProps {
-    id: number
-    user_id: number
-    total_points_used: number
-    created_at: string
-    redeem_number: string
-    updated_at: string
-    status: string
-}
 
 export default function AdminRedeemRewards() {
 

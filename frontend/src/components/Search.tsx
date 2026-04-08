@@ -1,19 +1,10 @@
 import { useEffect, useState } from 'react'
 import { api } from '../AxiosInstance'
 import { Link } from 'react-router-dom'
+import type { Product, SearchProps } from '../type/Search.type'
 
 
-interface Product {
-    id: number
-    name: string
-    price: number
-    image_url: string
-}
 
-interface SearchProps {
-    open: boolean
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
 
 export default function Search({ open, setOpen }: SearchProps) {
 

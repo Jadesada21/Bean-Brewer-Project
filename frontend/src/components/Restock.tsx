@@ -1,11 +1,8 @@
 import { useState } from "react"
 import { api } from "../AxiosInstance"
+import type { Props } from "../type/Restock.type"
 
-type Props = {
-    id: number
-    resource: 'products' | 'rewards'
-    onSuccess?: (qty: number) => void
-}
+
 
 export const RestockBtn = ({ id, resource, onSuccess }: Props) => {
 

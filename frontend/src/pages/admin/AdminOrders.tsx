@@ -3,17 +3,9 @@ import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination'
 import { formatDate } from '../../components/FormatDate'
+import type { Order } from '../../type/admin/AdminOrder.type'
 
-interface Order {
-    id: number
-    user_id: number
-    order_number: number
-    total_price: number
-    earned_points: number
-    created_at: string
-    updated_at: string
-    status: string
-}
+
 
 export default function AdminOrder() {
 

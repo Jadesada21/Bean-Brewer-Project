@@ -5,34 +5,8 @@ import { useCart } from "../../context/CartContext"
 import OrderDetailModal from "../modal/order/OrderDetailModal"
 import { useAuth } from "../../context/AuthContext"
 import BoxModal from "../login-signup/BoxModal"
+import type { Order, Product } from "../../type/shop/ShopDetailPage.type"
 
-
-interface Product {
-    id: number
-    name: string
-    description: string
-    price: number
-    reward_points: number
-    image_url: string
-    roast_level: string
-    category: string
-    taste: string
-    bag_size: string
-}
-
-interface OrderItem {
-    product_name: string
-    price: number
-    quantity: number
-}
-
-interface Order {
-    id: number
-    status: string
-    created_at: string
-    total_amount: number
-    items: OrderItem[]
-}
 
 export default function ShopDetailPage() {
     const { id } = useParams()

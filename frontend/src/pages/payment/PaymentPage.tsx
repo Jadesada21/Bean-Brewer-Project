@@ -1,40 +1,9 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { api } from "../../AxiosInstance"
+import type { AddressInfo, Order, UserInfo } from "../../type/PaymentPage.type"
 
-interface OrderItem {
-    product_name: string
-    price: number
-    quantity: number
-    image_url: string
-}
 
-interface Order {
-    order_id: number
-    order_number: string
-    status: string
-    total_price: number
-    payment_id: number
-    items: OrderItem[]
-}
-
-interface UserInfo {
-    email: string
-    phone_num: string
-    address_line: string
-    province: string
-    district: string
-    subdistrict: string
-}
-
-interface AddressInfo {
-    address_line: string
-    province: string
-    postal_code: string
-    country: string
-    district: string
-    subdistrict: string
-}
 
 export default function PaymentPage() {
 

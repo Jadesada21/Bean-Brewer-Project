@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
+import type { Points } from '../../type/profile/PointHis.type'
 
-interface Points {
-    id: number
-    points: number
-    reference_type: string
-    created_at: string
-}
 
 
 export default function PointsHistory() {

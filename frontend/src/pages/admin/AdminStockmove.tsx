@@ -5,17 +5,7 @@ import { useNavigate } from "react-router-dom"
 import Pagination from "../../components/Pagination"
 import { formatDate } from "../../components/FormatDate"
 import { formatNumeric } from "../../components/FormatNumeric"
-
-interface StockmoveProps {
-    id: number
-    item_type: string
-    item_id: number
-    quantity: number
-    movement_type: string
-    reference_type: string
-    reference_id: number
-    created_at: string
-}
+import type { StockmoveProps } from "../../type/admin/AdminStockMove.type"
 
 
 export default function AdminStockmove() {

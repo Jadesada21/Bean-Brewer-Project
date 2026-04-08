@@ -4,18 +4,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { getStatusStyle } from '../../../components/StatusStyle'
 import { formatDate } from '../../../components/FormatDate'
 import { formatNumeric } from '../../../components/FormatNumeric'
+import type { PaymentDetail } from '../../../type/profile/detail/PaymentDetailPage.type'
 
-interface PaymentDetail {
-    id: number
-    order_id: number
-    amount: number
-    transaction_ref: string
-    created_at: string
-    payment_provider: string
-    paid_at: string
-    status: string
-    user_id: number
-}
+
 
 export default function PaymentDetails() {
 

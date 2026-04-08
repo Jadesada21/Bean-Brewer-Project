@@ -1,12 +1,8 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
+import type { Redeem } from '../../type/profile/RedeemHis.type'
 
-interface Redeem {
-    id: number
-    code: string
-    points: number
-    used_at: string
-}
+
 
 
 export default function RedeemsHistory() {

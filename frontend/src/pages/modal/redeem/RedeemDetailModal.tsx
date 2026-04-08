@@ -1,27 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
+import type { Props } from "../../../type/RedeemDetailModal.type"
 
 
-interface redeemItem {
-    reward_name: string
-    points_required: number
-    quantity: number
-}
 
-interface Redeem {
-    id: number
-    status: string
-    created_at: string
-    total_points_used: number
-    items: redeemItem[]
-}
-
-interface Props {
-    redeem: Redeem | null
-    onClose: () => void
-    onRedeem?: () => void
-    onCancel?: () => void
-}
 
 export default function RedeemDetailModal({
     redeem,

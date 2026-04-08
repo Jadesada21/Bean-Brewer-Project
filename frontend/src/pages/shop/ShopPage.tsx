@@ -6,15 +6,9 @@ import PriceFilter from "./filter-details/PriceFilter"
 import { ItemCard } from "../../components/ItemCard";
 import { api } from "../../AxiosInstance"
 import Pagination from "../../components/Pagination";
+import type { Product } from "../../type/shop/ShopPage.type";
 
-interface Product {
-    id: number
-    name: string
-    taste: string
-    price: number
-    reward_points: number
-    image_url: string
-}
+
 
 export default function ShopPage() {
 

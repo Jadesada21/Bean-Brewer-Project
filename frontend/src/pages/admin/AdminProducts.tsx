@@ -2,22 +2,9 @@ import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination'
+import type { Product } from '../../type/admin/AdminProduct.type'
 
-interface Product {
-    id: number
-    name: number
-    description: string
-    price: number
-    stock: number
-    reward_points: number
-    roast_level: string
-    taste: string
-    is_active: boolean
-    total_images: number
-    created_at: string
-    updated_at: string
-    image_urls: string[]
-}
+
 
 export default function AdminProduct() {
     const navigate = useNavigate()

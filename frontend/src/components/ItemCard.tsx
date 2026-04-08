@@ -1,13 +1,6 @@
+import type { ItemCardProps } from "../type/ItemCard.type";
 
-interface ItemCardProps {
-    image: string
-    name: string
-    subtitle?: string
-    price?: number
-    points?: number
-    variant: "product" | "reward"
-    onClick?: () => void
-}
+
 
 export function ItemCard({
     image,

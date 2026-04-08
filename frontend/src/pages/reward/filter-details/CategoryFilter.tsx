@@ -1,10 +1,7 @@
+import type { CategoryFilterProps } from "../../../type/reward/CategoryFilter.type"
 
 
-interface CategoryFilterProps {
-    selected: string[]
-    onChange: (value: string[]) => void
-    label: string
-}
+
 
 export default function CategoryFilter({
     selected,

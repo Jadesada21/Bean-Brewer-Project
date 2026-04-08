@@ -1,16 +1,7 @@
 import { useState } from 'react'
+import type { FilterSidebarProps } from '../type/FilterSidebar.type'
 
-interface FilterConfig {
-    key: string
-    label: string
-    component: any
-}
 
-interface FilterSidebarProps {
-    filters: FilterConfig[]
-    searchParams: URLSearchParams
-    setSearchParams: (params: any) => void
-}
 
 
 

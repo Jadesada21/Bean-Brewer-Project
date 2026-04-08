@@ -5,15 +5,9 @@ import RoastLevelFilter from "./filter-details/RoastlevelFilter"
 import PriceFilter from "./filter-details/PriceFilter"
 
 import { api } from "../../AxiosInstance"
+import type { Product } from "../../type/shop/PremiumPage.type";
 
-interface Product {
-    id: number
-    name: string
-    taste: string
-    price: number
-    reward_points: number
-    image_url: string
-}
+
 
 export default function PremiumPage() {
 

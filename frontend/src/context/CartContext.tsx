@@ -1,24 +1,9 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { api } from '../AxiosInstance'
 import { useAuth } from './AuthContext'
+import type { CartContextType, CartItem } from '../type/CartContext.type'
 
-interface CartItem {
-    cart_item_id: number
-    product_id: number
-    name: string
-    image_url: string
-    price: number
-    quantity: number
-    bag_size: string
-}
 
-interface CartContextType {
-    cart: CartItem[]
-    fetchCart: () => void
-    addToCart: (productId: number, quantity: number) => Promise<void>
-    removeItem: (cartItemId: number) => Promise<void>
-    checkout: () => Promise<void>
-}
 
 const CartContext = createContext<CartContextType | null>(null)
 

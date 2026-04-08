@@ -5,17 +5,9 @@ import { formatNumeric } from "../../components/FormatNumeric"
 import { formatDate } from "../../components/FormatDate"
 import Pagination from "../../components/Pagination"
 import { AxiosError } from "axios"
+import type { PaymentDetail } from "../../type/admin/AdminPayment.type"
 
-interface PaymentDetail {
-    id: number
-    order_id: number
-    amount: number
-    status: string
-    transaction_ref: string
-    created_at: string
-    paid_at: string
-    payment_provider: string
-}
+
 
 export default function AdminPayment() {
 

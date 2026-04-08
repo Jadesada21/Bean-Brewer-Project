@@ -1,24 +1,10 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
+import type { Order } from '../../type/profile/OrderHis.type'
 
 
-interface Order {
-    order_id: number
-    order_number: string
-    status: string
-    total_price: number
-    created_at: string
-    items: OrderItem[]
-}
 
-interface OrderItem {
-    product_id: number
-    name: string
-    quantity: number
-    price_per_items: number
-    total_points: number
-}
 
 export default function OrdersHistory() {
 

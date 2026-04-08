@@ -4,31 +4,8 @@ import { api } from "../../../AxiosInstance"
 import { formatDate } from "../../../components/FormatDate"
 import { getStatusStyle } from "../../../components/StatusStyle"
 import { formatNumeric } from "../../../components/FormatNumeric"
+import type { RedeemDetail } from "../../../type/admin/detail/AdminRedeemRewardDetail.type"
 
-interface RedeemItem {
-    reward_id: number
-    name: string
-    quantity: number
-    points_per_item: number
-}
-
-interface RedeemUser {
-    id: number
-    first_name: string
-    last_name: string
-    email: string
-}
-
-interface RedeemDetail {
-    redeem_id: number
-    redeem_number: string
-    total_points_used: number
-    status: string
-    created_at: string
-    updated_at: string
-    user: RedeemUser
-    items: RedeemItem[]
-}
 
 export default function AdminRedeemRewardDetails() {
     const { id } = useParams()
