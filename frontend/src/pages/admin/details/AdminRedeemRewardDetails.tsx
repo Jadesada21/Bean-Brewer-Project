@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 import { formatDate } from "../../../components/FormatDate"
 import { getStatusStyle } from "../../../components/StatusStyle"
-import { formatNumeric } from "../../../components/FormatPrice"
+import { formatNumeric } from "../../../components/FormatNumeric"
 
 interface RedeemItem {
     reward_id: number

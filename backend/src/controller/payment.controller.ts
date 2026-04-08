@@ -6,7 +6,8 @@ import {
     getAllPaymentService,
     createPaymentService,
     updatePaymentStatusService,
-    getPaymentByIdService
+    getPaymentByIdService,
+    AdminGetPaymentDetailByIdService
 } from '../service/payment.service'
 
 import { PaymentUpdateStatus } from "../types/payment.type";
@@ -15,17 +16,17 @@ import { PaymentUpdateStatus } from "../types/payment.type";
 export const getAllPayment = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await getAllPaymentService()
-        return res.status(200).json({ status: "Success", data })
+        return res.status(200).json({ data })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
 
 export const createPayment = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const orderId = Number(req.params.orderId)
+        const orderId = Number(req.params.id)
 
-        if (!orderId || isNaN(orderId)) {
+        if (Number.isNaN(orderId)) {
             throw new AppError("Invalid orderId", 400)
         }
 
@@ -33,16 +34,16 @@ export const createPayment = async (req: Request, res: Response, next: NextFunct
 
 
         const payment = await createPaymentService(orderId, userId)
-        return res.status(201).json({ status: "Success", payment })
+        return res.status(201).json({ payment })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
 
 
 export const updatePaymentStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const paymentId = Number(req.params.paymentId)
+        const paymentId = Number(req.params.id)
         const loginUserId = Number(req.user!.id)
         const role = req.user!.role
 
@@ -63,24 +64,41 @@ export const updatePaymentStatus = async (req: Request, res: Response, next: Nex
         }
 
         const data = await updatePaymentStatusService(paymentId, status, loginUserId, role)
-        return res.status(200).json({ status: "Success", data })
+        return res.status(200).json({ data })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
 
 
 export const getPaymentById = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const paymentId = Number(req.params.paymentId)
+        const paymentId = Number(req.params.id)
 
-        if (!paymentId || isNaN(paymentId)) {
+        if (Number.isNaN(paymentId)) {
             throw new AppError("Invalid paymentId", 400)
         }
 
         const data = await getPaymentByIdService(paymentId, req.user!.id, req.user!.role)
-        return res.status(200).json({ status: "Success", data })
+        return res.status(200).json({ data })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
+
+export const AdminGetPaymentDetailById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const paymentId = Number(req.params.id)
+
+        if (Number.isNaN(paymentId)) {
+            throw new AppError("Invalid paymentId", 400)
+        }
+
+        const data = await AdminGetPaymentDetailByIdService(paymentId)
+        return res.status(200).json({ data })
+    } catch (err) {
+        return next(err)
+    }
+}
+

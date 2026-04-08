@@ -1,3 +1,4 @@
-export const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString('en-GB')
+export const formatDate = (date?: string) => {
+    if (!date) return "-"
+    return new Date(date).toLocaleDateString("en-GB")
 }

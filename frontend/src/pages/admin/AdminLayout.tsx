@@ -56,7 +56,7 @@ export default function AdminLayout() {
                         Promo Code
                     </NavLink>
 
-                    <NavLink to="/admin/users" className={linkClass}>
+                    <NavLink to="/admin/payments" className={linkClass}>
                         Payment
                     </NavLink>
 

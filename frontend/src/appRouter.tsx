@@ -51,6 +51,8 @@ import AdminRewards from "./pages/admin/AdminRewards";
 import AdminRewardDetails from "./pages/admin/details/AdminRewardDetails"
 import AdminRedeemRewards from "./pages/admin/AdminRedeemRewards";
 import AdminRedeemRewardDetails from "./pages/admin/details/AdminRedeemRewardDetails";
+import AdminPayment from "./pages/admin/AdminPayment";
+import AdminPaymentDetails from "./pages/admin/details/AdminPaymentDetails";
 
 
 export default function AppRouter() {
@@ -136,16 +138,29 @@ export default function AppRouter() {
                     }
                 >
                     <Route index element={<AdminDashboard />} />
-                    <Route path="orders" element={<AdminOrders />} />
-                    <Route path="orders/detail/:id" element={<AdminOrderDetails />} />
                     <Route path="products" element={<AdminProducts />} />
                     <Route path="products/detail/:id" element={<AdminProductDetails />} />
+
                     <Route path="rewards" element={<AdminRewards />} />
                     <Route path="rewards/detail/:id" element={<AdminRewardDetails />} />
+
+                    <Route path="categories" element={<AdminRedeemRewardDetails />} />
+
+                    <Route path="orders" element={<AdminOrders />} />
+                    <Route path="orders/detail/:id" element={<AdminOrderDetails />} />
+
                     <Route path="redeem-rewards" element={<AdminRedeemRewards />} />
                     <Route path="redeem-rewards/detail/:id" element={<AdminRedeemRewardDetails />} />
-                </Route>
 
+                    <Route path="promo-code" element={<AdminRedeemRewardDetails />} />
+
+                    <Route path="payments" element={<AdminPayment />} />
+                    <Route path="payments/detail/:id" element={<AdminPaymentDetails />} />
+
+                    <Route path="stock-movement" element={<AdminRedeemRewardDetails />} />
+
+                    <Route path="user" element={<AdminRedeemRewardDetails />} />
+                </Route>
             </Routes>
         </BrowserRouter >
     )

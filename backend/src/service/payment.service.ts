@@ -288,3 +288,39 @@ export const getPaymentByIdService = async (
 
     return payment
 }
+
+export const AdminGetPaymentDetailByIdService = async (paymentId: number) => {
+    const response = await pool.query(`
+        select
+            p.id,
+            p.order_id,
+            p.amount,
+            p.transaction_ref,
+            p.payment_provider,
+            p.status,
+            p.created_at,
+            p.paid_at,
+
+            json_build_object(
+            'id' , u.id,
+            'first_name' , u.first_name,
+            'last_name' , u.last_name,
+            'email' , u.email
+            ) as user
+             
+        from payment p 
+
+        left join orders o
+            on p.order_id = o.id
+        left join users u
+            on o.user_id = u.id
+
+        where p.id =$1
+        `, [paymentId])
+
+    if (response.rowCount === 0) {
+        throw new AppError("Payment not found", 404)
+    }
+
+    return response.rows[0]
+}

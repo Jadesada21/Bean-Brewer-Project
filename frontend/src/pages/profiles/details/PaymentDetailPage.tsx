@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../../AxiosInstance'
 import { useNavigate, useParams } from 'react-router-dom'
+import { getStatusStyle } from '../../../components/StatusStyle'
+import { formatDate } from '../../../components/FormatDate'
+import { formatNumeric } from '../../../components/FormatNumeric'
 
 interface PaymentDetail {
     id: number
@@ -25,8 +28,8 @@ export default function PaymentDetails() {
 
     const fetchPaymentDetail = async () => {
         try {
-            const res = await api.get(`payments/${id}`)
-            setPayment(res.data.data)
+            const { data } = await api.get(`payments/${id}`)
+            setPayment(data.data)
         } catch (err) {
             console.error('Error fetching payment detail:', err)
         } finally {
@@ -39,29 +42,6 @@ export default function PaymentDetails() {
             fetchPaymentDetail()
         }
     }, [id])
-
-    const formatDate = (date?: string) => {
-        if (!date) return "-"
-        return new Date(date).toLocaleDateString("en-GB")
-    }
-
-    const formatPrice = (price?: number) => {
-        if (!price) return "0"
-        return price.toLocaleString()
-    }
-
-    const getStatusStyle = (status: string) => {
-        switch (status) {
-            case "completed":
-                return "text-green-600"
-            case "cancelled":
-                return "text-red-600"
-            case "pending":
-                return "text-yellow-600"
-            default:
-                return "text-gray-600"
-        }
-    }
 
 
     if (!payment) return <div>Payment not found</div>
@@ -113,7 +93,7 @@ export default function PaymentDetails() {
 
                     <div className="flex justify-between border-b pb-3 font-baskerville">
                         <p>Amount</p>
-                        <p>฿ {formatPrice(payment.amount)}</p>
+                        <p>฿ {formatNumeric(payment.amount)}</p>
                     </div>
 
                     <div className="flex justify-between border-b pb-3 font-baskerville">
@@ -136,7 +116,7 @@ export default function PaymentDetails() {
 
                     <p>Total</p>
 
-                    <p>฿ {formatPrice(payment.amount)}</p>
+                    <p>฿ {formatNumeric(payment.amount)}</p>
                 </div>
 
 

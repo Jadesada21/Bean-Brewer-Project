@@ -7,7 +7,7 @@ import { RestockBtn } from "../../../components/Restock"
 import { DeleteImagesModal } from "../../../components/adminModal/DeleteImagesModal"
 import { UploadModal } from "../../../components/adminModal/UploadImagesModal"
 import { formatDate } from "../../../components/FormatDate"
-import { formatNumeric } from "../../../components/FormatPrice"
+import { formatNumeric } from "../../../components/FormatNumeric"
 
 import type { ProductDetail, ProductImage } from "../../../type/AdminProductDetail.type"
 

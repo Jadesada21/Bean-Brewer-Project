@@ -20,10 +20,10 @@ router.route('/me')
 router.route('/:orderId')
     .post(authorize(['customer']), createPayment)
 
-router.route('/:paymentId/')
+router.route('/:id')
     .get(authorize(['admin', 'customer']), getPaymentById)
 
-router.route('/:paymentId/status')
+router.route('/:id/status')
     .patch(authorize(['customer']), updatePaymentStatus)
 
 export default router
