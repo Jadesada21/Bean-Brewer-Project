@@ -50,6 +50,7 @@ import AdminProductDetails from "./pages/admin/details/AdminProductDetails";
 import AdminRewards from "./pages/admin/AdminRewards";
 import AdminRewardDetails from "./pages/admin/details/AdminRewardDetails"
 import AdminRedeemRewards from "./pages/admin/AdminRedeemRewards";
+import AdminRedeemRewardDetails from "./pages/admin/details/AdminRedeemRewardDetails";
 
 
 export default function AppRouter() {
@@ -142,6 +143,7 @@ export default function AppRouter() {
                     <Route path="rewards" element={<AdminRewards />} />
                     <Route path="rewards/detail/:id" element={<AdminRewardDetails />} />
                     <Route path="redeem-rewards" element={<AdminRedeemRewards />} />
+                    <Route path="redeem-rewards/detail/:id" element={<AdminRedeemRewardDetails />} />
                 </Route>
 
             </Routes>

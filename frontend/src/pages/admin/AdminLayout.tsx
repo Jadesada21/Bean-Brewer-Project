@@ -32,10 +32,6 @@ export default function AdminLayout() {
                         Dashboard
                     </NavLink>
 
-                    <NavLink to="/admin/orders" className={linkClass}>
-                        Orders
-                    </NavLink>
-
                     <NavLink to="/admin/products" className={linkClass}>
                         Products
                     </NavLink>
@@ -44,8 +40,28 @@ export default function AdminLayout() {
                         Rewards
                     </NavLink>
 
+                    <NavLink to="/admin/users" className={linkClass}>
+                        Categories
+                    </NavLink>
+
+                    <NavLink to="/admin/orders" className={linkClass}>
+                        Orders
+                    </NavLink>
+
                     <NavLink to="/admin/redeem-rewards" className={linkClass}>
                         Redeem Rewards
+                    </NavLink>
+
+                    <NavLink to="/admin/users" className={linkClass}>
+                        Promo Code
+                    </NavLink>
+
+                    <NavLink to="/admin/users" className={linkClass}>
+                        Payment
+                    </NavLink>
+
+                    <NavLink to="/admin/users" className={linkClass}>
+                        Stock Movement
                     </NavLink>
 
                     <NavLink to="/admin/users" className={linkClass}>

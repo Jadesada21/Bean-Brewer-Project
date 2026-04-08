@@ -7,7 +7,8 @@ import {
     updateStatusRedeemService,
     getAllRedeemsByLoginUserService,
     getRedeemByIdByLoginUserService,
-    adminGetRedeemByIdService
+    adminGetRedeemByIdService,
+    adminGetRedeemDetailByIdService
 } from '../../service/redeem/redeem.service'
 
 import { RedeemUpdateStatus } from "../../types/redeem.type";
@@ -105,5 +106,20 @@ export const adminGetRedeemById = async (req: Request, res: Response, next: Next
         return res.status(200).json({ status: "Success", data })
     } catch (err) {
         next(err)
+    }
+}
+
+export const adminGetRedeemDetailById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const redeemId = Number(req.params.id)
+
+        if (Number.isNaN(redeemId)) {
+            throw new AppError("Invalid redeem id", 400)
+        }
+
+        const data = await adminGetRedeemDetailByIdService(redeemId)
+        return res.status(200).json({ data })
+    } catch (err) {
+        return next(err)
     }
 }

@@ -2,12 +2,32 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 import { formatDate } from "../../../components/FormatDate"
+import { getStatusStyle } from "../../../components/StatusStyle"
+import { formatNumeric } from "../../../components/FormatPrice"
 
-interface RedeemRewardsProps {
+interface RedeemItem {
+    reward_id: number
+    name: string
+    quantity: number
+    points_per_item: number
+}
+
+interface RedeemUser {
     id: number
-    total_points_used: number
-    Redeem_number: number
+    first_name: string
+    last_name: string
+    email: string
+}
 
+interface RedeemDetail {
+    redeem_id: number
+    redeem_number: string
+    total_points_used: number
+    status: string
+    created_at: string
+    updated_at: string
+    user: RedeemUser
+    items: RedeemItem[]
 }
 
 export default function AdminRedeemRewardDetails() {
@@ -15,13 +35,14 @@ export default function AdminRedeemRewardDetails() {
 
     const navigate = useNavigate()
 
-    const [redeemReward, setRedeemRewards] = useState<RedeemRewardsProps[]>([])
+    const [redeem, setRedeem] = useState<RedeemDetail | null>(null)
     const [loading, setLoading] = useState(true)
 
     const fetchRedeemRewardDetail = async () => {
         try {
-            const { data } = await api.get(`/admin/redeems/${id}`)
-            setRedeemRewards(data.data.data)
+            const { data } = await api.get(`/admin/redeems/detail/${id}`)
+            setRedeem(data.data)
+            console.log(data)
         } catch (err) {
             console.error(err)
         } finally {
@@ -30,10 +51,12 @@ export default function AdminRedeemRewardDetails() {
     }
 
     useEffect(() => {
-        fetchRedeemRewardDetail()
+        if (id) {
+            fetchRedeemRewardDetail()
+        }
     }, [id])
 
-    if (!redeemReward) return <div>Redeem reward not found</div>
+    if (!redeem) return <div>Redeem reward not found</div>
 
     if (loading) return <div>Loading...</div>
     return (
@@ -41,7 +64,7 @@ export default function AdminRedeemRewardDetails() {
             <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-3xl mb-10 h-full">
 
                 <h2 className="text-xl font-semibold mb-6">
-                    Redeem Rewards {order.order_number}
+                    {redeem.redeem_number}
                 </h2>
 
                 <div className="grid grid-cols-[160px_160px]">
@@ -58,11 +81,11 @@ export default function AdminRedeemRewardDetails() {
 
                 <div className="grid grid-cols-[160px_160px]">
                     <p className="my-3">
-                        {order.user.first_name}
+                        {redeem.user.first_name}
                     </p>
 
                     <p className="my-3">
-                        {order.user.last_name}
+                        {redeem.user.last_name}
                     </p>
                 </div>
 
@@ -72,7 +95,7 @@ export default function AdminRedeemRewardDetails() {
                 </h2>
 
                 <p className="my-3">
-                    {order.user.email}
+                    {redeem.user.email}
                 </p>
 
                 <h2 className="text-xl font-semibold mb-2 mt-4">
@@ -80,8 +103,8 @@ export default function AdminRedeemRewardDetails() {
                 </h2>
 
                 <div className="my-3">
-                    {order.items.map((item) => (
-                        <div key={item.product_id}>
+                    {redeem.items.map((item) => (
+                        <div key={item.reward_id}>
                             <p className="my-3">
                                 {item.name}
                             </p>
@@ -93,18 +116,18 @@ export default function AdminRedeemRewardDetails() {
                     Status
                 </h2>
 
-                <p className={`mb-2 ${getStatusStyle(order.status)}`}>
-                    {order.status}
+                <p className={`mb-2 ${getStatusStyle(redeem.status)}`}>
+                    {redeem.status}
                 </p>
 
                 <p className="text-gray-500 mb-6">
-                    {formatDate(order.created_at)}
+                    {formatDate(redeem.created_at)}
                 </p>
 
                 <div className="space-y-4">
-                    {order.items.map((item) => (
+                    {redeem.items.map((item) => (
                         <div
-                            key={item.product_id}
+                            key={item.reward_id}
                             className="flex justify-between border-b pb-3"
                         >
                             <div>
@@ -118,7 +141,7 @@ export default function AdminRedeemRewardDetails() {
                             </div>
 
                             <p className="font-medium">
-                                ฿ {formatPrice(item.price_per_items)}
+                                {formatNumeric(item.points_per_item)} pts.
                             </p>
                         </div>
                     ))}
@@ -128,10 +151,10 @@ export default function AdminRedeemRewardDetails() {
 
                     <p>Total</p>
 
-                    <p>฿ {formatPrice(order.total_price)}</p>
+                    <p>{formatNumeric(redeem.total_points_used)} pts.</p>
                 </div>
 
-                {order.status === "pending" && (
+                {redeem.status === "pending" && (
                     <div className="flex justify-end gap-3 mt-6">
 
                         <button

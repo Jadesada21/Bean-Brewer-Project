@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
+import { getStatusStyle } from "../../../components/StatusStyle"
+import { formatDate } from "../../../components/FormatDate"
+import { formatNumeric } from "../../../components/FormatPrice"
 
 
 interface OrderItem {
@@ -56,27 +59,6 @@ export default function AdminOrderDetails() {
         }
     }, [id])
 
-    const formatDate = (date: string) => {
-        return new Date(date).toLocaleDateString('en-GB')
-    }
-
-    const formatPrice = (price: number) => {
-        return price.toLocaleString()
-    }
-
-    const getStatusStyle = (status: string) => {
-        switch (status) {
-            case "completed":
-                return "text-green-600"
-            case "cancelled":
-                return "text-red-600"
-            case "pending":
-                return "text-yellow-600"
-            default:
-                return "text-gray-600"
-        }
-    }
-
     if (!order) return <div>Order not found</div>
 
 
@@ -91,7 +73,7 @@ export default function AdminOrderDetails() {
             <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-3xl mb-10 h-full">
 
                 <h2 className="text-xl font-semibold mb-6">
-                    Order {order.order_number}
+                    {order.order_number}
                 </h2>
 
                 <div className="grid grid-cols-[160px_160px]">
@@ -168,7 +150,7 @@ export default function AdminOrderDetails() {
                             </div>
 
                             <p className="font-medium">
-                                ฿ {formatPrice(item.price_per_items)}
+                                ฿ {formatNumeric(item.price_per_items)}
                             </p>
                         </div>
                     ))}
@@ -178,7 +160,7 @@ export default function AdminOrderDetails() {
 
                     <p>Total</p>
 
-                    <p>฿ {formatPrice(order.total_price)}</p>
+                    <p>฿ {formatNumeric(order.total_price)}</p>
                 </div>
 
                 {order.status === "pending" && (

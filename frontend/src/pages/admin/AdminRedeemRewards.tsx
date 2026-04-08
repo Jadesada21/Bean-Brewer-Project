@@ -138,7 +138,7 @@ export default function AdminRedeemRewards() {
                             <tr
                                 key={redeemReward.id}
                                 className="border-t border-gray-300 transition-all duration-100 hover:shadow-xl cursor-pointer "
-                                onClick={() => navigate(`/admin/redeems/${redeemReward.id}`)}
+                                onClick={() => navigate(`/admin/redeem-rewards/detail/${redeemReward.id}`)}
                             >
 
                                 <td className="pl-2 py-4">
@@ -182,7 +182,7 @@ export default function AdminRedeemRewards() {
 
                 {isSearchResult && redeemRewards.length > 0 && (
                     <button
-                        onClick={() => navigate(`/admin/redeems/${redeemRewards[0].id}`)}
+                        onClick={() => navigate(`/admin/redeem-rewards/detail/${redeemRewards[0].id}`)}
                         className="bg-blue-500 text-white px-3 py-1 rounded mt-4"
                     >
                         view Details

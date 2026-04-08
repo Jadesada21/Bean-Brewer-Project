@@ -106,7 +106,7 @@ export const createRedeemService = async (
         // สร้าง redeem
         const redeemResult = await client.query(`
             insert into redeems
-            (user_id  , total_points_used , status)
+            (user_id  ,  total_points_used , status)
             values($1,$2,'pending')
             returning *`,
             [loginUserId, totalPointsUsed]
@@ -384,6 +384,60 @@ export const adminGetRedeemByIdService = async (
         select * from redeems
         where id = $1
         `, [redeemId])
+    if (response.rowCount === 0) {
+        throw new AppError("Redeem not found", 404)
+    }
+
+    return response.rows[0]
+}
+
+export const adminGetRedeemDetailByIdService = async (redeemId: number) => {
+    const response = await pool.query(`
+        select 
+            re.id as redeem_id,
+            re.redeem_number,
+            re.total_points_used,
+            re.status,
+            re.created_at,
+            re.updated_at,
+
+            json_build_object(
+                'id' , u.id,
+                'first_name' , u.first_name,
+                'last_name' , u.last_name,
+                'email' , u.email
+            ) as user,
+
+        coalesce(
+            json_agg(
+                    json_build_object(
+                'reward_id' , r.id, 
+                'name' , r.name,
+                'quantity' , rei.quantity,
+                'points_per_item' , rei.points_per_item
+            )
+        ) filter (where rei.id is not null),
+         '[]'
+        ) as items
+
+        from redeems re
+      
+        join users u
+            on u.id = re.user_id
+
+        left join redeem_items rei
+            on rei.redeem_id = re.id
+
+        left join rewards r
+            on r.id = rei.reward_id
+
+        where re.id = $1
+
+        group by
+        re.id,
+        u.id
+        `, [redeemId])
+
     if (response.rowCount === 0) {
         throw new AppError("Redeem not found", 404)
     }
