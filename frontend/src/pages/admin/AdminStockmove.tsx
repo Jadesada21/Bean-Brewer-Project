@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react"
 import { api } from "../../AxiosInstance"
-import { useNavigate } from "react-router-dom"
-import { formatNumeric } from "../../components/FormatNumeric"
-import { formatDate } from "../../components/FormatDate"
-import Pagination from "../../components/Pagination"
 import { AxiosError } from "axios"
+import { useNavigate } from "react-router-dom"
+import Pagination from "../../components/Pagination"
+import { formatDate } from "../../components/FormatDate"
+import { formatNumeric } from "../../components/FormatNumeric"
 
-interface PaymentDetail {
+interface StockmoveProps {
     id: number
-    order_id: number
-    amount: number
-    status: string
-    transaction_ref: string
+    item_type: string
+    item_id: number
+    quantity: number
+    movement_type: string
+    reference_type: string
+    reference_id: number
     created_at: string
-    paid_at: string
-    payment_provider: string
 }
 
-export default function AdminPayment() {
+
+export default function AdminStockmove() {
 
     const navigate = useNavigate()
 
     const [loading, setLoading] = useState(true)
-    const [payments, setPayments] = useState<PaymentDetail[]>([])
+    const [stocks, setStocks] = useState<StockmoveProps[]>([])
     const [error, setError] = useState("")
     const [search, setSearch] = useState("")
     const [isSearchResult, setIsSearchResult] = useState(false)
@@ -32,11 +33,11 @@ export default function AdminPayment() {
     const limit = 10
     const totalPages = Math.ceil(total / limit)
 
-    const fetchPayment = async () => {
+    const fetchStockmovement = async () => {
         try {
-            const res = await api.get(`/admin/payments`)
-            setPayments(res.data.data)
-            setTotal(res.data.total)
+            const { data } = await api.get(`/admin/stock_moves`)
+            setStocks(data.data)
+            setTotal(data.total)
         } catch (err) {
             console.error(err)
         } finally {
@@ -45,7 +46,7 @@ export default function AdminPayment() {
     }
 
     useEffect(() => {
-        fetchPayment()
+        fetchStockmovement()
     }, [page])
 
     const handleSearch = async () => {
@@ -53,29 +54,38 @@ export default function AdminPayment() {
             setError("")
 
             if (!search.trim()) {
-                const res = await api.get(`/admin/payments?page=1`)
-                setPayments(res.data.data)
+                const { data } = await api.get(`/admin/stock_moves?page=1`)
+                setStocks(data.data)
                 setIsSearchResult(false)
                 return
             }
 
-            const res = await api.get(`/admin/payments/${search}`)
-            setPayments(res.data.data)
+            const { data } = await api.get(`/admin/stock_moves/${search}`)
+            setStocks(data.data)
             setIsSearchResult(true)
         } catch (err: unknown) {
             if (err instanceof AxiosError) {
                 const status = err.response?.status
+
                 if (status === 404) {
-                    setPayments([])
-                    setError("Payment not found")
+                    setStocks([])
+                    setError("Stock not found")
                 } else if (status === 400) {
                     setError("Bad request")
                 } else {
                     setError("Something went wrong")
                 }
             } else {
-                setError("Unexpected error")
+                setError("Unexpected Error")
             }
+        }
+    }
+
+    const handleNavigate = (stock: typeof stocks[number]) => {
+        if (stock.item_type === "reward") {
+            navigate(`/admin/rewards/detail/${stock.item_id}`)
+        } else {
+            navigate(`/admin/products/detail/${stock.item_id}`)
         }
     }
 
@@ -85,7 +95,7 @@ export default function AdminPayment() {
 
             <div className="flex justify-between  mb-6">
                 <h1 className="text-2xl font-semibold">
-                    Payments
+                    Stock Movement
                 </h1>
 
                 <form
@@ -97,10 +107,10 @@ export default function AdminPayment() {
                     <div>
                         <input
                             type="text"
-                            placeholder="Search Payment ID"
+                            placeholder="Search Stock Movement ID"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="border px-3 py-2 rounded"
+                            className="border px-3 py-2 rounded w-65"
                         />
 
                         <button
@@ -123,80 +133,72 @@ export default function AdminPayment() {
                         <thead className="bg-gray-100 h-15">
                             <tr>
                                 <th className="text-left pl-2">ID</th>
-                                <th className="text-left pl-2">Order ID</th>
-                                <th className="text-left pl-2">Transaction Ref</th>
-                                <th className="text-left pl-2">Payment Provider</th>
-                                <th className="text-left pl-2">Status</th>
-                                <th className="text-left pl-2">Amount</th>
+                                <th className="text-left pl-2">Type</th>
+                                <th className="text-left pl-2">Item ID</th>
+                                <th className="text-left pl-2">Quantity</th>
+                                <th className="text-left pl-2">Movement Type</th>
+                                <th className="text-left pl-2">Reference Type</th>
+                                <th className="text-left pl-2">Reference ID</th>
                                 <th className="text-left pl-2">Created At</th>
-                                <th className="text-left pl-2">Paid At</th>
                             </tr>
                         </thead>
 
                         <div className="">
-                            {payments.length === 0 && error && (
+                            {stocks.length === 0 && error && (
                                 <tr>
                                     <td colSpan={3} className="p-6 text-gray-500">
-                                        Payments not found
+                                        Stock not found
                                     </td>
                                 </tr>
                             )}
                         </div>
 
-                        {payments.map(payment => (
-
+                        {stocks.map(stock => (
                             <tr
-                                key={payment.id}
-                                className="border-t border-gray-300 transition-all duration-100 hover:shadow-xl cursor-pointer  "
-                                onClick={() => navigate(`/admin/payments/detail/${payment.id}`)}
+                                key={stock.id}
+                                className="border-t border-gray-300"
                             >
 
                                 <td className="py-4 px-2">
-                                    {payment.id}
+                                    {stock.id}
                                 </td>
 
                                 <td className="max-w-45 py-4 px-2 truncate">
-                                    {payment.order_id}
+                                    {stock.item_type}
+                                </td>
+
+                                <td
+                                    className="py-4 px-2 text-blue-600 hover:underline cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                                    onClick={() => handleNavigate(stock)}
+                                >
+                                    {stock.item_id}
                                 </td>
 
                                 <td className="py-4 px-2">
-                                    {payment.transaction_ref}
+                                    {stock.quantity}
                                 </td>
 
                                 <td className="py-4 px-2">
-                                    {payment.payment_provider}
-                                </td>
-
-                                <td className="py-4 px-2">
-                                    {payment.status}
+                                    {stock.movement_type}
                                 </td>
 
                                 <td className="py-4 px-2 ">
-                                    ฿ {formatNumeric(payment.amount)}
+                                    {stock.reference_type}
                                 </td>
 
                                 <td className="py-4 px-2">
-                                    {formatDate(payment.created_at)}
+                                    {formatNumeric(stock.reference_id)}
                                 </td>
 
                                 <td className="py-4 px-2">
-                                    {formatDate(payment.paid_at)}
+                                    {formatDate(stock.created_at)}
                                 </td>
-
                             </tr>
                         ))}
                     </table>
                 </div>
             </div>
             <div className="flex justify-between">
-                {isSearchResult && payments.length > 0 && (
-                    <button
-                        onClick={() => navigate(`/admin/payments/detail/${payments[0].id}`)}
-                        className="bg-blue-500 text-white px-3 py-1 rounded mt-4"
-                    >
-                        view Details
-                    </button>
-                )}
                 <div className="flex gap-6 pt-4">
 
                     {!isSearchResult && (

@@ -5,7 +5,7 @@ import { AppError } from '../util/AppError'
 
 export const getAllStockmovementService = async () => {
     const response = await pool.query(`
-        select * from stock_movement
+        select * from stock_movements
         order by created_at desc
         `)
     return response.rows
@@ -13,7 +13,7 @@ export const getAllStockmovementService = async () => {
 
 export const getStockmovementByIdService = async (id: number) => {
     const response = await pool.query(`
-        select * from stock_movement 
+        select * from stock_movements
         where id = $1
         `, [id])
 

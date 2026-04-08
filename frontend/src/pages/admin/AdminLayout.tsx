@@ -60,7 +60,7 @@ export default function AdminLayout() {
                         Payment
                     </NavLink>
 
-                    <NavLink to="/admin/users" className={linkClass}>
+                    <NavLink to="/admin/stock-movement" className={linkClass}>
                         Stock Movement
                     </NavLink>
 
