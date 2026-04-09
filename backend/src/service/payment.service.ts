@@ -254,30 +254,14 @@ export const updatePaymentStatusService = async (
 export const getPaymentByIdService = async (
     paymentId: number,
     loginUserId: number,
-    role: Role
 ) => {
-
-    const response = await pool.query(
-        role === 'admin'
-            ? `
-        select 
-            p. * ,
-            o.user_id
-        from payment p 
-        join orders o on o.id = p.order_id
-        where p.id = $1
-        `
-            :
-            `
-        select p.* , o.user_id
+    const response = await pool.query(`
+         select p.* , o.user_id
         from payment p 
         join orders o on o.id = p.order_id
         where p.id = $1
         and o.user_id = $2
-        `,
-        role === 'admin'
-            ? [paymentId]
-            : [paymentId, loginUserId]
+       `, [paymentId, loginUserId]
     )
 
     if (response.rowCount === 0) {
@@ -293,20 +277,20 @@ export const AdminGetPaymentDetailByIdService = async (paymentId: number) => {
     const response = await pool.query(`
         select
             p.id,
-            p.order_id,
-            p.amount,
-            p.transaction_ref,
-            p.payment_provider,
-            p.status,
-            p.created_at,
-            p.paid_at,
+        p.order_id,
+        p.amount,
+        p.transaction_ref,
+        p.payment_provider,
+        p.status,
+        p.created_at,
+        p.paid_at,
 
-            json_build_object(
-            'id' , u.id,
-            'first_name' , u.first_name,
-            'last_name' , u.last_name,
-            'email' , u.email
-            ) as user
+        json_build_object(
+            'id', u.id,
+            'first_name', u.first_name,
+            'last_name', u.last_name,
+            'email', u.email
+        ) as user
              
         from payment p 
 
@@ -315,12 +299,21 @@ export const AdminGetPaymentDetailByIdService = async (paymentId: number) => {
         left join users u
             on o.user_id = u.id
 
-        where p.id =$1
+        where p.id = $1
         `, [paymentId])
 
     if (response.rowCount === 0) {
         throw new AppError("Payment not found", 404)
     }
+
+    return response.rows[0]
+}
+
+export const AdminGetPaymentIdByService = async (id: number) => {
+    const response = await pool.query(`
+    select * from payment
+    where id = $1
+    `, [id])
 
     return response.rows[0]
 }

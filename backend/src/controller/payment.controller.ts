@@ -7,7 +7,8 @@ import {
     createPaymentService,
     updatePaymentStatusService,
     getPaymentByIdService,
-    AdminGetPaymentDetailByIdService
+    AdminGetPaymentDetailByIdService,
+    AdminGetPaymentIdByService
 } from '../service/payment.service'
 
 import { PaymentUpdateStatus } from "../types/payment.type";
@@ -79,7 +80,7 @@ export const getPaymentById = async (req: Request, res: Response, next: NextFunc
             throw new AppError("Invalid paymentId", 400)
         }
 
-        const data = await getPaymentByIdService(paymentId, req.user!.id, req.user!.role)
+        const data = await getPaymentByIdService(paymentId, req.user!.id)
         return res.status(200).json({ data })
     } catch (err) {
         return next(err)
@@ -102,3 +103,17 @@ export const AdminGetPaymentDetailById = async (req: Request, res: Response, nex
     }
 }
 
+export const AdminGetPaymentById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.params.id)
+
+        if (Number.isNaN(id)) {
+            throw new AppError("invalid Id", 400)
+        }
+
+        const data = await AdminGetPaymentIdByService(id)
+        return res.status(200).json({ data })
+    } catch (err) {
+        return next(err)
+    }
+}

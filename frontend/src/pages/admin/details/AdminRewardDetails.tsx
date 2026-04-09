@@ -122,7 +122,7 @@ export default function AdminRewardDetails() {
     if (!rewards) return <div>Reward not found</div>
 
     return (
-        <div className="p-6">
+        <div className="p-6 font-baskerville">
 
             <div className="flex justify-between">
                 <div className="flex gap-10 pb-10 text-2xl">

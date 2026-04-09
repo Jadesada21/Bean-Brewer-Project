@@ -3,7 +3,8 @@ import { Router } from 'express'
 
 import {
     getAllPayment,
-    AdminGetPaymentDetailById
+    AdminGetPaymentDetailById,
+    AdminGetPaymentById
 } from '../../controller/payment.controller'
 
 const router = Router()
@@ -14,4 +15,6 @@ router.route('/')
 router.route('/detail/:id')
     .get(AdminGetPaymentDetailById)
 
+router.route('/:id')
+    .get(AdminGetPaymentById)
 export default router

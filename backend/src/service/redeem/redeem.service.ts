@@ -7,13 +7,24 @@ import {
     RedeemUpdateStatus
 } from '../../types/redeem.type'
 
-export const getAllRedeemService = async () => {
-    const response = await pool.query(`
-        select * from redeems
-        order by created_at desc
-        `)
+export const getAllRedeemService = async (page: number) => {
+    const limit = 10
+    const offset = (page - 1) * limit
 
-    return response.rows
+    const response = await pool.query(`
+        select *,
+        count(*) over() as total_count
+        from redeems
+        order by created_at desc
+        limit $1 offset $2
+        `, [limit, offset])
+
+    const rows = response.rows.map(({ total_count, ...rest }) => rest)
+    const total = response.rows[0]?.total_count ?? 0
+    return {
+        data: rows,
+        total
+    }
 }
 
 export const createRedeemService = async (

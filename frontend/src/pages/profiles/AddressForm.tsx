@@ -77,7 +77,6 @@ export default function AddressForm() {
                 district: "",
                 subdistrict: ""
             })
-            window.location.reload()
             await fetchAddress()
         } catch (err) {
             console.log("Add address error", err);
@@ -88,7 +87,6 @@ export default function AddressForm() {
     const setDefaultAddressHandler = async (id: number) => {
         try {
             await api.patch(`/addresses/${id}/default`)
-            window.location.reload()
             await fetchAddress()
         } catch (err) {
             console.error(err)
@@ -168,9 +166,7 @@ export default function AddressForm() {
 
 
     return (
-        <div className="font-baskerville"
-
-        >
+        <div className="font-baskerville">
             <div className="mt-8 pl-3">
                 <button
                     onClick={() => setShowCreateModal(true)}

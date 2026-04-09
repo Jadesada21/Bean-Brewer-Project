@@ -46,7 +46,7 @@ export default function AdminOrderDetails() {
 
 
     return (
-        <div className="font-baskerville">
+        <div className="font-baskerville ml-30">
             <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-3xl mb-10 h-full">
 
                 <h2 className="text-xl font-semibold mb-6">

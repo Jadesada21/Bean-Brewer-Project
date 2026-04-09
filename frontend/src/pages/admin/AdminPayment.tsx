@@ -26,9 +26,9 @@ export default function AdminPayment() {
 
     const fetchPayment = async () => {
         try {
-            const res = await api.get(`/admin/payments`)
-            setPayments(res.data.data)
-            setTotal(res.data.total)
+            const { data } = await api.get(`/admin/payments`)
+            setPayments(data.data)
+            setTotal(data.total)
         } catch (err) {
             console.error(err)
         } finally {
@@ -45,14 +45,14 @@ export default function AdminPayment() {
             setError("")
 
             if (!search.trim()) {
-                const res = await api.get(`/admin/payments?page=1`)
-                setPayments(res.data.data)
+                const { data } = await api.get(`/admin/payments?page=1`)
+                setPayments(data.data)
                 setIsSearchResult(false)
                 return
             }
 
-            const res = await api.get(`/admin/payments/${search}`)
-            setPayments(res.data.data)
+            const { data } = await api.get(`/admin/payments/${search}`)
+            setPayments([data.data])
             setIsSearchResult(true)
         } catch (err: unknown) {
             if (err instanceof AxiosError) {

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { formatDate } from "../../components/FormatDate"
 import Pagination from "../../components/Pagination"
 import type { RedeemRewardsProps } from "../../type/admin/adminredeemreward.type"
+import { AxiosError } from "axios"
 
 
 export default function AdminRedeemRewards() {
@@ -13,7 +14,7 @@ export default function AdminRedeemRewards() {
     const [redeemRewards, setRedeemRewards] = useState<RedeemRewardsProps[]>([])
     const [total, setTotal] = useState(0)
     const [page, setPage] = useState(1)
-    const [error, setErorr] = useState("")
+    const [error, setError] = useState("")
     const [search, setSearch] = useState("")
     const [isSearchResult, setIsSearchResult] = useState(false)
     const [loading, setLoading] = useState(true)
@@ -23,10 +24,10 @@ export default function AdminRedeemRewards() {
 
     const fetchRedeemRewards = async () => {
         try {
-            const res = await api.get(`/admin/redeems`)
+            const { data } = await api.get(`/admin/redeems?page=${page}`)
 
-            setRedeemRewards(res.data.data)
-            setTotal(res.data.total)
+            setRedeemRewards(data.data)
+            setTotal(data.total)
         } catch (err) {
             console.error(err)
         } finally {
@@ -40,23 +41,36 @@ export default function AdminRedeemRewards() {
 
     const handleSearch = async () => {
         try {
-            setErorr("")
+            setError("")
 
             if (!search.trim()) {
-                const res = await api.get(`/admin/redeems?page=1`)
-                setRedeemRewards(res.data.data)
+                const { data } = await api.get(`/admin/redeems?page=1`)
+                setRedeemRewards(data.data)
                 setIsSearchResult(false)
                 return
             }
 
-            const res = await api.get(`/admin/redeems/${search}`)
-            setRedeemRewards(res.data.data)
+            const { data } = await api.get(`/admin/redeems/${search}`)
+            setRedeemRewards([data.data])
             setIsSearchResult(true)
-        } catch (err: any) {
-            if (err.response?.status === 404) {
-                setRedeemRewards([])
-                setErorr("Redeem reward not found")
+
+        } catch (err: unknown) {
+            if (err instanceof AxiosError) {
+                const status = err.response?.status
+
+                if (status === 404) {
+                    setRedeemRewards([])
+                    setError("Stock not found")
+                } else if (status === 400) {
+                    setError("Bad request")
+                } else {
+                    setError("Something went wrong")
+                }
+            } else {
+                setError("Unexpected Error")
             }
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -88,7 +102,7 @@ export default function AdminRedeemRewards() {
                         />
 
                         <button
-                            onClick={handleSearch}
+                            type="submit"
                             className="bg-emerald-500 text-white px-4 py-2 rounded ml-5 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Search

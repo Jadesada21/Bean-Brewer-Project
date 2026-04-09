@@ -15,8 +15,10 @@ import { RedeemUpdateStatus } from "../../types/redeem.type";
 
 export const getAllRedeem = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = await getAllRedeemService()
-        return res.status(200).json({ data })
+        const page = Number(req.query.page) || 1
+
+        const { data, total } = await getAllRedeemService(page)
+        return res.status(200).json({ data, total })
     } catch (err) {
         next(err)
     }
@@ -103,7 +105,7 @@ export const adminGetRedeemById = async (req: Request, res: Response, next: Next
         }
 
         const data = await adminGetRedeemByIdService(redeemId)
-        return res.status(200).json({ status: "Success", data })
+        return res.status(200).json({ data })
     } catch (err) {
         next(err)
     }

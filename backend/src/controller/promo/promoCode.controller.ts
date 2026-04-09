@@ -16,8 +16,10 @@ import { AppError } from '../../util/AppError'
 
 export const getAllPromoCode = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = await getAllPromoCodeService()
-        return res.status(200).json({ status: "Success", data })
+        const page = Number(req.query.page) || 1
+
+        const { data, total } = await getAllPromoCodeService(page)
+        return res.status(200).json({ data, total })
     } catch (err) {
         next(err)
     }
@@ -48,8 +50,8 @@ export const createPromoCode = async (req: Request<{}, {}, PromoCodeTypeInput>, 
             throw new AppError("Invalid input", 400)
         }
 
-        const newPromoCode = await createPromoCodeService(req.body)
-        return res.status(201).json({ status: "Success", newPromoCode })
+        const data = await createPromoCodeService(req.body)
+        return res.status(201).json({ data })
 
     } catch (err) {
         next(err)

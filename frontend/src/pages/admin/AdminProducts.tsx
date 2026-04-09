@@ -3,6 +3,8 @@ import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination'
 import type { Product } from '../../type/admin/adminproduct.type'
+import { formatDate } from '../../components/FormatDate'
+import { formatNumeric } from '../../components/FormatNumeric'
 
 
 
@@ -151,15 +153,15 @@ export default function AdminProduct() {
                                 </td>
 
                                 <td className="py-4 px-2 ">
-                                    ฿ {product.price}
+                                    ฿ {formatNumeric(product.price)}
                                 </td>
 
                                 <td className="py-4 px-2">
-                                    {product.stock}
+                                    {formatNumeric(product.stock)}
                                 </td>
 
                                 <td className="py-4 px-2">
-                                    {product.reward_points} pts
+                                    {formatNumeric(product.reward_points)} pts
                                 </td>
 
                                 <td className="py-4 px-2">
@@ -171,11 +173,11 @@ export default function AdminProduct() {
                                 </td>
 
                                 <td className="py-4 px-2">
-                                    {new Date(product.created_at).toLocaleDateString()}
+                                    {formatDate(product.created_at)}
                                 </td>
 
                                 <td className="py-4 px-2">
-                                    {new Date(product.updated_at).toLocaleDateString()}
+                                    {formatDate(product.updated_at)}
                                 </td>
 
 
@@ -189,7 +191,7 @@ export default function AdminProduct() {
                 {isSearchResult && products.length > 0 && (
                     <button
                         onClick={() => navigate(`/admin/products/detail/${products[0].id}`)}
-                        className="bg-blue-500 text-white px-3 py-1 rounded mt-4"
+                        className="bg-blue-500 text-white px-3 py-1 rounded mt-4 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         view Details
                     </button>

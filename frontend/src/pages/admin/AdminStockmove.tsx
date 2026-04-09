@@ -25,7 +25,8 @@ export default function AdminStockmove() {
 
     const fetchStockmovement = async () => {
         try {
-            const { data } = await api.get(`/admin/stock_moves`)
+            const { data } = await api.get(`/admin/stock_moves?page=${page}`)
+
             setStocks(data.data)
             setTotal(data.total)
         } catch (err) {
@@ -42,6 +43,7 @@ export default function AdminStockmove() {
     const handleSearch = async () => {
         try {
             setError("")
+            setLoading(true)
 
             if (!search.trim()) {
                 const { data } = await api.get(`/admin/stock_moves?page=1`)
@@ -51,7 +53,7 @@ export default function AdminStockmove() {
             }
 
             const { data } = await api.get(`/admin/stock_moves/${search}`)
-            setStocks(data.data)
+            setStocks([data.data])
             setIsSearchResult(true)
         } catch (err: unknown) {
             if (err instanceof AxiosError) {
@@ -68,6 +70,8 @@ export default function AdminStockmove() {
             } else {
                 setError("Unexpected Error")
             }
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -104,7 +108,7 @@ export default function AdminStockmove() {
                         />
 
                         <button
-                            onClick={handleSearch}
+                            type="submit"
                             className="bg-emerald-500 text-white px-4 py-2 rounded ml-5 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Search
@@ -133,7 +137,7 @@ export default function AdminStockmove() {
                             </tr>
                         </thead>
 
-                        <div className="">
+                        <tbody>
                             {stocks.length === 0 && error && (
                                 <tr>
                                     <td colSpan={3} className="p-6 text-gray-500">
@@ -141,50 +145,51 @@ export default function AdminStockmove() {
                                     </td>
                                 </tr>
                             )}
-                        </div>
 
-                        {stocks.map(stock => (
-                            <tr
-                                key={stock.id}
-                                className="border-t border-gray-300"
-                            >
 
-                                <td className="py-4 px-2">
-                                    {stock.id}
-                                </td>
-
-                                <td className="max-w-45 py-4 px-2 truncate">
-                                    {stock.item_type}
-                                </td>
-
-                                <td
-                                    className="py-4 px-2 text-blue-600 hover:underline cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
-                                    onClick={() => handleNavigate(stock)}
+                            {stocks.map(stock => (
+                                <tr
+                                    key={stock.id}
+                                    className="border-t border-gray-300"
                                 >
-                                    {stock.item_id}
-                                </td>
 
-                                <td className="py-4 px-2">
-                                    {stock.quantity}
-                                </td>
+                                    <td className="py-4 px-2">
+                                        {stock.id}
+                                    </td>
 
-                                <td className="py-4 px-2">
-                                    {stock.movement_type}
-                                </td>
+                                    <td className="max-w-45 py-4 px-2 truncate">
+                                        {stock.item_type}
+                                    </td>
 
-                                <td className="py-4 px-2 ">
-                                    {stock.reference_type}
-                                </td>
+                                    <td
+                                        className="py-4 px-2 text-blue-600 hover:underline cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                                        onClick={() => handleNavigate(stock)}
+                                    >
+                                        {stock.item_id}
+                                    </td>
 
-                                <td className="py-4 px-2">
-                                    {formatNumeric(stock.reference_id)}
-                                </td>
+                                    <td className="py-4 px-2">
+                                        {stock.quantity}
+                                    </td>
 
-                                <td className="py-4 px-2">
-                                    {formatDate(stock.created_at)}
-                                </td>
-                            </tr>
-                        ))}
+                                    <td className="py-4 px-2">
+                                        {stock.movement_type}
+                                    </td>
+
+                                    <td className="py-4 px-2 ">
+                                        {stock.reference_type}
+                                    </td>
+
+                                    <td className="py-4 px-2">
+                                        {formatNumeric(stock.reference_id)}
+                                    </td>
+
+                                    <td className="py-4 px-2">
+                                        {formatDate(stock.created_at)}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
                     </table>
                 </div>
             </div>

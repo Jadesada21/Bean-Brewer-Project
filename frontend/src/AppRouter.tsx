@@ -54,6 +54,7 @@ import AdminRedeemRewardDetails from "./pages/admin/details/AdminRedeemRewardDet
 import AdminPayment from "./pages/admin/AdminPayment";
 import AdminPaymentDetails from "./pages/admin/details/AdminPaymentDetails";
 import AdminStockmove from "./pages/admin/AdminStockmove";
+import AdminPromoCode from "./pages/admin/AdminPromoCode";
 
 
 export default function AppRouter() {
@@ -153,7 +154,7 @@ export default function AppRouter() {
                     <Route path="redeem-rewards" element={<AdminRedeemRewards />} />
                     <Route path="redeem-rewards/detail/:id" element={<AdminRedeemRewardDetails />} />
 
-                    <Route path="promo-code" element={<AdminRedeemRewardDetails />} />
+                    <Route path="promo-code" element={<AdminPromoCode />} />
 
                     <Route path="payments" element={<AdminPayment />} />
                     <Route path="payments/detail/:id" element={<AdminPaymentDetails />} />
