@@ -3,11 +3,9 @@ import jwt from "jsonwebtoken"
 import { AppError } from "../util/AppError"
 
 import { Role } from "../types/users.type"
+import { JwtPayload } from "../types/optionalAuthenticate.type"
 
-interface JwtPayload {
-    id: number
-    role: Role
-}
+
 
 export const authenticate = (req: Request, res: Response, next: NextFunction) => {
     try {

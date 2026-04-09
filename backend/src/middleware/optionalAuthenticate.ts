@@ -2,12 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken"
 import { AppError } from "../util/AppError";
 
-import { Role } from "../types/users.type";
 
-interface JwtPayload {
-    id: number
-    role: Role
-}
+import { JwtPayload } from "../types/optionalAuthenticate.type";
+
 
 export const optionalAuthenticate = (req: Request, res: Response, next: NextFunction) => {
     try {
