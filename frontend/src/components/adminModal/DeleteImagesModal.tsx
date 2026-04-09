@@ -5,7 +5,7 @@ import type {
     DeleteImagesModalProps,
     DeleteImagesResponse,
     ImageItem
-} from "../../type/DeleteModal.type"
+} from "../../type/deletemodal.type"
 
 export const DeleteImagesModal = ({ id, resource, images, onImagesUpdate, onClose }: DeleteImagesModalProps) => {
 

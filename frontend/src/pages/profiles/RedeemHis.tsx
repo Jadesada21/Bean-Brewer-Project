@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
-import type { Redeem } from '../../type/profile/RedeemHis.type'
+import type { Redeem } from '../../type/profile/redeemhis.type'
 
 
 

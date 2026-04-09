@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../../AxiosInstance'
 import { useParams, useNavigate } from 'react-router-dom'
-import type { RedeemDetail } from '../../../type/profile/detail/RedeemRewardPage.type'
+import type { RedeemDetail } from '../../../type/profile/detail/redeemrewardpage.type'
 
 
 

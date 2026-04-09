@@ -6,7 +6,7 @@ import PriceFilter from "./filter-details/PriceFilter"
 import { ItemCard } from "../../components/ItemCard";
 import { api } from "../../AxiosInstance"
 import Pagination from "../../components/Pagination";
-import type { Product } from "../../type/shop/ShopPage.type";
+import type { Product } from "../../type/shop/shoppage.type";
 
 
 

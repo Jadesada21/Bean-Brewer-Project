@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
-import type { Payment } from '../../type/profile/PaymentHis.type'
+import type { Payment } from '../../type/profile/paymenthis.type'
 
 
 

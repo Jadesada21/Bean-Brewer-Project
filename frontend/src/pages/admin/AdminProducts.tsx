@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination'
-import type { Product } from '../../type/admin/AdminProduct.type'
+import type { Product } from '../../type/admin/adminproduct.type'
 
 
 

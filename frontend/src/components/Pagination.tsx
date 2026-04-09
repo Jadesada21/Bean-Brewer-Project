@@ -1,4 +1,4 @@
-import type { PaginationProps } from "../type/Pagination.type";
+import type { PaginationProps } from "../type/pagination.type";
 
 
 export default function Pagination({

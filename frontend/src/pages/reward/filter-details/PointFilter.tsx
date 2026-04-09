@@ -1,4 +1,4 @@
-import type { PointsFilterProps } from "../../../type/reward/PointFilter.type"
+import type { PointsFilterProps } from "../../../type/reward/pointfilter.type"
 
 
 

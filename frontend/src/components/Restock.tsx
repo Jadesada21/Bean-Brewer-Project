@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { api } from "../AxiosInstance"
-import type { Props } from "../type/Restock.type"
+import type { Props } from "../type/restock.type"
 
 
 

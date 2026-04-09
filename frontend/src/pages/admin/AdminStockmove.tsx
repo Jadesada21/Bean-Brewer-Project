@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 import Pagination from "../../components/Pagination"
 import { formatDate } from "../../components/FormatDate"
 import { formatNumeric } from "../../components/FormatNumeric"
-import type { StockmoveProps } from "../../type/admin/AdminStockMove.type"
+import type { StockmoveProps } from "../../type/admin/adminstockmove.type"
 
 
 export default function AdminStockmove() {

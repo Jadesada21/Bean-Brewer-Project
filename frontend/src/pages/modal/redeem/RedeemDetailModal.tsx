@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
-import type { Props } from "../../../type/RedeemDetailModal.type"
+import type { Props } from "../../../type/redeemdetailmodal.type"
 
 
 

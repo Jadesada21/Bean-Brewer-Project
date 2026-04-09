@@ -1,4 +1,4 @@
-import type { RoastLevelFilterProps } from "../../../type/shop/RoastLevelFilter.type"
+import type { RoastLevelFilterProps } from "../../../type/shop/roastlevelfilter.type"
 
 
 

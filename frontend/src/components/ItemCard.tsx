@@ -1,4 +1,4 @@
-import type { ItemCardProps } from "../type/ItemCard.type";
+import type { ItemCardProps } from "../type/itemcard.type";
 
 
 

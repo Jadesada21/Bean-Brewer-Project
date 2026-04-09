@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../AxiosInstance'
 import { Link } from 'react-router-dom'
-import type { Product, SearchProps } from '../type/Search.type'
+import type { Product, SearchProps } from '../type/search.type'
 
 
 

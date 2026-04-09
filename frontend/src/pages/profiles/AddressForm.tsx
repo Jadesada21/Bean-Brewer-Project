@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
-import type { Address } from '../../type/profile/AddessForm.type'
+import type { Address } from '../../type/profile/addessform.type'
 
 
 

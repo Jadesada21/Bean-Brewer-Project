@@ -4,7 +4,7 @@ import { api } from "../../../AxiosInstance"
 import { formatDate } from "../../../components/FormatDate"
 import { getStatusStyle } from "../../../components/StatusStyle"
 import { formatNumeric } from "../../../components/FormatNumeric"
-import type { RedeemDetail } from "../../../type/admin/detail/AdminRedeemRewardDetail.type"
+import type { RedeemDetail } from "../../../type/admin/detail/adminredeemrewarddetail.type"
 
 
 export default function AdminRedeemRewardDetails() {

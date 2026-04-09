@@ -6,7 +6,7 @@ import { ItemCard } from "../../components/ItemCard";
 import PointsFilter from "./filter-details/PointFilter";
 import CategoryFilter from "./filter-details/CategoryFilter";
 import Pagination from "../../components/Pagination";
-import type { Reward } from "../../type/reward/RewardPage.type";
+import type { Reward } from "../../type/reward/rewardpage.type";
 
 
 

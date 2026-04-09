@@ -4,7 +4,7 @@ import { api } from "../../../AxiosInstance"
 import { getStatusStyle } from "../../../components/StatusStyle"
 import { formatDate } from "../../../components/FormatDate"
 import { formatNumeric } from "../../../components/FormatNumeric"
-import type { PaymentDetail } from "../../../type/admin/detail/AdminPaymentDetail.type"
+import type { PaymentDetail } from "../../../type/admin/detail/adminpaymentdetail.type"
 
 
 

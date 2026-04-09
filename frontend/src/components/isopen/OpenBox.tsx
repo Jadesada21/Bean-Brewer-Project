@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import type { OpenBoxProps } from '../../type/OpenBox.type';
+import type { OpenBoxProps } from '../../type/openbox.type';
 
 
 

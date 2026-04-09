@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
-import type { Order } from '../../type/profile/OrderHis.type'
+import type { Order } from '../../type/profile/orderhis.type'
 
 
 

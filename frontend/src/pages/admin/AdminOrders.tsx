@@ -3,7 +3,7 @@ import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination'
 import { formatDate } from '../../components/FormatDate'
-import type { Order } from '../../type/admin/AdminOrder.type'
+import type { Order } from '../../type/admin/adminorder.type'
 
 
 

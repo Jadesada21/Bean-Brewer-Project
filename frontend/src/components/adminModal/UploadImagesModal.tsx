@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { api } from "../../AxiosInstance";
 
-import type { UploadModalProps } from "../../type/UploadModal.type";
+import type { UploadModalProps } from "../../type/uploadmodal.type";
 
 
 export const UploadModal = ({ id, resource }: UploadModalProps) => {

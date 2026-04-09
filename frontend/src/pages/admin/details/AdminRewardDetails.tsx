@@ -8,7 +8,7 @@ import { formatDate } from "../../../components/FormatDate"
 import { DeleteImagesModal } from "../../../components/adminModal/DeleteImagesModal"
 import { UploadModal } from "../../../components/adminModal/UploadImagesModal"
 
-import type { RewardImage, RewardsDetail } from "../../../type/admin/detail/AdminRewardDetail.type"
+import type { RewardImage, RewardsDetail } from "../../../type/admin/detail/adminrewarddetail.type"
 
 
 export default function AdminRewardDetails() {

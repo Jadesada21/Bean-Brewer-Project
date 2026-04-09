@@ -5,7 +5,7 @@ import { useCart } from "../../context/CartContext"
 import OrderDetailModal from "../modal/order/OrderDetailModal"
 import { useAuth } from "../../context/AuthContext"
 import BoxModal from "../login-signup/BoxModal"
-import type { Order, Product } from "../../type/shop/ShopDetailPage.type"
+import type { Order, Product } from "../../type/shop/shopdetailpage.type"
 
 
 export default function ShopDetailPage() {

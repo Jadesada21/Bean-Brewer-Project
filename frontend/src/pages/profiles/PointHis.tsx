@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
-import type { Points } from '../../type/profile/PointHis.type'
+import type { Points } from '../../type/profile/pointhis.type'
 
 
 

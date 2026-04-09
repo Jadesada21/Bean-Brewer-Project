@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { FilterSidebarProps } from '../type/FilterSidebar.type'
+import type { FilterSidebarProps } from '../type/filtersidebar.type'
 
 
 

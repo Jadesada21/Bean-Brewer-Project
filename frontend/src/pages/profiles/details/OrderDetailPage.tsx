@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../../AxiosInstance'
 import { useParams, useNavigate } from 'react-router-dom'
-import type { OrderDetail } from '../../../type/profile/detail/OrderDetailPage.type'
-
+import type { OrderDetail } from '../../../type/profile/detail/orderdetailpage.type'
 
 
 export default function OrderDetails() {

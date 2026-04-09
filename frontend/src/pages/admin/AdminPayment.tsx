@@ -5,7 +5,7 @@ import { formatNumeric } from "../../components/FormatNumeric"
 import { formatDate } from "../../components/FormatDate"
 import Pagination from "../../components/Pagination"
 import { AxiosError } from "axios"
-import type { PaymentDetail } from "../../type/admin/AdminPayment.type"
+import type { PaymentDetail } from "../../type/admin/adminpayment.type"
 
 
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
-import type { Redeem } from '../../type/profile/RewardHis.type'
+import type { Redeem } from '../../type/profile/rewardhis.type'
 
 
 

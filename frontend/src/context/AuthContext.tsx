@@ -1,7 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { api } from '../AxiosInstance'
-import type { AuthContextType, User } from '../type/AuthContext.type'
-
+import type { AuthContextType, User } from '../type/authcontext.type'
 
 
 

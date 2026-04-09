@@ -5,7 +5,7 @@ import RoastLevelFilter from "./filter-details/RoastlevelFilter"
 import PriceFilter from "./filter-details/PriceFilter"
 
 import { api } from "../../AxiosInstance"
-import type { Product } from "../../type/shop/PremiumPage.type";
+import type { Product } from "../../type/shop/premiumpage.type";
 
 
 

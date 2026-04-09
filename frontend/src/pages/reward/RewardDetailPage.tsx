@@ -4,7 +4,7 @@ import { api } from "../../AxiosInstance"
 import { useAuth } from "../../context/AuthContext"
 import BoxModal from "../login-signup/BoxModal"
 import RedeemDetailModal from "../modal/redeem/RedeemDetailModal"
-import type { Redeem, Reward } from "../../type/reward/RewardDetailPage.type"
+import type { Redeem, Reward } from "../../type/reward/rewarddetailpage.type"
 
 
 
@@ -109,7 +109,7 @@ export default function RewardDetailPage() {
     return (
         <div className="max-w-7xl mx-auto px-6 py-10 font-baskerville">
 
-            <div className="flex font-baskerville items-center pb-10">
+            <div className="flex flex-wrap items-center justify-center xl:justify-start pb-10 gap-2 font-baskerville">
                 <Link to='/' className="transition-transform duration-150 active:scale-90 hover:scale-105">
                     Home
                 </Link>
@@ -129,27 +129,32 @@ export default function RewardDetailPage() {
                 <p className="font-semibold">{reward.name}</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-16">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 xl:gap-16">
 
                 {/* Image */}
-                <div className="bg-gray-100 rounded-2xl flex items-center justify-center p-10">
+                <div className="bg-gray-100 rounded-2xl flex items-center justify-center p-6 xl:p-10">
                     <img
                         src={reward.image_url}
-                        className="w-120 object-contain rounded-2xl"
+                        className="
+                        w-full max-w-70
+                        sm:max-w-87.5
+                        md:max-w-105
+                        xl:max-w-125
+                        object-contain rounded-2xl mx-auto"
                     />
                 </div>
 
                 {/* Detail */}
-                <div>
+                <div className="text-center xl:text-left">
                     <p className="text-sm tracking-widest text-gray-500 uppercase">
                         {reward.category}
                     </p>
 
-                    <h1 className="text-4xl font-serif mt-2">
+                    <h1 className="text-2xl sm:text-3xl xl:text-4xl font-serif mt-2">
                         {reward.name}
                     </h1>
 
-                    <p className="text-2xl mt-4 font-medium">
+                    <p className="text-xl sm:text-2xl mt-4 font-medium">
                         {reward.points_required} pts
                     </p>
 
@@ -157,9 +162,9 @@ export default function RewardDetailPage() {
                         {reward.short_description}
                     </p>
 
-                    {/* Roast */}
+
                     <div className="mt-6">
-                        <p className="text-xl mb-2 whitespace-pre-line">
+                        <p className="mt-6 leading-relaxed">
                             {reward.description}
                         </p>
                     </div>
@@ -167,7 +172,7 @@ export default function RewardDetailPage() {
                     {/* Quantity */}
                     <div className="mt-8">Quantity</div>
 
-                    <div className="mt-3 flex items-center gap-4 border rounded-lg w-30">
+                    <div className="mt-4 flex items-center gap-4 border rounded-lg w-30 mx-auto xl:mx-0">
                         <button
                             onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
                             className="w-10 h-10 text-2xl pb-1 cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"

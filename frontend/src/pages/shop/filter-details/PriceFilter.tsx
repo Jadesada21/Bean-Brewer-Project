@@ -1,4 +1,4 @@
-import type { PriceFilterProps } from "../../../type/shop/PriceFilter.type"
+import type { PriceFilterProps } from "../../../type/shop/pricefilter.type"
 
 
 

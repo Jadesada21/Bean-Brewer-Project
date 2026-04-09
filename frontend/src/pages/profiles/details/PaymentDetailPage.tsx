@@ -4,7 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { getStatusStyle } from '../../../components/StatusStyle'
 import { formatDate } from '../../../components/FormatDate'
 import { formatNumeric } from '../../../components/FormatNumeric'
-import type { PaymentDetail } from '../../../type/profile/detail/PaymentDetailPage.type'
+import type { PaymentDetail } from '../../../type/profile/detail/paymentdetailpage.type'
+
 
 
 

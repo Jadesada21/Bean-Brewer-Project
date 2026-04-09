@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import type { ShopLinksProps } from "../../../type/ShopLink.type";
+import type { ShopLinksProps } from "../../../type/shoplink.type";
 
 
 export default function ShopLinks({ title, links }: ShopLinksProps) {

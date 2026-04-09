@@ -1,4 +1,4 @@
-import type { CategoryFilterProps } from "../../../type/reward/CategoryFilter.type"
+import type { CategoryFilterProps } from "../../../type/reward/categoryfilter.type"
 
 
 

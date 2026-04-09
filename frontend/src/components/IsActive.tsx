@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { api } from "../AxiosInstance"
-import type { Props } from "../type/IsActive.type"
+import type { Props } from "../type/isactive.type"
 
 
 

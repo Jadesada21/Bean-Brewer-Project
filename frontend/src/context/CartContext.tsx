@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { api } from '../AxiosInstance'
 import { useAuth } from './AuthContext'
-import type { CartContextType, CartItem } from '../type/CartContext.type'
+import type { CartContextType, CartItem } from '../type/cartcontext.type'
 
 
 
