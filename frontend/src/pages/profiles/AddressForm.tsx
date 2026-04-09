@@ -209,7 +209,9 @@ export default function AddressForm() {
                                 placeholder='address'
                                 maxLength={60}
                                 disabled={!isEditing}
-                                className="w-full rounded border border-gray-300 h-10 pl-2 "
+                                className={`w-full rounded border border-gray-300 h-10 
+                                    ${isEditing ? "border-gray-300 bg-white pl-2" : "border-transparent"
+                                    }`}
                             />
                         </div>
 
@@ -224,7 +226,9 @@ export default function AddressForm() {
                                     placeholder='subdistrict'
                                     maxLength={30}
                                     disabled={!isEditing}
-                                    className="w-full rounded border border-gray-300 h-10 pl-2 "
+                                    className={`w-full rounded border border-gray-300 h-10 
+                                    ${isEditing ? "border-gray-300 bg-white pl-2" : "border-transparent"
+                                        }`}
                                 />
                             </div>
                             <div>
@@ -237,7 +241,9 @@ export default function AddressForm() {
                                     placeholder='district'
                                     maxLength={20}
                                     disabled={!isEditing}
-                                    className="w-full rounded border border-gray-300 h-10 pl-2 "
+                                    className={`w-full rounded border border-gray-300 h-10 
+                                    ${isEditing ? "border-gray-300 bg-white pl-2" : "border-transparent"
+                                        }`}
                                 />
                             </div>
                         </div>
@@ -255,7 +261,9 @@ export default function AddressForm() {
                                     placeholder='province'
                                     maxLength={20}
                                     disabled={!isEditing}
-                                    className="w-full rounded border border-gray-300 h-10 pl-2 "
+                                    className={`w-full rounded border border-gray-300 h-10 
+                                    ${isEditing ? "border-gray-300 bg-white pl-2" : "border-transparent"
+                                        }`}
                                 />
                             </div>
 
@@ -269,7 +277,9 @@ export default function AddressForm() {
                                     placeholder='postalcode'
                                     maxLength={5}
                                     disabled={!isEditing}
-                                    className="w-full rounded border border-gray-300 h-10 pl-2 "
+                                    className={`w-full rounded border border-gray-300 h-10 
+                                    ${isEditing ? "border-gray-300 bg-white pl-2" : "border-transparent"
+                                        }`}
                                 />
                             </div>
                         </div>
@@ -284,7 +294,9 @@ export default function AddressForm() {
                                 placeholder='country'
                                 maxLength={30}
                                 disabled={!isEditing}
-                                className="w-full rounded border border-gray-300 h-10 pl-2 "
+                                className={`w-full rounded border border-gray-300 h-10 
+                                    ${isEditing ? "border-gray-300 bg-white pl-2" : "border-transparent"
+                                    }`}
                             />
                         </div>
                     </div>

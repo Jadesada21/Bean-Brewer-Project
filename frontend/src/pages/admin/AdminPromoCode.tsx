@@ -4,8 +4,8 @@ import { api } from "../../AxiosInstance"
 import { AxiosError } from "axios"
 import { formatNumeric } from "../../components/FormatNumeric"
 import { formatDate } from "../../components/FormatDate"
-import { PromoCodeModal } from "./modal/PromoCodeModal"
 import Pagination from "../../components/Pagination"
+import { AdminPromoCodeModal } from "./modal/AdminPromoCodeModal"
 
 
 
@@ -121,7 +121,7 @@ export default function AdminPromoCode() {
             </div>
 
             <div className="mt-8 pl-3 mb-8">
-                <PromoCodeModal onSuccess={fetchPromoCodes} />
+                <AdminPromoCodeModal onSuccess={fetchPromoCodes} />
             </div>
 
             <div className="bg-white rounded-xl shadow overflow-hidden">

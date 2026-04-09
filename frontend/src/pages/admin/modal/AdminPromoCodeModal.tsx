@@ -1,12 +1,12 @@
 import { useState } from "react"
-import type { PromoCodeModalProps } from "../../../type/admin/adminpromocodemodal.type"
+import type { PromoCodeModalProps } from "../../../type/admin/modal/adminpromocodemodal.type"
 import { api } from "../../../AxiosInstance"
 
 type Props = {
     onSuccess: () => void
 }
 
-export const PromoCodeModal = ({ onSuccess }: Props) => {
+export const AdminPromoCodeModal = ({ onSuccess }: Props) => {
 
     const [open, setOpen] = useState(false)
     const [form, setForm] = useState<PromoCodeModalProps>({
@@ -46,7 +46,7 @@ export const PromoCodeModal = ({ onSuccess }: Props) => {
             <div className="mt-8 pl-3 mb-8">
                 <button
                     onClick={() => setOpen(true)}
-                    className="border bg-green-500 w-50 h-10 text-white rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                    className="border bg-emerald-500 w-50 h-10 text-white rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                 >
                     Create Promo Code +
                 </button>
@@ -102,7 +102,7 @@ export const PromoCodeModal = ({ onSuccess }: Props) => {
                     <div className="mt-auto pt-6 flex justify-start gap-3">
                         <button
                             onClick={handleSubmit}
-                            className="px-4 py-2 bg-green-500 text-white rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                            className="px-4 py-2 bg-emerald-500 text-white rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                         >
                             Save
                         </button>

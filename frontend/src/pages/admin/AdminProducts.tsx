@@ -5,6 +5,7 @@ import Pagination from '../../components/Pagination'
 import type { Product } from '../../type/admin/adminproduct.type'
 import { formatDate } from '../../components/FormatDate'
 import { formatNumeric } from '../../components/FormatNumeric'
+import { AdminProductModal } from './modal/AdminProductModal'
 
 
 
@@ -98,6 +99,10 @@ export default function AdminProduct() {
                         </button>
                     </div>
                 </form>
+            </div>
+
+            <div className="mt-8 pl-3 mb-8">
+                <AdminProductModal /*onSuccess={fetchPromoCodes}*/ />
             </div>
 
 

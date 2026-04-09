@@ -394,7 +394,7 @@ export default function AdminProductDetails() {
                                 />
                             ) : (
                                 <p className="mt-1 border p-2 rounded">
-                                    {products.taste}
+                                    {products.bag_size}
                                 </p>
                             )}
 

@@ -59,7 +59,7 @@ export const createProduct = async (req: Request<{}, {}, CreateProductInput>, re
             typeof taste !== "string" || taste.trim() === "" ||
             typeof bag_size !== "string" || bag_size.trim() === "" ||
             typeof price !== "number" || price <= 0 ||
-            typeof stock !== "number" || !Number.isInteger(stock) || stock < 0 ||
+            typeof stock !== "number" || stock < 0 ||
             typeof reward_points !== "number" || !Number.isInteger(reward_points) || reward_points <= 0 ||
             typeof category_id !== "number" || !Number.isInteger(category_id) || category_id <= 0
         ) {
