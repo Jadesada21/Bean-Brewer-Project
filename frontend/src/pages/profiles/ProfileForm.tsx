@@ -78,7 +78,7 @@ export default function ProfileForm() {
                 phone_num: form.phone
             })
 
-            await fetchProfile()
+            fetchProfile()
             setIsEditing(false)
 
         } catch (err) {

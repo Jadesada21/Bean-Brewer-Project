@@ -53,14 +53,14 @@ export const getUsersById = async (req: Request, res: Response, next: NextFuncti
 
 export const updateUsersByLoginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const data = await updateUsersByLoginUserService(
+            req.user!.id,
+            req.body
+        )
 
-        const loginUserId = req.user!.id
-
-        const responese = await updateUsersByLoginUserService(req.user!.id, req.body)
-
-        return res.status(200).json({ status: "Success", responese })
+        return res.status(200).json({ data })
     } catch (err) {
-        next(err)
+        return next(err)
     }
 }
 

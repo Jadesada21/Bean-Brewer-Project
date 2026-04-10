@@ -3,7 +3,7 @@ import { AppError } from '../util/AppError'
 
 
 import {
-    UpdateUsersPhoneInput,
+    UpdateUsersInput,
 } from '../types/users.type'
 
 import {
@@ -50,15 +50,15 @@ export const getUsersByIdService = async (targetUserId: number, loginUserId: num
 }
 
 
-export const updateUsersByLoginUserService = async (loginUserId: number, body: UpdateUsersPhoneInput) => {
+export const updateUsersByLoginUserService = async (loginUserId: number, body: UpdateUsersInput) => {
     const { first_name, last_name, phone_num } = body
 
     const response = await pool.query(
         `update users
         set 
-            first_name = COALESCE($1, first_name),
-            last_name = COALESCE($2, last_name),
-            phone_num = COALESCE($3, phone_num)
+            first_name = coalesce($1, first_name),
+            last_name = coalesce($2, last_name),
+            phone_num = coalesce($3, phone_num)
         where id = $4
         returning id ,first_name , last_name , phone_num`,
         [first_name, last_name, phone_num, loginUserId]

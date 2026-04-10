@@ -40,7 +40,7 @@ export default function AdminLayout() {
                         Rewards
                     </NavLink>
 
-                    <NavLink to="/admin/users" className={linkClass}>
+                    <NavLink to="/admin/categories" className={linkClass}>
                         Categories
                     </NavLink>
 

@@ -3,6 +3,7 @@ import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination'
 import type { Reward } from '../../type/admin/adminreward.type'
+import { AdminRewardModal } from './modal/AdminRewardModal'
 
 
 
@@ -95,6 +96,10 @@ export default function AdminReward() {
                         </button>
                     </div>
                 </form>
+            </div>
+
+            <div className="mt-8 pl-3 mb-8">
+                <AdminRewardModal onSuccess={fetchRewards} />
             </div>
 
 

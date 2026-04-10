@@ -24,7 +24,7 @@ export interface UsersResponse {
     updated_at: string
 }
 
-export interface UpdateUsersPhoneInput {
+export interface UpdateUsersInput {
     first_name: string
     last_name: string
     phone_num: string

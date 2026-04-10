@@ -6,6 +6,7 @@ import type { Product } from '../../type/admin/adminproduct.type'
 import { formatDate } from '../../components/FormatDate'
 import { formatNumeric } from '../../components/FormatNumeric'
 import { AdminProductModal } from './modal/AdminProductModal'
+import { AxiosError } from 'axios'
 
 
 
@@ -55,12 +56,23 @@ export default function AdminProduct() {
 
             setProducts([res.data.data])
             setIsSearchResult(true)
-        } catch (err: any) {
+        } catch (err: unknown) {
+            if (err instanceof AxiosError) {
+                const status = err.response?.status
 
-            if (err.response?.status === 404) {
-                setProducts([])
-                setError("Product not found")
+                if (status === 404) {
+                    setProducts([])
+                    setError("Product not found")
+                } else if (status === 400) {
+                    setError("Bad request")
+                } else {
+                    setError("Something went wrong")
+                }
+            } else {
+                setError("Unexpected Error")
             }
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -102,7 +114,7 @@ export default function AdminProduct() {
             </div>
 
             <div className="mt-8 pl-3 mb-8">
-                <AdminProductModal /*onSuccess={fetchPromoCodes}*/ />
+                <AdminProductModal onSuccess={fetchProducts} />
             </div>
 
 

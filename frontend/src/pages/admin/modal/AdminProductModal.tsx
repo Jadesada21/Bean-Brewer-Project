@@ -13,7 +13,7 @@ export const AdminProductModal = ({ onSuccess }: Props) => {
         name: "",
         description: "",
         taste: "",
-        roast_level: { roast_level: "light" },
+        roast_level: "light",
         bag_size: "standard: 300 gram",
         price: "",
         stock: "",
@@ -28,7 +28,7 @@ export const AdminProductModal = ({ onSuccess }: Props) => {
                 price: Number(form.price),
                 stock: Number(form.stock),
                 reward_points: Number(form.reward_points),
-                roast_level: form.roast_level.roast_level,
+                roast_level: form.roast_level,
                 description: form.description.replace(/\r\n/g, '\n'),
                 category_id: Number(form.category_id),
             }
@@ -40,7 +40,7 @@ export const AdminProductModal = ({ onSuccess }: Props) => {
                 name: "",
                 description: "",
                 taste: "",
-                roast_level: { roast_level: "light" },
+                roast_level: "light",
                 bag_size: "standard: 300 gram",
                 price: "",
                 stock: "",
@@ -56,7 +56,7 @@ export const AdminProductModal = ({ onSuccess }: Props) => {
     }
 
     const handleRoastChange = (value: "light" | "medium" | "dark") => {
-        setForm({ ...form, roast_level: { roast_level: value } });
+        setForm({ ...form, roast_level: value });
     };
 
     return (
@@ -149,7 +149,7 @@ export const AdminProductModal = ({ onSuccess }: Props) => {
                                 <div>
                                     <label className="block mb-2 ">Roast Level</label>
                                     <select
-                                        value={form.roast_level.roast_level}
+                                        value={form.roast_level}
                                         className="w-full border rounded px-3 py-2 mt-1"
                                         onChange={(e) =>
                                             handleRoastChange(e.target.value as "light" | "medium" | "dark")

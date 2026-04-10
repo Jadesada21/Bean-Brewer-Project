@@ -6,7 +6,8 @@ import {
     getCategoryByIdService,
     getCategoryProductsByIdService,
     getCategoryRewardsByIdService,
-    admingetAllCategoryService
+    adminGetAllCategoryService,
+    adminPatchNameCategoryService
 } from '../service/category.service'
 
 import {
@@ -17,8 +18,10 @@ import { AppError } from '../util/AppError'
 
 export const getAllCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = await getAllCategoryService()
-        return res.status(200).json({ status: "Success", data })
+        const page = Number(req.query.page) || 1
+
+        const { data, total } = await getAllCategoryService(page)
+        return res.status(200).json({ data, total })
     } catch (err) {
         next(err)
     }
@@ -38,7 +41,7 @@ export const getCategoryById = async (req: Request, res: Response, next: NextFun
     try {
         const id = Number(req.params.id)
 
-        if (isNaN(id)) {
+        if (Number.isNaN(id)) {
             throw new AppError("Invalid categories Id", 400)
         }
 
@@ -71,7 +74,7 @@ export const getCategoryRewardsById = async (req: Request, res: Response, next: 
     try {
         const id = Number(req.params.id)
 
-        if (isNaN(id)) {
+        if (Number.isNaN(id)) {
             throw new AppError("Invalid categories Id", 400)
         }
 
@@ -85,9 +88,27 @@ export const getCategoryRewardsById = async (req: Request, res: Response, next: 
 
 export const admingetAllCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const data = await admingetAllCategoryService()
-        return res.status(200).json({ status: "Success", data })
+        const page = Number(req.query.page) || 1
+
+
+        const { data, total } = await adminGetAllCategoryService(page)
+        return res.status(200).json({ data, total })
     } catch (err) {
-        next(err)
+        return next(err)
+    }
+}
+
+export const adminPatchNameCategory = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.params.id)
+
+        if (Number.isNaN(id)) {
+            throw new AppError("Invalid categories Id", 400)
+        }
+
+        const data = await adminPatchNameCategoryService(id, req.body)
+        return res.status(200).json({ data })
+    } catch (err) {
+        return next(err)
     }
 }

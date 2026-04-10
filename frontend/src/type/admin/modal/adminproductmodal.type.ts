@@ -2,7 +2,7 @@ export interface ProductModalProps {
     "name": string
     "description": string
     "taste": string
-    "roast_level": RoastLevelProps
+    "roast_level": "light" | "medium" | "dark"
     "bag_size": string
     "price": string
     "stock": string
@@ -10,6 +10,3 @@ export interface ProductModalProps {
     "category_id": string
 }
 
-interface RoastLevelProps {
-    roast_level: "light" | "medium" | "dark"
-}

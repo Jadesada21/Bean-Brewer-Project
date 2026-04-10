@@ -268,7 +268,6 @@ export default function AdminProductDetails() {
                                 {products.name}
                             </p>
                         )}
-
                     </div>
 
                     {/* Price + Stock */}

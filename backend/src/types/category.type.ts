@@ -15,3 +15,6 @@ export interface CreateCategoryInput {
     type: CategoryType
 }
 
+export interface UpdateCategoriesInput {
+    name: string
+}

@@ -2,20 +2,28 @@ import { pool } from '../db/connectPostgre.repository'
 import { AppError } from '../util/AppError'
 
 import {
-    CreateCategoryInput
+    CreateCategoryInput,
+    UpdateCategoriesInput
 } from '../types/category.type'
 
-export const getAllCategoryService = async () => {
-    const sql = `select 
-    id , 
-    name ,
-    parent_id,
-    type
-    from categories 
-    order by id desc
-    `
-    const response = await pool.query(sql)
-    return response.rows
+export const getAllCategoryService = async (page: number) => {
+    const limit = 10
+    const offset = (page - 1) * limit
+
+    const response = await pool.query(`
+    select * ,
+    count(*) over() as total_count
+    from categories
+    order by created_at desc
+    limit $1 offset $2
+    `, [limit, offset])
+
+    const rows = response.rows.map(({ total_count, ...rest }) => rest)
+    const total = response.rows[0]?.total_count ?? 0
+    return {
+        data: rows,
+        total
+    }
 }
 
 export const createCategoryService = async (body: CreateCategoryInput) => {
@@ -98,11 +106,44 @@ export const getCategoryRewardsByIdService = async (id: number) => {
     }
 }
 
-export const admingetAllCategoryService = async () => {
-    const response = await pool.query(`
-    select * from categories
-    order by id desc
-        `)
+export const adminGetAllCategoryService = async (page: number) => {
+    const limit = 10
+    const offset = (page - 1) * limit
 
-    return response.rows
+    const response = await pool.query(`
+    select * ,
+    count(*) over() as total_count
+    from categories
+    order by created_at desc
+    limit $1 offset $2
+    `, [limit, offset])
+
+    const rows = response.rows.map(({ total_count, ...rest }) => rest)
+    const total = response.rows[0]?.total_count ?? 0
+    return {
+        data: rows,
+        total
+    }
+}
+
+
+export const adminPatchNameCategoryService = async (id: number, body: UpdateCategoriesInput) => {
+    const { name } = body
+
+    if (!name) {
+        throw new AppError("Name is required", 400)
+    }
+
+    const response = await pool.query(`
+                update categories 
+                set 
+                name = $1 
+                where id = $2
+                returning *
+                `, [name, id])
+
+    if (response.rowCount === 0) {
+        throw new AppError("Category not found", 404)
+    }
+    return response.rows[0]
 }
