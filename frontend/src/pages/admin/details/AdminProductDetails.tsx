@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 
 import { ToggleActiveBtn } from "../../../components/IsActive"
@@ -16,6 +16,8 @@ import type { ProductDetail, ProductImage } from "../../../type/admin/detail/adm
 export default function AdminProductDetails() {
 
     const { id } = useParams()
+
+    const navigate = useNavigate()
 
     const [isEditing, setIsEditing] = useState(false)
     const [products, setProducts] = useState<ProductDetail | null>(null)
@@ -133,9 +135,18 @@ export default function AdminProductDetails() {
         <div className="p-6 font-baskerville">
 
             <div className="flex justify-between">
-                <div className="flex gap-10 pb-10 text-2xl">
-                    <span>ID# {products.id}</span>
-                    <span>{products.name}</span>
+                <div className="flex items-center gap-10 pb-10">
+                    <div>
+                        <button
+                            onClick={() => navigate("/admin/products")}
+                            className="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                        >
+                            Back
+                        </button>
+                    </div>
+
+                    <span className="text-2xl">ID# {products.id}</span>
+                    <span className="text-2xl">{products.name}</span>
                 </div>
 
                 <div>

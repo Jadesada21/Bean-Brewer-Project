@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 import { ToggleActiveBtn } from "../../../components/IsActive"
 import { RestockBtn } from "../../../components/Restock"
@@ -14,6 +14,8 @@ import type { RewardImage, RewardsDetail } from "../../../type/admin/detail/admi
 export default function AdminRewardDetails() {
 
     const { id } = useParams()
+
+    const navigate = useNavigate()
 
     const [isEditing, setIsEditing] = useState(false)
     const [rewards, setRewards] = useState<RewardsDetail | null>(null)
@@ -125,9 +127,19 @@ export default function AdminRewardDetails() {
         <div className="p-6 font-baskerville">
 
             <div className="flex justify-between">
-                <div className="flex gap-10 pb-10 text-2xl">
-                    <span>ID# {rewards.id}</span>
-                    <span>{rewards.name}</span>
+                <div className="flex items-center gap-10 pb-10">
+                    <div>
+                        <button
+                            onClick={() => navigate("/admin/rewards")}
+                            className="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                        >
+                            Back
+                        </button>
+                    </div>
+
+
+                    <span className="text-2xl">ID# {rewards.id}</span>
+                    <span className="text-2xl">{rewards.name}</span>
                 </div>
 
                 <div>
