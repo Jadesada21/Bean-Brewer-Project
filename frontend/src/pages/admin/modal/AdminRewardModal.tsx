@@ -55,6 +55,8 @@ export const AdminRewardModal = ({ onSuccess }: Props) => {
         { id: 6, name: "Pour Over Kettle" },
         { id: 7, name: "Paper Filter" },
         { id: 8, name: "Coffee Dripper" },
+        { id: 9, name: "Coffee Scale" },
+        { id: 10, name: "Coffee Machine" },
     ]
 
     const handleCategoriesChange = (value: number) => {

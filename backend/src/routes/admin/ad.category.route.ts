@@ -3,7 +3,7 @@ import { Router } from 'express'
 import {
     createCategory,
     admingetAllCategory,
-    adminPatchNameCategory
+    adminPatchCategory
 } from '../../controller/category.controller'
 
 const router = Router()
@@ -14,6 +14,6 @@ router.route('/')
     .post(createCategory)
 
 router.route('/:id')
-    .patch(adminPatchNameCategory)
+    .patch(adminPatchCategory)
 
 export default router

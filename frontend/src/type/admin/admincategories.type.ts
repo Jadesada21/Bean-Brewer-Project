@@ -6,3 +6,8 @@ export interface Category {
     updated_at: string
     type: 'reward' | 'product'
 }
+
+export interface CategoryInput {
+    name: string
+    type: 'reward' | 'product'
+}

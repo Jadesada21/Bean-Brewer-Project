@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import Pagination from '../../components/Pagination'
 import { formatDate } from '../../components/FormatDate'
-import { AdminProductModal } from './modal/AdminProductModal'
-import type { Category } from '../../type/admin/admincategories.type'
+import type { Category, CategoryInput } from '../../type/admin/admincategories.type'
+import { AdminCategoriesModal } from './modal/AdminCategoriesModal'
 
 
 
@@ -19,8 +19,9 @@ export default function AdminCategories() {
     const limit = 10
     const totalPages = Math.ceil(total / limit)
 
-    const [form, setForm] = useState({
-        name: ""
+    const [form, setForm] = useState<CategoryInput>({
+        name: "",
+        type: "reward"
     })
 
     const fetchCategorys = async () => {
@@ -43,7 +44,8 @@ export default function AdminCategories() {
     const handleEditBtn = async (id: number) => {
         try {
             await api.patch(`/admin/categories/${id}`, {
-                name: form.name
+                name: form.name,
+                type: form.type
             })
 
             setEditingId(null)
@@ -63,6 +65,12 @@ export default function AdminCategories() {
         }))
     }
 
+    const handleType = (value: "reward" | "product") => {
+        setForm({ ...form, type: value });
+    };
+
+
+
     if (loading) {
         return <div>Loading...</div>
     }
@@ -77,7 +85,7 @@ export default function AdminCategories() {
             </div>
 
             <div className="mt-8 pl-3 mb-8">
-                <AdminProductModal onSuccess={fetchCategorys} />
+                <AdminCategoriesModal onSuccess={fetchCategorys} />
             </div>
 
 
@@ -91,6 +99,7 @@ export default function AdminCategories() {
                             <tr>
                                 <th className="text-left pl-2">ID</th>
                                 <th className="text-left pl-2">name</th>
+                                <th className="text-left pl-2">Type</th>
                                 <th className="text-left pl-2">parent_id</th>
                                 <th className="text-left pl-2">Create</th>
                                 <th className="text-left pl-2">Update</th>
@@ -138,6 +147,25 @@ export default function AdminCategories() {
                                     )}
                                 </td>
 
+                                <td className="py-4 px-2">
+                                    {editingId === categorie.id ? (
+                                        <select
+                                            value={form.type}
+                                            className="w-full border rounded px-3 py-2 mt-1"
+                                            onChange={(e) =>
+                                                handleType(e.target.value as "product" | "reward")
+                                            }
+                                        >
+                                            <option value="product">Product</option>
+                                            <option value="reward">Reward</option>
+                                        </select>
+                                    ) : (
+                                        <p>
+                                            {categorie.type}
+                                        </p>
+                                    )}
+                                </td>
+
                                 <td className="max-w-45 py-4 px-2 truncate">
                                     {categorie.parent_id ?? "No Parent"}
                                 </td>
@@ -156,7 +184,7 @@ export default function AdminCategories() {
                                             className="border rounded px-2 py-2 ml-6 bg-blue-500 text-white cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                                             onClick={() => {
                                                 setEditingId(categorie.id)
-                                                setForm({ name: categorie.name })
+                                                setForm({ name: categorie.name, type: categorie.type })
                                             }}
                                         >
                                             Edit

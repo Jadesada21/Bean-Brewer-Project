@@ -7,7 +7,7 @@ import {
     getCategoryProductsByIdService,
     getCategoryRewardsByIdService,
     adminGetAllCategoryService,
-    adminPatchNameCategoryService
+    adminPatchCategoryService
 } from '../service/category.service'
 
 import {
@@ -98,7 +98,7 @@ export const admingetAllCategory = async (req: Request, res: Response, next: Nex
     }
 }
 
-export const adminPatchNameCategory = async (req: Request, res: Response, next: NextFunction) => {
+export const adminPatchCategory = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const id = Number(req.params.id)
 
@@ -106,7 +106,7 @@ export const adminPatchNameCategory = async (req: Request, res: Response, next: 
             throw new AppError("Invalid categories Id", 400)
         }
 
-        const data = await adminPatchNameCategoryService(id, req.body)
+        const data = await adminPatchCategoryService(id, req.body)
         return res.status(200).json({ data })
     } catch (err) {
         return next(err)

@@ -7,6 +7,6 @@ export interface ProductModalProps {
     "price": string
     "stock": string
     "reward_points": string
-    "category_id": string
+    "category_id": number
 }
 

@@ -158,13 +158,12 @@ export default function RewardDetailPage() {
                         {reward.points_required} pts
                     </p>
 
-                    <p className="mt-6 leading-relaxed">
+                    <p className="mt-6 leading-relaxed whitespace-pre-line">
                         {reward.short_description}
                     </p>
 
-
                     <div className="mt-6">
-                        <p className="mt-6 leading-relaxed">
+                        <p className="mt-6 leading-relaxed whitespace-pre-line">
                             {reward.description}
                         </p>
                     </div>

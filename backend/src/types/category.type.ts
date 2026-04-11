@@ -17,4 +17,5 @@ export interface CreateCategoryInput {
 
 export interface UpdateCategoriesInput {
     name: string
+    type: "product" | "reward"
 }

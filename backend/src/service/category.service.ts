@@ -127,20 +127,17 @@ export const adminGetAllCategoryService = async (page: number) => {
 }
 
 
-export const adminPatchNameCategoryService = async (id: number, body: UpdateCategoriesInput) => {
-    const { name } = body
-
-    if (!name) {
-        throw new AppError("Name is required", 400)
-    }
+export const adminPatchCategoryService = async (id: number, body: UpdateCategoriesInput) => {
+    const { name, type } = body
 
     const response = await pool.query(`
                 update categories 
                 set 
-                name = $1 
-                where id = $2
+                name = coalesce($1 , name), 
+                type = coalesce($2 , type)
+                where id = $3
                 returning *
-                `, [name, id])
+                `, [name, type, id])
 
     if (response.rowCount === 0) {
         throw new AppError("Category not found", 404)

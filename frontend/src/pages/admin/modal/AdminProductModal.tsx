@@ -18,7 +18,7 @@ export const AdminProductModal = ({ onSuccess }: Props) => {
         price: "",
         stock: "",
         reward_points: "",
-        category_id: "1",
+        category_id: 1,
     })
 
     const handleSubmit = async () => {
@@ -45,7 +45,7 @@ export const AdminProductModal = ({ onSuccess }: Props) => {
                 price: "",
                 stock: "",
                 reward_points: "",
-                category_id: "1",
+                category_id: 1,
             })
             onSuccess()
             setShowCreateModal(false)
@@ -58,6 +58,14 @@ export const AdminProductModal = ({ onSuccess }: Props) => {
     const handleRoastChange = (value: "light" | "medium" | "dark") => {
         setForm({ ...form, roast_level: value });
     };
+
+    const categories = [
+        { id: 1, name: "Coffee Bean" }
+    ]
+
+    const handleCategoriesChange = (value: number) => {
+        setForm({ ...form, category_id: value })
+    }
 
     return (
         <div className="font-baskerville">
@@ -210,17 +218,20 @@ export const AdminProductModal = ({ onSuccess }: Props) => {
                             </div>
 
                             <div>
-                                <label className="block mb-2">Categories Id</label>
-                                <input
-                                    type='number'
-                                    name="category_id"
+                                <label className="block mb-2">Categories ID</label>
+                                <select
                                     value={form.category_id}
-                                    maxLength={60}
-                                    onChange={(e) =>
-                                        setForm({ ...form, category_id: e.target.value })
-                                    }
                                     className="w-full border rounded px-3 py-2 mt-1"
-                                />
+                                    onChange={(e) =>
+                                        handleCategoriesChange(Number(e.target.value))
+                                    }
+                                >
+                                    {categories.map(cat => (
+                                        <option key={cat.id} value={cat.id}>
+                                            {cat.name}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
 
 
