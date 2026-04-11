@@ -140,7 +140,7 @@ export default function AdminOrderDetails() {
                     <p>฿ {formatNumeric(order.total_price)}</p>
                 </div>
 
-                {order.status === "pending" && (
+                {order && (
                     <div className="flex justify-end gap-3 mt-6">
 
                         <button

@@ -56,6 +56,8 @@ import AdminPaymentDetails from "./pages/admin/details/AdminPaymentDetails";
 import AdminStockmove from "./pages/admin/AdminStockmove";
 import AdminPromoCode from "./pages/admin/AdminPromoCode";
 import AdminCategories from "./pages/admin/AdminCategories";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminUserDetails from "./pages/admin/details/AdminUserDetails";
 
 
 export default function AppRouter() {
@@ -162,7 +164,9 @@ export default function AppRouter() {
 
                     <Route path="stock-movement" element={<AdminStockmove />} />
 
-                    <Route path="user" element={<AdminRedeemRewardDetails />} />
+                    <Route path="users" element={<AdminUsers />} />
+                    <Route path="users/detail/:id" element={<AdminUserDetails />} />
+
                 </Route>
             </Routes>
         </BrowserRouter >

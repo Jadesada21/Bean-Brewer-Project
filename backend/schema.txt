@@ -213,7 +213,7 @@ create table users_addresses(
     province varchar(100) not null ,
     country varchar(255) not null,
     district varchar(255) not null,
-    subdistrict varchar(255) not null
+    subdistrict varchar(255) not null,
     postal_code varchar(100) not null,
     is_default boolean default false not null,
     created_at timestamp default current_timestamp not null,

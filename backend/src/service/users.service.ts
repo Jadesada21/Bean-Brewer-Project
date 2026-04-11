@@ -284,3 +284,96 @@ export const getPrimaryService = async (userId: number) => {
 
     return response.rows[0]
 }
+
+
+// ************************ ADMIN
+
+export const adminGetAllUsersService = async (page: number) => {
+    const limit = 10
+    const offset = (page - 1) * limit
+
+    const response = await pool.query(`
+            select 
+            id,
+            username,
+            email,
+            first_name,
+            last_name,
+            phone_num,
+            role,
+            is_active,
+            points,
+            created_at,
+            updated_at,
+                count(*) over() as total_count
+            from users
+            order by id desc
+            limit $1 offset $2
+            `, [limit, offset])
+
+    const rows = response.rows.map(({ total_count, ...rest }) => rest)
+    const total = response.rows[0]?.total_count ?? 0
+
+    return {
+        data: rows,
+        total
+    }
+}
+
+export const adminGetUserByIdService = async (id: number) => {
+    const response = await pool.query(`
+        select 
+            id,
+            username,
+            email,
+            first_name,
+            last_name,
+            phone_num,
+            role,
+            is_active,
+            points,
+            created_at,
+            updated_at
+        from users
+        where id = $1
+        `, [id])
+
+    if (response.rowCount === 0) {
+        throw new AppError("Users not found", 404)
+    }
+
+    return response.rows[0]
+}
+
+export const adminGetUserDetailByIdService = async (id: number) => {
+
+    const response = await pool.query(`
+        select
+           u.id,
+           u.username,
+           u.email,
+           u.first_name,
+           u.last_name,
+           u.phone_num,
+           u.role,
+           u.is_active,
+           u.points,
+           u.created_at,
+           u.updated_at,
+           coalesce(
+                json_agg(a.*) filter (where a.id is not null),
+                '[]'
+           )  as addresses
+        from users u
+        left join users_addresses a
+            on u.id = a.user_id
+        where u.id = $1
+        group by u.id
+        `, [id])
+
+    if (response.rowCount === 0) {
+        throw new AppError("User not found", 404)
+    }
+
+    return response.rows[0]
+}

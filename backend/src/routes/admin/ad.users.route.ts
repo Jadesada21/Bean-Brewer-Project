@@ -1,8 +1,9 @@
 import { Router } from 'express'
 
 import {
-    getAllUsers,
-    getUsersById
+    adminGetAllUsers,
+    adminGetUserById,
+    adminGetUserDetailById
 } from '../../controller/users.controller'
 
 
@@ -10,10 +11,13 @@ const router = Router()
 
 
 router.route('/')
-    .get(getAllUsers)
+    .get(adminGetAllUsers)
+
+router.route('/detail/:id')
+    .get(adminGetUserDetailById)
 
 router.route('/:id')
-    .get(getUsersById)
+    .get(adminGetUserById)
 
 
 export default router

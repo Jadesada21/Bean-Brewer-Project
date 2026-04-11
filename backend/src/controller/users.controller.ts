@@ -8,7 +8,10 @@ import {
     updateAddressUserByLoginUserService,
     getAllMyAddressService,
     setdefaultAddressService,
-    getPrimaryService
+    getPrimaryService,
+    adminGetAllUsersService,
+    adminGetUserByIdService,
+    adminGetUserDetailByIdService
 } from '../service/users.service'
 
 
@@ -20,35 +23,6 @@ import {
 
 import { AppError } from '../util/AppError'
 
-
-
-export const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const data = await getAllUsersService()
-
-        return res.status(200).json({ status: "Success", data })
-    } catch (err) {
-        next(err)
-    }
-}
-
-
-export const getUsersById = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-
-        const targetUserId = Number(req.params.id)
-
-        if (!targetUserId || isNaN(targetUserId)) {
-            throw new AppError("Invalid user ID", 400)
-        }
-
-        const data = await getUsersByIdService(targetUserId, req.user!.id)
-
-        return res.status(200).json({ status: "Success", data })
-    } catch (err) {
-        next(err)
-    }
-}
 
 
 export const updateUsersByLoginUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -63,9 +37,6 @@ export const updateUsersByLoginUser = async (req: Request, res: Response, next: 
         return next(err)
     }
 }
-
-
-
 
 
 // ****************************** ADDRESS
@@ -164,5 +135,50 @@ export const getPrimary = async (req: Request, res: Response, next: NextFunction
         return res.status(200).json({ data })
     } catch (err) {
         next(err)
+    }
+}
+
+
+// ************************ ADMIN
+
+export const adminGetAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const page = Number(req.query.page) || 1
+
+        const { data, total } = await adminGetAllUsersService(page)
+        return res.status(200).json({ data, total })
+    } catch (err) {
+        return next(err)
+    }
+}
+
+export const adminGetUserById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const id = Number(req.params.id)
+
+        if (Number.isNaN(id)) {
+            throw new AppError("Invalid User id ", 400)
+        }
+        const data = await adminGetUserByIdService(id)
+        return res.status(200).json({ data })
+    } catch (err) {
+        return next(err)
+    }
+}
+
+export const adminGetUserDetailById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+        const id = Number(req.params.id)
+
+        if (Number.isNaN(id)) {
+            throw new AppError("Invalid User Id", 400)
+        }
+
+        const data = await adminGetUserDetailByIdService(id)
+
+        return res.status(200).json({ data })
+    } catch (err) {
+        return next(err)
     }
 }
