@@ -31,6 +31,7 @@ import adminPaymentRoute from './admin/ad.payment.route'
 import adminRedeemRoute from './admin/ad.redeem.route'
 import adminPromoCodeRoute from './admin/ad.promoCode.route'
 import adminPromoCodeUsagedRoute from './admin/ad.promoCodeUsages.route'
+import adminDashboard from './admin/ad.dashboard.route'
 
 import { authenticate } from '../middleware/authenticate'
 import { authorize } from '../middleware/authorize'
@@ -65,6 +66,7 @@ router.use('/carts', cartRoute)
 // authen admin
 router.use(authorize('admin'))
 
+router.use('/admin/dashboard', adminDashboard)
 router.use('/admin/users', adminUserRoute)
 router.use('/admin/addresses', adminAddressesRoute)
 router.use('/admin/categories', adminCategoryRoute)
