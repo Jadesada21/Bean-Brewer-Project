@@ -1,4 +1,3 @@
-
 export const getStatusStyle = (status: string) => {
     switch (status) {
         case "completed":

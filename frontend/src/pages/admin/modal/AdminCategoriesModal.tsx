@@ -29,8 +29,7 @@ export const AdminCategoriesModal = ({ onSuccess }: Props) => {
             })
             onSuccess()
             setShowCreateModal(false)
-        } catch (err: any) {
-            console.error(err.response?.data || err.message)
+        } catch (err) {
             alert("Create Categories Failed")
         }
     }

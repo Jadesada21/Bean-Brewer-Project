@@ -15,7 +15,7 @@ export default function LoginModal({ close }: { close: () => void }) {
     const [errorPassword, setErrorPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         try {

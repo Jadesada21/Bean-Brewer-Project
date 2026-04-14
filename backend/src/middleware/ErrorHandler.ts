@@ -1,21 +1,24 @@
 import { Request, Response, NextFunction } from "express"
 import { AppError } from "../util/AppError"
 import { DB_CONSTRAINT_EXISTING } from "../constants/statusCode"
+import { isPgError } from "../constants/isPgError"
 
 export const errorHandler = (
-    err: any,
+    err: unknown,
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
 
-    if (err.code === '23505') {
+    let error: unknown = err
+
+    if (isPgError(err) && err.code === '23505') {
         if (err.constraint === DB_CONSTRAINT_EXISTING.USER_EMAIL) {
-            err = new AppError("Email already exists", 400)
+            error = new AppError("Email already exists", 400)
         }
 
         if (err.constraint === DB_CONSTRAINT_EXISTING.USER_USERNAME) {
-            err = new AppError("Username already exists", 400)
+            error = new AppError("Username already exists", 400)
         }
     }
 

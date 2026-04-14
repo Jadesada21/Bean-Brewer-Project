@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination'
 import { formatDate } from '../../components/FormatDate'
 import type { Order } from '../../type/admin/adminorder.type'
+import { AxiosError } from 'axios'
 
 
 
@@ -55,10 +56,20 @@ export default function AdminOrder() {
 
             setOrders([res.data.data])
             setIsSearchResult(true)
-        } catch (err: any) {
-            if (err.response?.status === 404) {
-                setOrders([])
-                setError("Order not found")
+        } catch (err: unknown) {
+            if (err instanceof AxiosError) {
+                const status = err.response?.status
+
+                if (status === 404) {
+                    setOrders([])
+                    setError("Order not found")
+                } else if (status === 400) {
+                    setError("Bad request")
+                } else {
+                    setError("Somgthing went wrong")
+                }
+            } else {
+                setLoading(false)
             }
         }
 

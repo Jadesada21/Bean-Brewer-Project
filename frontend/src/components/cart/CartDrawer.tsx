@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import { useCart } from "../../context/CartContext"
+import type { CardDrawerProps } from "../../type/carddrawer.type"
 
 
-export default function CartDrawer({ open, onClose }: any) {
+export default function CartDrawer({ open, onClose }: CardDrawerProps) {
 
     const navigate = useNavigate()
     const { cart, removeItem, checkout } = useCart()

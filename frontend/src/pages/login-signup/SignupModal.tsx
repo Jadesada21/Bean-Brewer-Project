@@ -3,6 +3,7 @@ import eye from '../../assets/eye.svg'
 import { api } from '../../AxiosInstance';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { isApiError } from '../../constants/isApiError';
 
 
 
@@ -37,7 +38,7 @@ export default function SignupModal({ close }: { close: () => void }) {
 
 
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         const phonePattern = /^\d{3}-\d{3}-\d{4}$/
@@ -60,11 +61,16 @@ export default function SignupModal({ close }: { close: () => void }) {
             await loginAndRedirect(username, password, navigate)
 
             close()
-        } catch (err: any) {
-            const message = err.response?.data?.message || ""
+        } catch (err: unknown) {
 
-            if (message.includes("Username")) {
-                setErrorUserName("Username already exists")
+            let message = ""
+
+            if (isApiError(err)) {
+                message = err.response?.data?.message ?? ""
+            }
+
+            if (message.includes("username")) {
+                setErrorEmail("Username already exists")
             }
 
             if (message.includes("Email")) {

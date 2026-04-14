@@ -11,13 +11,19 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from "../context/CartContext"
 import CartDrawer from './cart/CartDrawer';
 
-export default function Navbar({ setOpenSearch }: any) {
+type SearchProps = {
+    setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export default function Navbar({ setOpenSearch }: SearchProps) {
 
     const [openBoxModal, setOpenBoxModal] = useState(false)
 
     const [openMenu, setOpenMenu] = useState(false)
 
     const [openCart, setOpenCart] = useState(false)
+
+    const [openLoginModal, setOpenLoginModal] = useState(false)
 
     const { cart } = useCart()
 
@@ -30,6 +36,14 @@ export default function Navbar({ setOpenSearch }: any) {
         } else {
             setOpenBoxModal(true)
         }
+    }
+
+    const handleOpenCart = () => {
+        if (!user) {
+            setOpenLoginModal(true)
+            return
+        }
+        setOpenCart(true)
     }
 
 
@@ -115,7 +129,8 @@ export default function Navbar({ setOpenSearch }: any) {
                         />
                     </button>
 
-                    <button onClick={() => setOpenCart(true)}>
+                    <button
+                        onClick={handleOpenCart}>
                         <img
                             src={Cart}
                             alt="cart"
@@ -165,6 +180,14 @@ export default function Navbar({ setOpenSearch }: any) {
                     >
                         About Us
                     </Link>
+                </div>
+            )}
+
+            {openLoginModal && (
+                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-xl w-105">
+                        <BoxModal close={() => setOpenLoginModal(false)} />
+                    </div>
                 </div>
             )}
         </div >

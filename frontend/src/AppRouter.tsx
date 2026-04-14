@@ -10,7 +10,6 @@ import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop"
 import Search from "./components/Search";
 
-
 import TermPage from "./pages/Term";
 import PrivacyPage from "./pages/Privacy";
 import CookiesPage from "./pages/Cookies";
@@ -40,7 +39,6 @@ import RedeemRewardDetails from "./pages/profiles/details/RedeemRewardPage";
 import RedeemHis from "./pages/profiles/RedeemHis";
 import PointHis from "./pages/profiles/PointHis";
 
-
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminOrders from "./pages/admin/AdminOrders";
@@ -59,6 +57,29 @@ import AdminCategories from "./pages/admin/AdminCategories";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminUserDetails from "./pages/admin/details/AdminUserDetails";
 
+import {
+    HOME,
+    ABOUT,
+    CONTACT,
+    PAYMENT,
+    PROFILE,
+    REWARD,
+    SHOP,
+    TERM,
+    COOKIES,
+    PRIVACY
+} from "./constants/route";
+
+import {
+    ADDRESS,
+    ORDERS,
+    PAYMENTHIS,
+    POINTS,
+    REDEEMS,
+    REWARDREDEEM
+} from "./constants/profileRoute";
+import { ADMIN, ADMINCATEGORIES, ADMINORDERS, ADMINPAYMENTS, ADMINPRODUCTS, ADMINPROMOCODES, ADMINREDEEMREWARDS, ADMINREWARDS, ADMINSTOCKMOVES, ADMINUSERS } from "./constants/adminRoute";
+
 
 export default function AppRouter() {
     const { loading } = useAuth()
@@ -68,6 +89,7 @@ export default function AppRouter() {
     if (loading) {
         return <div>Loading...</div>
     }
+
 
     return (
         <BrowserRouter>
@@ -93,49 +115,49 @@ export default function AppRouter() {
                     </div>
                 }>
 
-                    <Route path="/" element={<HomePage />} />
+                    <Route path={`${HOME}`} element={<HomePage />} />
 
-                    <Route path="/shops" element={<ShopPage />} />
-                    <Route path="/shops/special" element={<PremiumPage />} />
-                    <Route path="/shops/:id" element={<ShopDetailPage />} />
+                    <Route path={`${SHOP}`} element={<ShopPage />} />
+                    <Route path={`${SHOP}/shops/special`} element={<PremiumPage />} />
+                    <Route path={`${SHOP}/shops/:id`} element={<ShopDetailPage />} />
 
-                    <Route path="/rewards" element={<RewardPage />} />
-                    <Route path='/rewards/:id' element={<RewardDetailPage />} />
+                    <Route path={`${REWARD}`} element={<RewardPage />} />
+                    <Route path={`${REWARD}/:id`} element={<RewardDetailPage />} />
 
-                    <Route path="/about-us" element={<AboutUsPage />} />
-                    <Route path="/contact-us" element={<ContactUsPage />} />
-                    <Route path="/payments/:id" element={<PaymentPage />} />
+                    <Route path={`${PAYMENT}/:id`} element={<PaymentPage />} />
+
+                    <Route path={`${ABOUT}/about-us`} element={<AboutUsPage />} />
+                    <Route path={`${CONTACT}/contact-us`} element={<ContactUsPage />} />
 
 
                     <Route
-                        path="/profile"
+                        path={`${PROFILE}`}
                         element={<ProtectedRoute>
                             <ProfilesPage />
                         </ProtectedRoute>
                         }
                     >
                         <Route index element={<ProfileForm />} />
-                        <Route path="address" element={<AddressForm />} />
-                        <Route path="payments" element={<PaymentHis />} />
-                        <Route path="payments/:id" element={<PaymentDetails />} />
-                        <Route path="orders" element={<OrderHis />} />
-                        <Route path="orders/:id" element={<OrderDetails />} />
-                        <Route path="rewards-redeem" element={<RewardHis />} />
-                        <Route path="rewards-redeem/:id" element={<RedeemRewardDetails />} />
-                        <Route path="redeems" element={<RedeemHis />} />
-                        <Route path="points" element={<PointHis />} />
-
+                        <Route path={`${ADDRESS}`} element={<AddressForm />} />
+                        <Route path={`${PAYMENTHIS}`} element={<PaymentHis />} />
+                        <Route path={`${PAYMENTHIS}/:id`} element={<PaymentDetails />} />
+                        <Route path={`${ORDERS}`} element={<OrderHis />} />
+                        <Route path={`${ORDERS}/:id`} element={<OrderDetails />} />
+                        <Route path={`${REWARDREDEEM}`} element={<RewardHis />} />
+                        <Route path={`${REWARDREDEEM}/:id`} element={<RedeemRewardDetails />} />
+                        <Route path={`${REDEEMS}`} element={<RedeemHis />} />
+                        <Route path={`${POINTS}`} element={<PointHis />} />
                     </Route>
 
-                    <Route path="/term" element={<TermPage />} />
-                    <Route path="/cookies" element={<CookiesPage />} />
-                    <Route path="/privacy" element={<PrivacyPage />} />
+                    <Route path={`${TERM}`} element={<TermPage />} />
+                    <Route path={`${COOKIES}`} element={<CookiesPage />} />
+                    <Route path={`${PRIVACY}`} element={<PrivacyPage />} />
 
                 </Route>
 
 
                 <Route
-                    path="/admin"
+                    path={`${ADMIN}`}
                     element={
                         <AdminRoute>
                             <AdminLayout />
@@ -143,29 +165,29 @@ export default function AppRouter() {
                     }
                 >
                     <Route index element={<AdminDashboard />} />
-                    <Route path="products" element={<AdminProducts />} />
-                    <Route path="products/detail/:id" element={<AdminProductDetails />} />
+                    <Route path={`${ADMINPRODUCTS}`} element={<AdminProducts />} />
+                    <Route path={`${ADMINPRODUCTS}/detail/:id`} element={<AdminProductDetails />} />
 
-                    <Route path="rewards" element={<AdminRewards />} />
-                    <Route path="rewards/detail/:id" element={<AdminRewardDetails />} />
+                    <Route path={`${ADMINREWARDS}`} element={<AdminRewards />} />
+                    <Route path={`${ADMINREWARDS}/detail/:id`} element={<AdminRewardDetails />} />
 
-                    <Route path="categories" element={<AdminCategories />} />
+                    <Route path={`${ADMINCATEGORIES}`} element={<AdminCategories />} />
 
-                    <Route path="orders" element={<AdminOrders />} />
-                    <Route path="orders/detail/:id" element={<AdminOrderDetails />} />
+                    <Route path={`${ADMINORDERS}`} element={<AdminOrders />} />
+                    <Route path={`${ADMINORDERS}/detail/:id`} element={<AdminOrderDetails />} />
 
-                    <Route path="redeem-rewards" element={<AdminRedeemRewards />} />
-                    <Route path="redeem-rewards/detail/:id" element={<AdminRedeemRewardDetails />} />
+                    <Route path={`${ADMINREDEEMREWARDS}`} element={<AdminRedeemRewards />} />
+                    <Route path={`${ADMINREDEEMREWARDS}/detail/:id`} element={<AdminRedeemRewardDetails />} />
 
-                    <Route path="promo-code" element={<AdminPromoCode />} />
+                    <Route path={`${ADMINPROMOCODES}`} element={<AdminPromoCode />} />
 
-                    <Route path="payments" element={<AdminPayment />} />
-                    <Route path="payments/detail/:id" element={<AdminPaymentDetails />} />
+                    <Route path={`${ADMINPAYMENTS}`} element={<AdminPayment />} />
+                    <Route path={`${ADMINPAYMENTS}/detail/:id`} element={<AdminPaymentDetails />} />
 
-                    <Route path="stock-movement" element={<AdminStockmove />} />
+                    <Route path={`${ADMINSTOCKMOVES}`} element={<AdminStockmove />} />
 
-                    <Route path="users" element={<AdminUsers />} />
-                    <Route path="users/detail/:id" element={<AdminUserDetails />} />
+                    <Route path={`${ADMINUSERS}`} element={<AdminUsers />} />
+                    <Route path={`${ADMINUSERS}/detail/:id`} element={<AdminUserDetails />} />
 
                 </Route>
             </Routes>

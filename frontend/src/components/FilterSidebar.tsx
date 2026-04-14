@@ -4,7 +4,6 @@ import type { FilterSidebarProps } from '../type/filtersidebar.type'
 
 
 
-
 export function FilterSidebar({
     filters,
     searchParams,
@@ -15,7 +14,7 @@ export function FilterSidebar({
 
     const handleChange = (key: string, value: string) => {
 
-        const params: any = Object.fromEntries(searchParams.entries())
+        const params: Record<string, string> = Object.fromEntries(searchParams.entries())
 
         if (!value || value === "any") {
             delete params[key]

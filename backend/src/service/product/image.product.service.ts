@@ -206,11 +206,8 @@ export const updatePrimaryImagesByIdService = async (
 
         return result.rows[0]
 
-    } catch (err: any) {
+    } catch (err) {
         await client.query("ROLLBACK")
-        console.error(err.detail)
-        console.error(err.constraint)
-        console.error("🔥 ERROR:", err)
         throw err
     } finally {
         client.release()

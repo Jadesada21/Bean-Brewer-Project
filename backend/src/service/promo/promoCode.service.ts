@@ -34,21 +34,14 @@ export const createPromoCodeService = async (body: PromoCodeTypeInput): Promise<
 
     const normalizedCode = code.trim().toUpperCase()
 
-    try {
-        const response = await pool.query(`
+    const response = await pool.query(`
         insert into promo_code 
         (code , bonus_points , max_usage)
         values($1,$2,$3)
         returning *
         `, [normalizedCode, bonus_points, max_usage])
 
-        return response.rows[0]
-    } catch (err: any) {
-        if (err.code === '23505') {
-            throw new AppError("Promo code already exists", 400)
-        }
-        throw err
-    }
+    return response.rows[0]
 }
 
 export const getPromoCodeByIdService = async (id: number) => {

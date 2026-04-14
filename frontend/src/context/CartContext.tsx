@@ -40,7 +40,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             const res = await api.post('/orders/checkout')
             return res.data.data.id
-        } catch (err: any) {
+        } catch (err: unknown) {
             throw err
         }
     }
