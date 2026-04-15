@@ -118,16 +118,16 @@ export default function AppRouter() {
                     <Route path={`${HOME}`} element={<HomePage />} />
 
                     <Route path={`${SHOP}`} element={<ShopPage />} />
-                    <Route path={`${SHOP}/shops/special`} element={<PremiumPage />} />
-                    <Route path={`${SHOP}/shops/:id`} element={<ShopDetailPage />} />
+                    <Route path={`${SHOP}/special`} element={<PremiumPage />} />
+                    <Route path={`${SHOP}/:id`} element={<ShopDetailPage />} />
 
                     <Route path={`${REWARD}`} element={<RewardPage />} />
                     <Route path={`${REWARD}/:id`} element={<RewardDetailPage />} />
 
                     <Route path={`${PAYMENT}/:id`} element={<PaymentPage />} />
 
-                    <Route path={`${ABOUT}/about-us`} element={<AboutUsPage />} />
-                    <Route path={`${CONTACT}/contact-us`} element={<ContactUsPage />} />
+                    <Route path={`${ABOUT}`} element={<AboutUsPage />} />
+                    <Route path={`${CONTACT}`} element={<ContactUsPage />} />
 
 
                     <Route

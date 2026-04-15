@@ -35,7 +35,7 @@ export const createOrder = async (req: Request, res: Response, next: NextFunctio
             req.body,
             loginUserId
         )
-        return res.status(201).json({ status: "Success", data })
+        return res.status(201).json({ data })
     } catch (err) {
         return next(err)
     }
@@ -50,7 +50,7 @@ export const cancelOrder = async (req: Request<{ id: string }, {}, { status: Sta
         }
 
         const data = await cancelOrderService(orderId, req.user)
-        return res.status(200).json({ status: "Success", data })
+        return res.status(200).json({ data })
     } catch (err) {
         return next(err)
     }
@@ -65,7 +65,7 @@ export const getOrderById = async (req: Request, res: Response, next: NextFuncti
         }
 
         const data = await getOrderByidService(orderId)
-        return res.status(200).json({ status: "Success", data })
+        return res.status(200).json({ data })
     } catch (err) {
         return next(err)
     }
@@ -91,7 +91,7 @@ export const getAllOrderByLoginUser = async (req: Request, res: Response, next: 
         const loginUserId = req.user!.id
 
         const data = await getAllOrderByLoginUserService(loginUserId)
-        return res.status(200).json({ status: "Success", data })
+        return res.status(200).json({ data })
     } catch (err) {
         return next(err)
     }
@@ -107,7 +107,7 @@ export const getOrderByIdByLoginUser = async (req: Request, res: Response, next:
         }
 
         const data = await getOrderByIdByLoginUserService(orderId, loginUserId)
-        return res.status(200).json({ status: "Success", data })
+        return res.status(200).json({ data })
     } catch (err) {
         return next(err)
     }
@@ -120,7 +120,7 @@ export const createOrderFromCart = async (req: Request, res: Response, next: Nex
 
         const order = await createOrderFromCartService(loginUserId)
 
-        return res.status(201).json({ Status: "Success", data: order })
+        return res.status(201).json({ data: order })
     } catch (err) {
         return next(err)
     }

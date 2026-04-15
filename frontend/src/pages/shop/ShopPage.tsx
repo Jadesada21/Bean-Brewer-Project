@@ -26,7 +26,7 @@ export default function ShopPage() {
 
     const fetchProducts = async () => {
 
-        const res = await api.get(`/products`, {
+        const { data } = await api.get(`/products`, {
             params: {
                 price,
                 roast_level,
@@ -34,8 +34,8 @@ export default function ShopPage() {
             }
         })
 
-        setProducts(res.data.products)
-        setTotal(res.data.total)
+        setProducts(data.products)
+        setTotal(data.total)
     }
 
     useEffect(() => {

@@ -24,8 +24,8 @@ export default function ShopDetailPage() {
     const [openLoginModal, setOpenLoginModal] = useState(false)
 
     const fetchProduct = async () => {
-        const res = await api.get(`/products/${id}`)
-        setProduct(res.data.data)
+        const { data } = await api.get(`/products/${id}`)
+        setProduct(data.data)
     }
 
     useEffect(() => {
@@ -54,7 +54,7 @@ export default function ShopDetailPage() {
                 return
             }
 
-            const res = await api.post("/orders", {
+            const { data } = await api.post("/orders", {
                 items: [
                     {
                         product_id: product?.id,
@@ -64,7 +64,7 @@ export default function ShopDetailPage() {
             })
 
             setOrder({
-                ...res.data.data,
+                ...data.data,
                 items: [
                     {
                         product_name: product?.name,

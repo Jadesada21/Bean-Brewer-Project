@@ -25,9 +25,6 @@ export default function PaymentPage() {
             setOrder(orderRes.data.data)
             setUser(userRes.data.user)
             setAddressUser(addressUserRes.data.data)
-            console.log(orderRes.data)
-            console.log(userRes.data)
-            console.log(addressUserRes.data)
         }
         fetchData()
     }, [id])
@@ -133,14 +130,14 @@ export default function PaymentPage() {
 
                     <button
                         onClick={handleCancel}
-                        className="px-6 py-3 border rounded-lg bg-red-500 opacity-50 text-white cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                        className="px-6 py-3 border rounded-lg bg-red-500 text-white cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         Cancel Order
                     </button>
 
                     <button
                         onClick={handlePayNow}
-                        className="px-6 py-3 bg-green-600 text-white opacity-50 rounded-lg cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                        className="px-6 py-3 bg-green-600 text-white rounded-lg cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         Pay Now
                     </button>
