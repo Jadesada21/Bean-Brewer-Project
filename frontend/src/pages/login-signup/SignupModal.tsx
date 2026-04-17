@@ -3,7 +3,7 @@ import eye from '../../assets/eye.svg'
 import { api } from '../../AxiosInstance';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { isApiError } from '../../constants/isApiError';
+import { getErrorData } from '../../constants/isApiError';
 
 
 
@@ -27,7 +27,7 @@ export default function SignupModal({ close }: { close: () => void }) {
     }
     const [phone, setPhone] = useState("")
 
-    const [errorUserName, setErrorUserName] = useState("")
+    const [errorUsername, setErrorUsername] = useState("")
     const [errorPassword, setErrorPassword] = useState("")
     const [errorEmail, setErrorEmail] = useState("")
     const [errorFirstname, setErrorFirstname] = useState("")
@@ -59,23 +59,28 @@ export default function SignupModal({ close }: { close: () => void }) {
 
             // auto login
             await loginAndRedirect(username, password, navigate)
-
             close()
+
         } catch (err: unknown) {
+            const errorData = getErrorData(err)
 
-            let message = ""
+            const message = errorData?.message?.toLowerCase() ?? ""
 
-            if (isApiError(err)) {
-                message = err.response?.data?.message ?? ""
-            }
+            setErrorEmail("")
+            setErrorUsername("")
 
             if (message.includes("username")) {
-                setErrorEmail("Username already exists")
+                setErrorUsername("Username already exists")
+                return
             }
 
-            if (message.includes("Email")) {
+            if (message.includes("email")) {
                 setErrorEmail("Email already exists")
+                return
             }
+
+            // fallback
+            setErrorEmail("Something went wrong")
         }
     }
     return (
@@ -97,7 +102,7 @@ export default function SignupModal({ close }: { close: () => void }) {
                         {/* username */}
                         <div className="w-full mb-1">
                             <div className={`relative flex items-center w-full h-12 px-4 bg-surface-white border rounded-lg transition-colors duration-200
-                                         ${errorUserName ? "border-red-500" : "border-gray-200 focus-within:border-gray-600"}
+                                         ${errorUsername ? "border-red-500" : "border-gray-200 focus-within:border-gray-600"}
                                         `}>
                                 <input
                                     type="text"
@@ -105,19 +110,19 @@ export default function SignupModal({ close }: { close: () => void }) {
                                     value={username}
                                     onChange={(e) => {
                                         setUsername(e.target.value)
-                                        if (errorUserName) setErrorUserName("")
+                                        if (errorUsername) setErrorUsername("")
                                     }}
                                     className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none font-baskerville"
                                     onBlur={() => {
                                         if (!username.trim()) {
-                                            setErrorUserName("Please enter your username")
+                                            setErrorUsername("Please enter your username")
                                         }
                                     }}
                                 />
 
                             </div>
-                            {errorUserName && (
-                                <p className=" text-[12px] font-bold text-red-500 font-baskerville">{errorUserName}</p>
+                            {errorUsername && (
+                                <p className=" text-[12px] font-bold text-red-500 font-baskerville">{errorUsername}</p>
                             )}
                         </div>
 

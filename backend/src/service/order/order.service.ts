@@ -267,7 +267,10 @@ export const getOrderDetailsByIdService = async (orderId: number) => {
 }
 
 
-export const getAllOrderByLoginUserService = async (loginUserId: number) => {
+export const getAllOrderByLoginUserService = async (loginUserId: number, page: number) => {
+    const limit = 10
+    const offset = (page - 1) * limit
+
     const response = await pool.query(`
    select 
             o.id as order_id,
@@ -275,6 +278,7 @@ export const getAllOrderByLoginUserService = async (loginUserId: number) => {
             o.status,
             o.total_price,
             o.created_at,
+            count(*) over() as total_count,
         coalesce(
             json_agg(
                 json_build_object(
@@ -301,9 +305,16 @@ export const getAllOrderByLoginUserService = async (loginUserId: number) => {
         o.earned_points,
         o.created_at
     order by o.created_at desc
-    `, [loginUserId])
+    limit $2 offset $3
+    `, [loginUserId, limit, offset])
 
-    return response.rows
+    const rows = response.rows.map(({ total_count, ...rest }) => rest)
+    const total = response.rows[0]?.total_count ?? 0
+
+    return {
+        data: rows,
+        total
+    }
 }
 
 export const getOrderByIdByLoginUserService = async (orderId: number, loginUserId: number) => {

@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination'
 import { formatDate } from '../../components/FormatDate'
 import { formatNumeric } from '../../components/FormatNumeric'
-import { AxiosError } from 'axios'
 import type { UsersProps } from '../../type/admin/adminusers.type'
+import type { ApiError } from '../../type/apierror.type'
+import axios from 'axios'
 
 
 
@@ -55,16 +56,17 @@ export default function AdminUsers() {
             setUsers([data.data])
             setIsSearchResult(true)
         } catch (err: unknown) {
-            if (err instanceof AxiosError) {
+            if (axios.isAxiosError<ApiError>(err)) {
                 const status = err.response?.status
+                const message = err.response?.data?.message
 
                 if (status === 404) {
                     setUsers([])
-                    setError("Users not found")
+                    setError(message ?? "Users not found")
                 } else if (status === 400) {
-                    setError("Bad request")
+                    setError(message ?? "Bad request")
                 } else {
-                    setError("Something went wrong")
+                    setError(message ?? "Something went wrong")
                 }
             } else {
                 setError("Unexpected Error")

@@ -71,7 +71,7 @@ export const addUsersAddressById = async (req: Request<{}, {}, AddUsersAddressBy
         }
 
         const newAddress = await createUsersAddressByIdService(userId, req.body)
-        return res.status(201).json({ status: "Success", newAddress })
+        return res.status(201).json({ newAddress })
     } catch (err) {
         next(err)
     }
@@ -95,7 +95,7 @@ export const updateAddressUserByLoginUser = async (req: Request<{ id: string }, 
 
         const updated = await updateAddressUserByLoginUserService(userId, addressId, req.body)
 
-        res.status(200).json({ status: "Success", updated })
+        res.status(200).json({ updated })
     } catch (err) {
         next(err)
     }
@@ -104,7 +104,7 @@ export const updateAddressUserByLoginUser = async (req: Request<{ id: string }, 
 export const getAllMyAddress = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await getAllMyAddressService(req.user!.id)
-        return res.status(200).json({ status: "Success", data })
+        return res.status(200).json({ data })
     } catch (err) {
         next(err)
     }
@@ -120,7 +120,7 @@ export const setdefaultAddress = async (req: Request, res: Response, next: NextF
 
         const userId = req.user!.id
         const data = await setdefaultAddressService(userId, addressId)
-        return res.status(200).json({ status: "Success", data })
+        return res.status(200).json({ data })
     } catch (err) {
         next(err)
     }

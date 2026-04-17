@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import type { Points } from '../../type/profile/pointhis.type'
+import Pagination from '../../components/Pagination'
 
 
 
@@ -8,11 +9,21 @@ export default function PointsHistory() {
 
     const [points, setPoints] = useState<Points[]>([])
     const [loading, setLoading] = useState(true)
+    const [page, setPage] = useState(1)
+    const [total, setTotal] = useState(0)
+
+    const limit = 10
+    const totalPages = Math.ceil(total / limit)
 
     const fetchPoints = async () => {
         try {
-            const res = await api.get('/point-histories/users/me')
-            setPoints(res.data.data)
+            const { data } = await api.get('/point-histories/users/me', {
+                params: {
+                    page
+                }
+            })
+            setPoints(data.data)
+            setTotal(data.total)
         } catch (err) {
             console.error('Error fetching points:', err)
         } finally {
@@ -22,7 +33,7 @@ export default function PointsHistory() {
 
     useEffect(() => {
         fetchPoints()
-    }, [])
+    }, [page])
 
     const formatDate = (date: string) => {
         return new Date(date).toLocaleDateString('en-GB')
@@ -77,6 +88,13 @@ export default function PointsHistory() {
                         No Points History
                     </div>
                 )}
+            </div>
+            <div className="mt-12 mb-10 ml-30">
+                <Pagination
+                    page={page}
+                    totalPages={totalPages}
+                    onPageChange={(newPage) => setPage(newPage)}
+                />
             </div>
         </div>
     )

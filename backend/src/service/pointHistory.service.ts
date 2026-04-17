@@ -31,7 +31,7 @@ export const getAllPointsHistoryService = async (userId?: number, limit = 20) =>
 }
 
 
-export const getPointsHistoryByUserIdService = async (
+export const AdminGetPointsHistoryByUserIdService = async (
     UserId: number,
     limit: number,
 ) => {
@@ -45,6 +45,32 @@ export const getPointsHistoryByUserIdService = async (
     `, [UserId, limit])
 
     return response.rows
+}
+
+
+export const getPointsHistoryByUserIdService = async (
+    UserId: number,
+    page: number,
+) => {
+    const limit = 10
+    const offset = (page - 1) * limit
+
+    const response = await pool.query(`
+        select *,
+        count(*) over() as total_count
+        from point_histories
+        where user_id = $1
+        order by created_at desc
+        limit $2 offset $3
+    `, [UserId, limit, offset])
+
+    const rows = response.rows.map(({ total_count, ...rest }) => rest)
+    const total = response.rows[0]?.total_count ?? 0
+
+    return {
+        data: rows,
+        total
+    }
 }
 
 

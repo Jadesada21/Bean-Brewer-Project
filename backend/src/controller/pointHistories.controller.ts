@@ -3,6 +3,7 @@ import { AppError } from "../util/AppError";
 
 import {
     getAllPointsHistoryService,
+    AdminGetPointsHistoryByUserIdService,
     getPointsHistoryByUserIdService
 } from '../service/pointHistory.service'
 
@@ -26,14 +27,14 @@ export const getAllPointsHistory = async (req: Request, res: Response, next: Nex
         }
 
         const data = await getAllPointsHistoryService(userId, limit)
-        return res.status(200).json({ status: "Success", total: data.length })
+        return res.status(200).json({ total: data.length })
 
     } catch (err) {
         next(err)
     }
 }
 
-export const getPointsHistoryByUserId = async (req: Request, res: Response, next: NextFunction) => {
+export const AdminGetPointsHistoryByUserId = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const targetUserId = Number(req.params.userId)
 
@@ -49,8 +50,8 @@ export const getPointsHistoryByUserId = async (req: Request, res: Response, next
             throw new AppError("Invalid limit", 400)
         }
 
-        const data = await getPointsHistoryByUserIdService(targetUserId, limit)
-        return res.status(200).json({ status: "Success", total: data.length })
+        const data = await AdminGetPointsHistoryByUserIdService(targetUserId, limit)
+        return res.status(200).json({ total: data.length })
     } catch (err) {
         next(err)
     }
@@ -61,8 +62,10 @@ export const getMyPointsHistory = async (req: Request, res: Response, next: Next
     try {
         const loginUserId = req.user!.id
 
-        const data = await getPointsHistoryByUserIdService(loginUserId, 10)
-        return res.status(200).json({ status: "Success", data })
+        const page = Number(req.query.page) || 1
+
+        const { data, total } = await getPointsHistoryByUserIdService(loginUserId, page)
+        return res.status(200).json({ data, total })
     } catch (err) {
         next(err)
     }

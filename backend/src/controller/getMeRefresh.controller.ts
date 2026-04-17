@@ -7,7 +7,7 @@ export const getMeRefresh = async (req: Request, res: Response, next: NextFuncti
         const loginUserId = req.user!.id
 
         const user = await getMeRefreshService(loginUserId)
-        return res.status(200).json({ status: "Success", user })
+        return res.status(200).json({ user })
     } catch (err) {
         next(err)
     }

@@ -71,8 +71,10 @@ export const getAllRedeemsByLoginUser = async (req: Request, res: Response, next
     try {
         const loginUserId = req.user!.id
 
-        const data = await getAllRedeemsByLoginUserService(loginUserId)
-        return res.status(200).json({ data })
+        const page = Number(req.query.page) || 1
+
+        const { data, total } = await getAllRedeemsByLoginUserService(loginUserId, page)
+        return res.status(200).json({ data, total })
     }
     catch (err) {
         next(err)

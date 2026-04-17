@@ -20,8 +20,10 @@ export const getAllPaymentByLoginUser = async (req: Request, res: Response, next
     try {
         const loginUserId = req.user!.id
 
-        const payment = await getAllPaymentByLoginUserService(loginUserId)
-        return res.status(200).json({ status: "Success", payment })
+        const page = Number(req.query.page) || 1
+
+        const { data, total } = await getAllPaymentByLoginUserService(loginUserId, page)
+        return res.status(200).json({ data, total })
     } catch (err) {
         next(err)
     }

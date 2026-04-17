@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import { useNavigate } from 'react-router-dom'
 import type { Payment } from '../../type/profile/paymenthis.type'
+import Pagination from '../../components/Pagination'
 
 
 
@@ -11,11 +12,21 @@ export default function PaymentHistory() {
 
     const [payments, setPayments] = useState<Payment[]>([])
     const [loading, setLoading] = useState(true)
+    const [page, setPage] = useState(1)
+    const [total, setTotal] = useState(0)
+
+    const limit = 10
+    const totalPages = Math.ceil(total / limit)
 
     const fetchPayment = async () => {
         try {
-            const res = await api.get('/payments/me')
-            setPayments(res.data.payment)
+            const { data } = await api.get('/payments/me', {
+                params: {
+                    page
+                }
+            })
+            setPayments(data.data)
+            setTotal(data.total)
         } catch (err) {
             console.error('Error fetching payments:', err)
         } finally {
@@ -25,7 +36,7 @@ export default function PaymentHistory() {
 
     useEffect(() => {
         fetchPayment()
-    }, [])
+    }, [page])
 
     const formatDate = (date: string) => {
         return new Date(date).toLocaleDateString('en-GB')
@@ -160,12 +171,18 @@ export default function PaymentHistory() {
                         </tbody>
                     </table>
                 </div>
-
                 {payments.length === 0 && (
                     <div className="text-center text-gray-500 mt-6 font-baskerville">
                         No payment history
                     </div>
                 )}
+            </div>
+            <div className="mt-12 flex justify-center mb-10">
+                <Pagination
+                    page={page}
+                    totalPages={totalPages}
+                    onPageChange={(newPage) => setPage(newPage)}
+                />
             </div>
         </div>
     )

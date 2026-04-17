@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { formatDate } from "../../components/FormatDate"
 import Pagination from "../../components/Pagination"
 import type { RedeemRewardsProps } from "../../type/admin/adminredeemreward.type"
-import { AxiosError } from "axios"
+import type { ApiError } from "../../type/apierror.type"
+import axios from "axios"
 
 
 export default function AdminRedeemRewards() {
@@ -55,16 +56,17 @@ export default function AdminRedeemRewards() {
             setIsSearchResult(true)
 
         } catch (err: unknown) {
-            if (err instanceof AxiosError) {
+            if (axios.isAxiosError<ApiError>(err)) {
                 const status = err.response?.status
+                const message = err.request?.data?.message
 
                 if (status === 404) {
                     setRedeemRewards([])
-                    setError("Stock not found")
+                    setError(message ?? "Stock not found")
                 } else if (status === 400) {
-                    setError("Bad request")
+                    setError(message ?? "Bad request")
                 } else {
-                    setError("Something went wrong")
+                    setError(message ?? "Something went wrong")
                 }
             } else {
                 setError("Unexpected Error")

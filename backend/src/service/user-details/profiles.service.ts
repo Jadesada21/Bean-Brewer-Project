@@ -20,7 +20,10 @@ export const getProfileByLoginUserService = async (userId: number) => {
     return respnose.rows[0]
 }
 
-export const getAllPaymentByLoginUserService = async (userId: number) => {
+export const getAllPaymentByLoginUserService = async (userId: number, page: number) => {
+    const limit = 10
+    const offset = (page - 1) * limit
+
     const response = await pool.query(`
         select
             p.id,
@@ -31,14 +34,22 @@ export const getAllPaymentByLoginUserService = async (userId: number) => {
             p.payment_provider,
             p.paid_at,
             p.status,
-            o.order_number 
+            o.order_number,
+            count(*) over() as total_count
         from payment p
         join orders o on p.order_id = o.id
         where o.user_id = $1
         order by p.created_at desc
-        `, [userId])
+        limit $2 offset $3
+        `, [userId, limit, offset])
 
-    return response.rows
+    const rows = response.rows.map(({ total_count, ...rest }) => rest)
+    const total = response.rows[0]?.total_count ?? 0
+
+    return {
+        data: rows,
+        total
+    }
 }
 
 export const getAllRedeemByLoginUserService = async (userId: number) => {

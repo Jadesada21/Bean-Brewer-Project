@@ -36,7 +36,7 @@ import OrderDetails from "./pages/profiles/details/OrderDetailPage";
 import RewardHis from "./pages/profiles/RewardHis";
 import RedeemRewardDetails from "./pages/profiles/details/RedeemRewardPage";
 
-import RedeemHis from "./pages/profiles/RedeemHis";
+import RedeemHis from "./pages/profiles/PromoCodeHis";
 import PointHis from "./pages/profiles/PointHis";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";

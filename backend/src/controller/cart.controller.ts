@@ -16,7 +16,7 @@ export const getCartByLoginUser = async (req: Request, res: Response, next: Next
 
         const cart = await getCartByLoginUserService(loginUserId)
 
-        res.status(200).json({ status: "success", data: cart })
+        res.status(200).json({ cart })
     } catch (err) {
         next(err)
     }
@@ -39,7 +39,7 @@ export const addToCart = async (req: Request, res: Response, next: NextFunction)
         }
 
         const data = await addToCartService(loginUserId, productId, qty)
-        res.status(201).json({ status: "success", data: data })
+        res.status(201).json({ data })
 
     } catch (error) {
         next(error)
@@ -53,10 +53,7 @@ export const getCartItems = async (req: Request, res: Response, next: NextFuncti
 
         const data = await getCartItemsService(loginUserId)
 
-        res.status(200).json({
-            status: "success",
-            data
-        })
+        res.status(200).json({ data })
 
     } catch (error) {
         next(error)
@@ -81,7 +78,7 @@ export const updateCartItem = async (req: Request, res: Response, next: NextFunc
 
         const data = await updateCartItemService(loginUserId, id, quantity)
 
-        res.status(200).json({ status: "success", data: data })
+        res.status(200).json({ data })
 
     } catch (error) {
         next(error)
@@ -101,7 +98,7 @@ export const deleteCartItem = async (req: Request, res: Response, next: NextFunc
 
         const data = await deleteCartItemService(loginUserId, id)
 
-        res.status(200).json({ status: "success", data: data })
+        res.status(200).json({ data })
     } catch (error) {
         next(error)
     }

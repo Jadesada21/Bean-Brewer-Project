@@ -90,8 +90,10 @@ export const getAllOrderByLoginUser = async (req: Request, res: Response, next: 
     try {
         const loginUserId = req.user!.id
 
-        const data = await getAllOrderByLoginUserService(loginUserId)
-        return res.status(200).json({ data })
+        const page = Number(req.query.page) || 1
+
+        const { data, total } = await getAllOrderByLoginUserService(loginUserId, page)
+        return res.status(200).json({ data, total })
     } catch (err) {
         return next(err)
     }

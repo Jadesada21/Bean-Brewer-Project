@@ -6,7 +6,8 @@ import type { Product } from '../../type/admin/adminproduct.type'
 import { formatDate } from '../../components/FormatDate'
 import { formatNumeric } from '../../components/FormatNumeric'
 import { AdminProductModal } from './modal/AdminProductModal'
-import { AxiosError } from 'axios'
+import axios from 'axios'
+import type { ApiError } from '../../type/apierror.type'
 
 
 
@@ -57,16 +58,17 @@ export default function AdminProduct() {
             setProducts([res.data.data])
             setIsSearchResult(true)
         } catch (err: unknown) {
-            if (err instanceof AxiosError) {
+            if (axios.isAxiosError<ApiError>(err)) {
                 const status = err.response?.status
+                const message = err.response?.data?.message
 
                 if (status === 404) {
                     setProducts([])
-                    setError("Product not found")
+                    setError(message ?? "Product not found")
                 } else if (status === 400) {
-                    setError("Bad request")
+                    setError(message ?? "Bad request")
                 } else {
-                    setError("Something went wrong")
+                    setError(message ?? "Something went wrong")
                 }
             } else {
                 setError("Unexpected Error")

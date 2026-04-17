@@ -2,18 +2,30 @@ import { pool } from '../../db/connectPostgre.repository'
 import { AppError } from '../../util/AppError'
 
 // user owner
-export const getAllPromoCodeUsageByLoginUserService = async (loginUserId: number) => {
+export const getAllPromoCodeUsageByLoginUserService = async (loginUserId: number, page: number) => {
+
+    const limit = 10
+    const offset = (page - 1) * limit
+
     const response = await pool.query(`
     select 
         pcu.*,
+    count(*) over() as total_count,
         pc.code 
     from promo_code_usage pcu
     join promo_code pc on pcu.promo_code_id = pc.id
     where pcu.user_id = $1
     order by pcu.created_at desc
-    `, [loginUserId])
+    limit $2 offset $3
+    `, [loginUserId, limit, offset])
 
-    return response.rows
+    const rows = response.rows.map(({ total_count, ...rest }) => rest)
+    const total = response.rows[0]?.total_count ?? 0
+
+    return {
+        data: rows,
+        total
+    }
 }
 
 
@@ -87,8 +99,8 @@ export const redeemPromoCodeService = async (code: string, loginUserId: number) 
         // insert point_histories
         await client.query(`
             insert into point_histories
-            (user_id , points , source , reference_id , created_at)
-            values($1,$2,'promo_bonus' , $3, now())
+            (user_id , points , source , reference_id ,reference_type, created_at)
+            values($1,$2,'promo_bonus' , $3, 'promo code', now())
             `, [loginUserId, promo.bonus_points, promo.id])
 
         await client.query("COMMIT")

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
 import { api } from "../../AxiosInstance"
-import { AxiosError } from "axios"
 import { useNavigate } from "react-router-dom"
 import Pagination from "../../components/Pagination"
 import { formatDate } from "../../components/FormatDate"
 import { formatNumeric } from "../../components/FormatNumeric"
 import type { StockmoveProps } from "../../type/admin/adminstockmove.type"
+import type { ApiError } from "../../type/apierror.type"
+import axios from "axios"
 
 
 export default function AdminStockmove() {
@@ -56,16 +57,17 @@ export default function AdminStockmove() {
             setStocks([data.data])
             setIsSearchResult(true)
         } catch (err: unknown) {
-            if (err instanceof AxiosError) {
+            if (axios.isAxiosError<ApiError>(err)) {
                 const status = err.response?.status
+                const message = err.response?.data?.message
 
                 if (status === 404) {
                     setStocks([])
-                    setError("Stock not found")
+                    setError(message ?? "Stock not found")
                 } else if (status === 400) {
-                    setError("Bad request")
+                    setError(message ?? "Bad request")
                 } else {
-                    setError("Something went wrong")
+                    setError(message ?? "Something went wrong")
                 }
             } else {
                 setError("Unexpected Error")

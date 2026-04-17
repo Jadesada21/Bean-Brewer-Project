@@ -103,14 +103,14 @@ export default function ProfilesPage() {
 
                     <button
                         onClick={() => go("/profile/rewards-redeem")}
-                        className={menuClass("/profile/rewards")}
+                        className={menuClass("/profile/rewards-redeem")}
                     >
-                        Reward History
+                        Redeem Reward History
                     </button>
 
                     <button
                         onClick={() => go("/profile/redeems")}
-                        className={menuClass("/profile/redeem")}
+                        className={menuClass("/profile/redeems")}
                     >
                         Redeem Code History
                     </button>
@@ -121,6 +121,8 @@ export default function ProfilesPage() {
                     >
                         Point History
                     </button>
+
+
 
                     {/* Logout */}
                     <div className="pt-6">

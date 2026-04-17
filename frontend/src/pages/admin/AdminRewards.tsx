@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import Pagination from '../../components/Pagination'
 import type { Reward } from '../../type/admin/adminreward.type'
 import { AdminRewardModal } from './modal/AdminRewardModal'
-import { AxiosError } from 'axios'
+import axios from 'axios'
+import type { ApiError } from '../../type/apierror.type'
 
 
 
@@ -54,16 +55,17 @@ export default function AdminReward() {
             setRewards([res.data.data])
             setIsSearchResult(true)
         } catch (err: unknown) {
-            if (err instanceof AxiosError) {
+            if (axios.isAxiosError<ApiError>(err)) {
                 const status = err.response?.status
+                const message = err.response?.data?.message
 
                 if (status === 404) {
                     setRewards([])
-                    setError("Reward not found")
+                    setError(message ?? "Reward not found")
                 } else if (status === 400) {
-                    setError("Bad Request")
+                    setError(message ?? "Bad Request")
                 } else {
-                    setError("Something went wrong")
+                    setError(message ?? "Something went wrong")
                 }
             } else {
                 setLoading(false)

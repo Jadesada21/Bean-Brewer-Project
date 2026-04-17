@@ -117,7 +117,7 @@ export const createRedeemService = async (
         // สร้าง redeem
         const redeemResult = await client.query(`
             insert into redeems
-            (user_id  ,  total_points_used , status)
+            (user_id , total_points_used , status)
             values($1,$2,'pending')
             returning *`,
             [loginUserId, totalPointsUsed]
@@ -288,7 +288,10 @@ export const updateStatusRedeemService = async (
 }
 
 
-export const getAllRedeemsByLoginUserService = async (loginUserId: number) => {
+export const getAllRedeemsByLoginUserService = async (loginUserId: number, page: number) => {
+
+    const limit = 10
+    const offset = (page - 1) * limit
 
     const response = await pool.query(`
         select 
@@ -297,7 +300,7 @@ export const getAllRedeemsByLoginUserService = async (loginUserId: number) => {
             r.status,
             r.total_points_used,
             r.created_at,
-
+        count(*) over() as total_count,
         coalesce(
             json_agg(
                 json_build_object(
@@ -329,9 +332,16 @@ export const getAllRedeemsByLoginUserService = async (loginUserId: number) => {
             r.created_at
 
         order by r.created_at desc
-    `, [loginUserId])
+        limit $2 offset $3
+    `, [loginUserId, limit, offset])
 
-    return response.rows
+    const rows = response.rows.map(({ total_count, ...rest }) => rest)
+    const total = response.rows[0]?.total_count ?? 0
+
+    return {
+        data: rows,
+        total
+    }
 }
 
 export const getRedeemByIdByLoginUserService = async (

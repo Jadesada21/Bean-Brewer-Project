@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../AxiosInstance'
 import type { Redeem } from '../../type/profile/redeemhis.type'
-
-
+import Pagination from '../../components/Pagination'
 
 
 export default function RedeemsHistory() {
@@ -10,11 +9,21 @@ export default function RedeemsHistory() {
     const [redeems, setRedeems] = useState<Redeem[]>([])
     const [loading, setLoading] = useState(true)
     const [code, setCode] = useState("")
+    const [page, setPage] = useState(1)
+    const [total, setTotal] = useState(0)
+
+    const limit = 10
+    const totalPages = Math.ceil(total / limit)
 
     const fetchRedeems = async () => {
         try {
-            const res = await api.get('/promo-code-usages/me')
-            setRedeems(res.data.data)
+            const { data } = await api.get('/promo-code-usages/me', {
+                params: {
+                    page
+                }
+            })
+            setRedeems(data.data)
+            setTotal(data.total)
         } catch (err) {
             console.error('Error fetching redeems:', err)
         } finally {
@@ -24,7 +33,7 @@ export default function RedeemsHistory() {
 
     useEffect(() => {
         fetchRedeems()
-    }, [])
+    }, [page])
 
     const redeemCode = async () => {
         try {
@@ -53,8 +62,8 @@ export default function RedeemsHistory() {
 
 
     return (
-        <div className="font-baskerville">
-            <div className="flex mt-6 items-center gap-6 bg-white shadow-sm max-w-2xl p-3 pl-8 rounded-xl">
+        <div>
+            <div className="flex mt-6 items-center gap-6 bg-white shadow-sm max-w-2xl p-3 pl-8 rounded-xl font-baskerville w-full">
                 <div>
                     Redeem Code Here
                 </div>
@@ -72,7 +81,7 @@ export default function RedeemsHistory() {
                 <div>
                     <button
                         onClick={redeemCode}
-                        className="w-25 h-9 border rounded bg-blue-500 text-white"
+                        className="w-25 h-9 border rounded bg-blue-500 text-white cursor-pointer transition-all duration-150 active:scale-90 hover:scale-105"
                     >
                         Redeem
                     </button>
@@ -119,6 +128,14 @@ export default function RedeemsHistory() {
                         No Redeem History
                     </div>
                 )}
+            </div>
+
+            <div className="mt-12 flex justify-center mb-10 mr-20">
+                <Pagination
+                    page={page}
+                    totalPages={totalPages}
+                    onPageChange={(newPage) => setPage(newPage)}
+                />
             </div>
         </div>
     )

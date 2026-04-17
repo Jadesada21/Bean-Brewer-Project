@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
 import type { PromoCode } from "../../type/admin/adminpromocode.type"
 import { api } from "../../AxiosInstance"
-import { AxiosError } from "axios"
+import axios from "axios"
 import { formatNumeric } from "../../components/FormatNumeric"
 import { formatDate } from "../../components/FormatDate"
 import Pagination from "../../components/Pagination"
 import { AdminPromoCodeModal } from "./modal/AdminPromoCodeModal"
+import type { ApiError } from "../../type/apierror.type"
 
 
 
@@ -52,16 +53,17 @@ export default function AdminPromoCode() {
 
             setPromoCodes([data.data])
         } catch (err: unknown) {
-            if (err instanceof AxiosError) {
+            if (axios.isAxiosError<ApiError>(err)) {
                 const status = err.response?.status
+                const message = err.response?.data?.message
 
                 if (status === 404) {
                     setPromoCodes([])
-                    setError("Promo code not found")
+                    setError(message ?? "Promo code not found")
                 } else if (status === 400) {
-                    setError("Bad request")
+                    setError(message ?? "Bad request")
                 } else {
-                    setError("Something went wrong")
+                    setError(message ?? "Something went wrong")
                 }
             } else {
                 setError("Unexpected Error")

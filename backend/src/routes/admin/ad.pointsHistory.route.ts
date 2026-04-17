@@ -2,7 +2,7 @@ import { Router } from 'express'
 
 import {
     getAllPointsHistory,
-    getPointsHistoryByUserId
+    AdminGetPointsHistoryByUserId
 } from '../../controller/pointHistories.controller'
 
 const router = Router()
@@ -12,7 +12,7 @@ router.route('/')
     .get(getAllPointsHistory)
 
 router.route('/users/:userId')
-    .get(getPointsHistoryByUserId)
+    .get(AdminGetPointsHistoryByUserId)
 
 
 export default router

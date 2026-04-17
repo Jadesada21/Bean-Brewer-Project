@@ -10,3 +10,7 @@ export type ApiError = {
     }
 }
 
+export type ApiErrorData = {
+    message?: string
+    code?: number
+}
