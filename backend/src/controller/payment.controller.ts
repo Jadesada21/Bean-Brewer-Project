@@ -25,14 +25,14 @@ export const getAllPayment = async (req: Request, res: Response, next: NextFunct
 
 export const createPayment = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const orderId = Number(req.params.id)
-
+        const orderId = Number(req.params.orderId)
+        console.log(req.params.id)
         if (Number.isNaN(orderId)) {
             throw new AppError("Invalid orderId", 400)
         }
 
         const userId = req.user!.id
-
+        console.log("userId:", userId)
 
         const payment = await createPaymentService(orderId, userId)
         return res.status(201).json({ payment })

@@ -41,6 +41,7 @@ export const createPaymentService = async (order_id: number, userId: number) => 
             `, [order_id, userId]
         )
 
+
         if (orderResult.rowCount === 0) {
             throw new AppError("Order not found", 400)
         }
@@ -138,6 +139,7 @@ export const updatePaymentStatusService = async (
         if (role !== "admin" && Number(order.user_id) !== loginUserId) {
             throw new AppError("Forbidden", 403)
         }
+
 
         // payment completed
         if (newStatus === 'completed') {
