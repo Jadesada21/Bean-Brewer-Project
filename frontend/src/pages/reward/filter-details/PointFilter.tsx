@@ -15,7 +15,7 @@ export default function PointsFilter({
         { label: "201-300 pts", value: "201-300" },
         { label: "301-400 pts", value: "301-400" },
         { label: "401-500 pts", value: "401-500" },
-        { label: "500+ pts", value: "500" }
+        { label: "500+ pts", value: "501-9999" }
     ]
     return (
         <div>

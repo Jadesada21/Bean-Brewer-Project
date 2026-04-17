@@ -34,7 +34,7 @@ export function ItemCard({
                             </h3>
 
                             {price && (
-                                <p className="font-semibold text-[16px] whitespace-nowrap">
+                                <p className="font-semibold text-[16px] whitespace-nowrap flex items-center">
                                     ฿ {price}
                                 </p>
                             )}

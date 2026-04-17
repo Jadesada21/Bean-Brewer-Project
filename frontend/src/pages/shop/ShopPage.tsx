@@ -112,7 +112,7 @@ export default function ShopPage() {
 
                             <button
                                 onClick={() => setSearchParams({})}
-                                className="text-base font-semibold text-[#f45048] underline"
+                                className="text-base font-semibold text-[#f45048] underline cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Clear
                             </button>
@@ -176,10 +176,6 @@ export default function ShopPage() {
                             {/* header */}
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-xl font-semibold">Filters</h2>
-
-                                <button onClick={() => setOpenFilter(false)}>
-                                    ✕
-                                </button>
                             </div>
 
                             {/* filter */}
@@ -192,7 +188,7 @@ export default function ShopPage() {
                             {/* clear */}
                             <button
                                 onClick={() => setSearchParams({})}
-                                className="mt-6 text-red-500 underline"
+                                className="mt-6 text-red-500 underline cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                             >
                                 Clear Filters
                             </button>
