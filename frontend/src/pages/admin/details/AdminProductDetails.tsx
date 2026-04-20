@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 
 import { ToggleActiveBtn } from "../../../components/IsActive"
@@ -19,7 +19,7 @@ export default function AdminProductDetails() {
 
     const { id } = useParams()
 
-    const navigate = useNavigate()
+
 
     const [isEditing, setIsEditing] = useState(false)
     const [products, setProducts] = useState<ProductDetail | null>(null)

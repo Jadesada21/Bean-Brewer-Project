@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 import { formatDate } from "../../../components/FormatDate"
 import { formatNumeric } from "../../../components/FormatNumeric"
@@ -15,7 +15,6 @@ export default function AdminUserDetails() {
 
     const { id } = useParams()
 
-    const navigate = useNavigate()
 
     const [user, setUser] = useState<UserDetail | null>(null)
     const [loading, setLoading] = useState(true)

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 import { ToggleActiveBtn } from "../../../components/IsActive"
 import { RestockBtn } from "../../../components/Restock"
@@ -17,7 +17,6 @@ export default function AdminRewardDetails() {
 
     const { id } = useParams()
 
-    const navigate = useNavigate()
 
     const [isEditing, setIsEditing] = useState(false)
     const [rewards, setRewards] = useState<RewardsDetail | null>(null)
