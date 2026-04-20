@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { api } from '../../../AxiosInstance'
 import { useParams, useNavigate } from 'react-router-dom'
 import type { OrderDetail } from '../../../type/profile/detail/orderdetailpage.type'
+import { routes } from '../../../constants/route'
+import BackBtn from '../../../components/BackBtn'
 
 
 export default function OrderDetails() {
@@ -71,17 +73,25 @@ export default function OrderDetails() {
 
 
     return (
-        <div>
+        <div className="font-baskerville">
             <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-3xl mb-10 h-full">
-                <h2 className="text-xl font-semibold mb-4 font-baskerville">
-                    {order.order_number}
-                </h2>
 
-                <p className={`mb-2 font-baskerville ${getStatusStyle(order.status)}`}>
+                <div className="flex justify-between">
+                    <h2 className="text-xl font-semibold mb-4">
+                        {order.order_number}
+                    </h2>
+
+
+                    <BackBtn
+                        to={routes.user.orders}>
+                    </BackBtn>
+                </div>
+
+                <p className={`mb-2 ${getStatusStyle(order.status)}`}>
                     {order.status}
                 </p>
 
-                <p className="text-gray-500 mb-6 font-baskerville">
+                <p className="text-gray-500 mb-6">
                     {formatDate(order.created_at)}
                 </p>
 
@@ -89,26 +99,26 @@ export default function OrderDetails() {
                     {order.items.map((item) => (
                         <div
                             key={item.product_id}
-                            className="flex justify-between border-b pb-3 font-baskerville"
+                            className="flex justify-between border-b pb-3"
                         >
                             <div>
                                 <p className="font-medium">
                                     {item.product_name}
                                 </p>
 
-                                <p className="text-sm text-gray-500 font-baskerville">
+                                <p className="text-sm text-gray-500">
                                     Qty: {item.quantity}
                                 </p>
                             </div>
 
-                            <p className="font-medium font-baskerville">
+                            <p className="font-medium">
                                 ฿ {formatPrice(item.price)}
                             </p>
                         </div>
                     ))}
                 </div>
 
-                <div className="flex justify-between mt-6 font-semibold text-lg font-baskerville">
+                <div className="flex justify-between mt-6 font-semibold text-lg">
 
                     <p>Total</p>
 

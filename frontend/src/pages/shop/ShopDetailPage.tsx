@@ -113,7 +113,7 @@ export default function ShopDetailPage() {
     return (
         <div className="max-w-7xl mx-auto px-6 py-10 font-baskerville">
 
-            <div className="flex flex-wrap items-center justify-center xl:justify-start pb-10 gap-2 font-baskerville">
+            <div className="flex flex-wrap items-center justify-center xl:justify-start pb-10 gap-2">
                 <Link to='/' className="transition-transform duration-150 active:scale-90 hover:scale-105">
                     Home
                 </Link>

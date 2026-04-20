@@ -4,6 +4,8 @@ import { api } from "../../../AxiosInstance"
 import { formatDate } from "../../../components/FormatDate"
 import { formatNumeric } from "../../../components/FormatNumeric"
 import type { UserDetail } from "../../../type/admin/detail/adminuserdetail.type"
+import BackBtn from "../../../components/BackBtn"
+import { routes } from "../../../constants/route"
 
 
 
@@ -182,12 +184,10 @@ export default function AdminUserDetails() {
                 </div>
 
                 <div className="flex justify-end gap-3 mt-6">
-                    <button
-                        onClick={() => navigate("/admin/users")}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
-                    >
-                        Back
-                    </button>
+                    <BackBtn
+                        to={routes.admin.users}>
+                    </BackBtn>
+
                 </div>
             </div>
 

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 import { getStatusStyle } from "../../../components/StatusStyle"
 import { formatDate } from "../../../components/FormatDate"
 import { formatNumeric } from "../../../components/FormatNumeric"
 import type { OrderDetail } from "../../../type/admin/detail/adminorderdetail.type"
+import BackBtn from "../../../components/BackBtn"
+import { routes } from "../../../constants/route"
 
 
 
@@ -14,7 +16,7 @@ export default function AdminOrderDetails() {
 
     const { id } = useParams()
 
-    const navigate = useNavigate()
+
 
     const [order, setOrder] = useState<OrderDetail | null>(null)
     const [loading, setLoading] = useState(true)
@@ -143,16 +145,14 @@ export default function AdminOrderDetails() {
                 {order && (
                     <div className="flex justify-end gap-3 mt-6">
 
-                        <button
-                            onClick={() => navigate("/admin/orders")}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
-                        >
-                            Back
-                        </button>
+                        <BackBtn
+                            to={routes.admin.orders}>
+                        </BackBtn>
+
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     )
 }
 

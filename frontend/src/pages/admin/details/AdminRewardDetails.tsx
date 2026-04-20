@@ -9,6 +9,8 @@ import { DeleteImagesModal } from "../../../components/adminModal/DeleteImagesMo
 import { UploadModal } from "../../../components/adminModal/UploadImagesModal"
 
 import type { RewardImage, RewardsDetail } from "../../../type/admin/detail/adminrewarddetail.type"
+import BackBtn from "../../../components/BackBtn"
+import { routes } from "../../../constants/route"
 
 
 export default function AdminRewardDetails() {
@@ -129,12 +131,11 @@ export default function AdminRewardDetails() {
             <div className="flex justify-between">
                 <div className="flex items-center gap-10 pb-10">
                     <div>
-                        <button
-                            onClick={() => navigate("/admin/rewards")}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
-                        >
-                            Back
-                        </button>
+
+                        <BackBtn
+                            to={routes.admin.rewards}>
+                        </BackBtn>
+
                     </div>
 
 

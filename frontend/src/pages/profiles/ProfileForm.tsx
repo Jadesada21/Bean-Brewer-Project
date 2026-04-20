@@ -91,12 +91,12 @@ export default function ProfileForm() {
     }
 
     return (
-        <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-3xl mb-10">
+        <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-3xl mb-10 font-baskerville">
 
 
             {/* header */}
             <div className="flex justify-between items-center mb-8">
-                <h2 className="text-2xl font-bold font-baskerville"
+                <h2 className="text-2xl font-bold"
                 >Personal Information ,
                     <span className="text-red-500 "> Point : {form.point}
 
@@ -106,7 +106,7 @@ export default function ProfileForm() {
                 {!isEditing && (
                     <button
                         onClick={() => setIsEditing(true)}
-                        className="border px-4 py-2 rounded font-baskerville transition-transform duration-150 active:scale-90 hover:scale-105 cursor-pointer"
+                        className="border px-4 py-2 rounded transition-transform duration-150 active:scale-90 hover:scale-105 cursor-pointer"
                     >
                         Edit
                     </button>
@@ -117,7 +117,7 @@ export default function ProfileForm() {
             <div className="space-y-6">
 
                 <div>
-                    <label className="block mb-2 font-baskerville">First name</label>
+                    <label className="block mb-2">First name</label>
                     <input
                         type='text'
                         name="firstname"
@@ -125,12 +125,12 @@ export default function ProfileForm() {
                         onChange={handleChange}
                         maxLength={30}
                         disabled={!isEditing}
-                        className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                        className="w-full rounded border border-gray-300 h-10 pl-2"
                     />
                 </div>
 
                 <div>
-                    <label className="block mb-2 font-baskerville">Last name</label>
+                    <label className="block mb-2">Last name</label>
                     <input
                         type='text'
                         name="lastname"
@@ -138,20 +138,20 @@ export default function ProfileForm() {
                         onChange={handleChange}
                         maxLength={30}
                         disabled={!isEditing}
-                        className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                        className="w-full rounded border border-gray-300 h-10 pl-2"
                     />
                 </div>
 
                 <div>
-                    <h1 className="block mb-2 font-baskerville">Email</h1>
+                    <h1 className="block mb-2">Email</h1>
                     <p className="flex items-center w-full rounded 
-                    border border-gray-300 h-10 pl-2 font-baskerville bg-gray-300">
+                    border border-gray-300 h-10 pl-2 bg-gray-300">
                         {form.email}
                     </p>
                 </div>
 
                 <div>
-                    <label className="block mb-2 font-baskerville">Phone number</label>
+                    <label className="block mb-2">Phone number</label>
                     <input
                         type='text'
                         name="phone"
@@ -159,7 +159,7 @@ export default function ProfileForm() {
                         onChange={handleChange}
                         placeholder='xxx-xxx-xxxx'
                         disabled={!isEditing}
-                        className="w-full rounded border border-gray-300 h-10 pl-2 font-baskerville"
+                        className="w-full rounded border border-gray-300 h-10 pl-2"
                     />
                 </div>
 
@@ -171,14 +171,14 @@ export default function ProfileForm() {
 
                     <button
                         onClick={handleSubmit}
-                        className="bg-black text-white px-6 py-2 rounded font-baskerville cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                        className="bg-black text-white px-6 py-2 rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         Save
                     </button>
 
                     <button
                         onClick={() => setIsEditing(false)}
-                        className="border px-6 py-2 rounded font-baskerville cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
+                        className="border px-6 py-2 rounded cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
                     >
                         Cancel
                     </button>

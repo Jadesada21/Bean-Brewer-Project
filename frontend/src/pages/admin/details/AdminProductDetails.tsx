@@ -10,6 +10,8 @@ import { formatDate } from "../../../components/FormatDate"
 import { formatNumeric } from "../../../components/FormatNumeric"
 
 import type { ProductDetail, ProductImage } from "../../../type/admin/detail/adminproductdetail.type"
+import BackBtn from "../../../components/BackBtn"
+import { routes } from "../../../constants/route"
 
 
 
@@ -137,12 +139,11 @@ export default function AdminProductDetails() {
             <div className="flex justify-between">
                 <div className="flex items-center gap-10 pb-10">
                     <div>
-                        <button
-                            onClick={() => navigate("/admin/products")}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
-                        >
-                            Back
-                        </button>
+
+                        <BackBtn
+                            to={routes.admin.products}>
+                        </BackBtn>
+
                     </div>
 
                     <span className="text-2xl">ID# {products.id}</span>

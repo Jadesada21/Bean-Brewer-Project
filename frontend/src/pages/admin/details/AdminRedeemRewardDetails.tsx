@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { api } from "../../../AxiosInstance"
 import { formatDate } from "../../../components/FormatDate"
 import { getStatusStyle } from "../../../components/StatusStyle"
 import { formatNumeric } from "../../../components/FormatNumeric"
 import type { RedeemDetail } from "../../../type/admin/detail/adminredeemrewarddetail.type"
+import BackBtn from "../../../components/BackBtn"
+import { routes } from "../../../constants/route"
 
 
 export default function AdminRedeemRewardDetails() {
     const { id } = useParams()
-
-    const navigate = useNavigate()
 
     const [redeem, setRedeem] = useState<RedeemDetail | null>(null)
     const [loading, setLoading] = useState(true)
@@ -133,12 +133,11 @@ export default function AdminRedeemRewardDetails() {
 
                 {redeem && (
                     <div className="flex justify-end gap-3 mt-6">
-                        <button
-                            onClick={() => navigate("/admin/redeem-rewards")}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-md cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105"
-                        >
-                            Back
-                        </button>
+
+                        <BackBtn
+                            to={routes.admin.redeemRewards}>
+                        </BackBtn>
+
                     </div>
                 )}
             </div>

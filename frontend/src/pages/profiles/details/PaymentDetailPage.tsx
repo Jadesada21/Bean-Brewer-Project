@@ -5,6 +5,8 @@ import { getStatusStyle } from '../../../components/StatusStyle'
 import { formatDate } from '../../../components/FormatDate'
 import { formatNumeric } from '../../../components/FormatNumeric'
 import type { PaymentDetail } from '../../../type/profile/detail/paymentdetailpage.type'
+import BackBtn from '../../../components/BackBtn'
+import { routes } from '../../../constants/route'
 
 
 
@@ -58,53 +60,60 @@ export default function PaymentDetails() {
 
 
     return (
-        <div>
+        <div className="font-baskerville">
             <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-3xl mb-10 h-full">
-                <h2 className="text-xl font-semibold mb-4 font-baskerville">
-                    Payment #{payment.id}
-                </h2>
+                <div className="flex justify-between">
+                    <h2 className="text-xl font-semibold mb-4">
+                        Payment #{payment.id}
+                    </h2>
 
-                <p className={`mb-2 font-baskerville ${getStatusStyle(payment.status)}`}>
+                    <BackBtn
+                        to={routes.user.payments}>
+                    </BackBtn>
+                </div>
+
+
+                <p className={`mb-2 ${getStatusStyle(payment.status)}`}>
                     {payment.status}
                 </p>
 
-                <p className="text-gray-500 mb-6 font-baskerville">
+                <p className="text-gray-500 mb-6">
                     {formatDate(payment.created_at)}
                 </p>
 
                 <div className="space-y-4">
-                    <div className="flex justify-between border-b pb-3 font-baskerville">
+                    <div className="flex justify-between border-b pb-3">
                         <p>Provider</p>
                         <p>{payment.payment_provider}</p>
                     </div>
 
-                    <div className="flex justify-between border-b pb-3 font-baskerville">
+                    <div className="flex justify-between border-b pb-3">
                         <p>Transaction</p>
                         <p>{payment.transaction_ref}</p>
                     </div>
 
-                    <div className="flex justify-between border-b pb-3 font-baskerville">
+                    <div className="flex justify-between border-b pb-3">
                         <p>Amount</p>
                         <p>฿ {formatNumeric(payment.amount)}</p>
                     </div>
 
-                    <div className="flex justify-between border-b pb-3 font-baskerville">
+                    <div className="flex justify-between border-b pb-3">
                         <p>Paid At</p>
                         <p>{formatDate(payment.paid_at)}</p>
                     </div>
 
-                    <div className="flex justify-between font-baskerville">
+                    <div className="flex justify-between">
                         <p>Order</p>
                         <button
                             onClick={() => navigate(`/profile/orders/${payment.order_id}`)}
-                            className="text-blue-600 hover:underline font-baskerville"
+                            className="text-blue-600 hover:underline"
                         >
                             #{payment.order_id}
                         </button>
                     </div>
                 </div>
 
-                <div className="flex justify-between mt-6 font-semibold text-lg font-baskerville">
+                <div className="flex justify-between mt-6 font-semibold text-lg">
 
                     <p>Total</p>
 

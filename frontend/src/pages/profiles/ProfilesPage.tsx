@@ -25,7 +25,7 @@ export default function ProfilesPage() {
     }
 
     const menuClass = (path: string) => {
-        return `cursor-pointer text-lg pt-3 font-baskerville border-b transition-all duration-150 
+        return `cursor-pointer text-lg pt-3 border-b transition-all duration-150 
         active:scale-95 hover:scale-105
         ${isActive(path) ? "border-black" : "border-transparent"}`
     }

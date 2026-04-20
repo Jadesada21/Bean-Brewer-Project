@@ -46,12 +46,12 @@ export default function PointsHistory() {
 
 
     return (
-        <div>
+        <div className="font-baskerville">
             <div className="mt-10 bg-white p-8 rounded-xl shadow-sm w-125 mb-10 h-full">
 
                 <table className="w-full border-collapse">
                     <thead>
-                        <tr className="text-left text-gray-500 border-b border-gray-300 font-baskerville">
+                        <tr className="text-left text-gray-500 border-b border-gray-300">
                             <th className="pb-3">Date</th>
                             <th className="pb-3 pr-4">Points</th>
                             <th className="pb-3">Reference Type</th>
@@ -64,17 +64,17 @@ export default function PointsHistory() {
                                 key={point.id}
                                 className="border-b border-gray-300 hover:bg-gray-50 transition"
                             >
-                                <td className="py-4 font-medium font-baskerville">
+                                <td className="py-4 font-medium">
                                     {formatDate(point.created_at)}
                                 </td>
 
                                 <td className="py-4">
-                                    <div className={`flex items-center gap-2  font-baskerville`}>
+                                    <div className={`flex items-center gap-2 `}>
                                         {point.points}
                                     </div>
                                 </td>
 
-                                <td className="py-4 font-baskerville">
+                                <td className="py-4">
                                     {point.reference_type}
                                 </td>
                             </tr>
@@ -84,7 +84,7 @@ export default function PointsHistory() {
                 </table>
 
                 {points.length === 0 && (
-                    <div className="text-center text-gray-500 mt-6 font-baskerville">
+                    <div className="text-center text-gray-500 mt-6">
                         No Points History
                     </div>
                 )}

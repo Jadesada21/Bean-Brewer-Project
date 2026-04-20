@@ -85,12 +85,12 @@ export default function SignupModal({ close }: { close: () => void }) {
     }
     return (
         // title
-        < div >
+        < div className="font-baskerville">
             <div className="flex items-center flex-col ">
-                <h2 className="text-xl font-semibold mb-2 font-baskerville">
+                <h2 className="text-xl font-semibold mb-2">
                     Create your account
                 </h2>
-                <p className="text-center font-baskerville">
+                <p className="text-center">
                     Join Trade to easily manage your dashboard, <br /> update coffee preferences, edit deliveries, and more!
                 </p>
             </div>
@@ -112,7 +112,7 @@ export default function SignupModal({ close }: { close: () => void }) {
                                         setUsername(e.target.value)
                                         if (errorUsername) setErrorUsername("")
                                     }}
-                                    className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none font-baskerville"
+                                    className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none"
                                     onBlur={() => {
                                         if (!username.trim()) {
                                             setErrorUsername("Please enter your username")
@@ -122,7 +122,7 @@ export default function SignupModal({ close }: { close: () => void }) {
 
                             </div>
                             {errorUsername && (
-                                <p className=" text-[12px] font-bold text-red-500 font-baskerville">{errorUsername}</p>
+                                <p className=" text-[12px] font-bold text-red-500">{errorUsername}</p>
                             )}
                         </div>
 
@@ -139,7 +139,7 @@ export default function SignupModal({ close }: { close: () => void }) {
                                         setPassword(e.target.value)
                                         if (errorPassword) setErrorPassword("")
                                     }}
-                                    className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none font-baskerville"
+                                    className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none"
                                     onBlur={() => {
                                         if (!password.trim()) {
                                             setErrorPassword("Please enter a valid password")
@@ -156,7 +156,7 @@ export default function SignupModal({ close }: { close: () => void }) {
 
                             </div>
                             {errorPassword && (
-                                <p className=" text-[12px] font-bold text-red-500 font-baskerville">{errorPassword}</p>
+                                <p className=" text-[12px] font-bold text-red-500">{errorPassword}</p>
                             )}
                         </div>
                     </div>
@@ -174,7 +174,7 @@ export default function SignupModal({ close }: { close: () => void }) {
                                     setEmail(e.target.value)
                                     if (errorEmail) setErrorEmail("")
                                 }}
-                                className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none font-baskerville"
+                                className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none"
                                 onBlur={() => {
                                     if (!email.trim()) {
                                         setErrorEmail("Please enter a valid email")
@@ -184,7 +184,7 @@ export default function SignupModal({ close }: { close: () => void }) {
 
                         </div>
                         {errorEmail && (
-                            <p className=" text-[12px] font-bold text-red-500 font-baskerville">{errorEmail}</p>
+                            <p className=" text-[12px] font-bold text-red-500">{errorEmail}</p>
                         )}
                     </div>
 
@@ -203,7 +203,7 @@ export default function SignupModal({ close }: { close: () => void }) {
                                         setFirstname(e.target.value)
                                         if (errorFirstname) setErrorFirstname("")
                                     }}
-                                    className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none font-baskerville"
+                                    className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none"
                                     onBlur={() => {
                                         if (!firstname.trim()) {
                                             setErrorFirstname("Please enter your firstname")
@@ -213,7 +213,7 @@ export default function SignupModal({ close }: { close: () => void }) {
 
                             </div>
                             {errorFirstname && (
-                                <p className=" text-[12px] font-bold text-red-500 font-baskerville">{errorFirstname}</p>
+                                <p className=" text-[12px] font-bold text-red-500">{errorFirstname}</p>
                             )}
                         </div>
 
@@ -230,7 +230,7 @@ export default function SignupModal({ close }: { close: () => void }) {
                                         setLastname(e.target.value)
                                         if (errorLastname) setErrorLastname("")
                                     }}
-                                    className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none font-baskerville"
+                                    className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none"
                                     onBlur={() => {
                                         if (!lastname.trim()) {
                                             setErrorLastname("Please enter your lastname")
@@ -240,7 +240,7 @@ export default function SignupModal({ close }: { close: () => void }) {
 
                             </div>
                             {errorLastname && (
-                                <p className=" text-[12px] font-bold text-red-500 font-baskerville">{errorLastname}</p>
+                                <p className=" text-[12px] font-bold text-red-500">{errorLastname}</p>
                             )}
                         </div>
                     </div>
@@ -261,7 +261,7 @@ export default function SignupModal({ close }: { close: () => void }) {
                                         setErrorPhone("")
                                     }
                                 }}
-                                className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none font-baskerville"
+                                className="w-full bg-transparent placeholder-gray-400 text-[14px] focus:outline-none"
                                 onBlur={() => {
                                     if (!phone.trim()) {
                                         setErrorPhone("Please enter your phone number")
@@ -271,20 +271,20 @@ export default function SignupModal({ close }: { close: () => void }) {
 
                         </div>
                         {errorPhone && (
-                            <p className=" text-[12px] font-bold text-red-500 font-baskerville">{errorPhone}</p>
+                            <p className=" text-[12px] font-bold text-red-500">{errorPhone}</p>
                         )}
                     </div>
 
                     <div className="flex flex-col gap-4">
                         <button
                             type="submit"
-                            className="w-full h-13 px-6 bg-black  text-body-16 rounded-lg hover:bg-gray-500 transition-all flex items-center justify-center text-white font-baskerville cursor-pointer duration-150 active:scale-90 hover:scale-105"
+                            className="w-full h-13 px-6 bg-black  text-body-16 rounded-lg hover:bg-gray-500 transition-all flex items-center justify-center text-white cursor-pointer duration-150 active:scale-90 hover:scale-105"
                         >Create Account</button>
 
                         <button
                             type='button'
                             onClick={close}
-                            className="w-full h-13 px-6 border border-[rgba(37,37,37,0.25)] text-gray-600 text-body-16 rounded-lg hover:bg-gray-50 transition-all flex items-center justify-center font-baskerville cursor-pointer duration-150 active:scale-90 hover:scale-105"
+                            className="w-full h-13 px-6 border border-[rgba(37,37,37,0.25)] text-gray-600 text-body-16 rounded-lg hover:bg-gray-50 transition-all flex items-center justify-center cursor-pointer duration-150 active:scale-90 hover:scale-105"
                         > Close
                         </button>
                     </div>

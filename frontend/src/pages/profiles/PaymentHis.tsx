@@ -25,7 +25,7 @@ export default function PaymentHistory() {
                     page
                 }
             })
-            setPayments(data.data)
+            setPayments(data.payment)
             setTotal(data.total)
         } catch (err) {
             console.error('Error fetching payments:', err)
@@ -64,7 +64,7 @@ export default function PaymentHistory() {
     }
 
     return (
-        <div>
+        <div className="font-baskerville">
             <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-230 mb-10 h-full">
 
                 {/* ✅ MOBILE (card) */}
@@ -74,11 +74,11 @@ export default function PaymentHistory() {
 
                             {/* row 1 */}
                             <div className="flex justify-between items-center">
-                                <span className="font-medium font-baskerville">
+                                <span className="font-medium">
                                     {payment.transaction_ref}
                                 </span>
 
-                                <div className={`flex items-center gap-2 font-baskerville ${getStatusStyle(payment.status)}`}>
+                                <div className={`flex items-center gap-2 ${getStatusStyle(payment.status)}`}>
                                     <span className={`w-2 h-2 rounded-full 
                                 ${payment.status === 'completed'
                                             ? "bg-green-500"
@@ -94,7 +94,7 @@ export default function PaymentHistory() {
                             </div>
 
                             {/* row 2 */}
-                            <div className="flex justify-between text-sm text-gray-600 mt-2 font-baskerville">
+                            <div className="flex justify-between text-sm text-gray-600 mt-2">
                                 <span>{formatDate(payment.paid_at)}</span>
                                 <span>฿ {formatPrice(payment.amount)}</span>
                             </div>
@@ -129,12 +129,12 @@ export default function PaymentHistory() {
                                     key={payment.id}
                                     className="border-b border-gray-300 hover:bg-gray-50 transition"
                                 >
-                                    <td className="py-4 font-medium font-baskerville">
+                                    <td className="py-4 font-medium">
                                         {payment.transaction_ref}
                                     </td>
 
                                     <td className="py-4">
-                                        <div className={`flex items-center gap-2 font-baskerville ${getStatusStyle(payment.status)}`}>
+                                        <div className={`flex items-center gap-2 ${getStatusStyle(payment.status)}`}>
                                             <span className={`w-2 h-2 rounded-full 
                                         ${payment.status === 'completed'
                                                     ? "bg-green-500"
@@ -148,15 +148,15 @@ export default function PaymentHistory() {
                                         </div>
                                     </td>
 
-                                    <td className="py-4 font-baskerville">
+                                    <td className="py-4">
                                         {formatDate(payment.paid_at)}
                                     </td>
 
-                                    <td className="py-4 font-baskerville">
+                                    <td className="py-4">
                                         ฿ {formatPrice(payment.amount)}
                                     </td>
 
-                                    <td className="py-4  font-baskerville">
+                                    <td className="py-4 ">
                                         <button
                                             onClick={() => navigate(`/profile/payments/${payment.id}`)}
                                             className="cursor-pointer
@@ -172,7 +172,7 @@ export default function PaymentHistory() {
                     </table>
                 </div>
                 {payments.length === 0 && (
-                    <div className="text-center text-gray-500 mt-6 font-baskerville">
+                    <div className="text-center text-gray-500 mt-6">
                         No payment history
                     </div>
                 )}

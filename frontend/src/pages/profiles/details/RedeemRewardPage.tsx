@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { api } from '../../../AxiosInstance'
 import { useParams, useNavigate } from 'react-router-dom'
 import type { RedeemDetail } from '../../../type/profile/detail/redeemrewardpage.type'
+import BackBtn from '../../../components/BackBtn'
+import { routes } from '../../../constants/route'
 
 
 
@@ -85,20 +87,25 @@ export default function RedeemRewardDetails() {
     }
 
 
-
-
     return (
-        <div>
+        <div className="font-baskerville">
             <div className="mt-10 bg-white p-8 rounded-xl shadow-sm max-w-3xl mb-10 h-full">
-                <h2 className="text-xl font-semibold mb-4 font-baskerville">
-                    Redeem {redeem.redeem_number}
-                </h2>
 
-                <p className={`mb-2 font-baskerville ${getStatusStyle(redeem.status)}`}>
+                <div className="flex justify-between">
+                    <h2 className="text-xl font-semibold mb-4">
+                        Redeem {redeem.redeem_number}
+                    </h2>
+
+                    <BackBtn
+                        to={routes.user.redeems}>
+                    </BackBtn>
+                </div>
+
+                <p className={`mb-2 ${getStatusStyle(redeem.status)}`}>
                     {redeem.status}
                 </p>
 
-                <p className="text-gray-500 mb-6 font-baskerville">
+                <p className="text-gray-500 mb-6">
                     {formatDate(redeem.created_at)}
                 </p>
 
@@ -106,26 +113,26 @@ export default function RedeemRewardDetails() {
                     {redeem.items.map((item) => (
                         <div
                             key={item.reward_id}
-                            className="flex justify-between border-b pb-3 font-baskerville"
+                            className="flex justify-between border-b pb-3"
                         >
                             <div>
                                 <p className="font-medium">
                                     {item.reward_name}
                                 </p>
 
-                                <p className="text-sm text-gray-500 font-baskerville pt-2">
+                                <p className="text-sm text-gray-500 pt-2">
                                     Qty: {item.quantity}
                                 </p>
                             </div>
 
-                            <p className="font-medium font-baskerville">
+                            <p className="font-medium">
                                 {formatPoints(item.points_per_item)} pts
                             </p>
                         </div>
                     ))}
                 </div>
 
-                <div className="flex justify-between mt-6 font-semibold text-lg font-baskerville">
+                <div className="flex justify-between mt-6 font-semibold text-lg">
 
                     <p>Total</p>
 
