@@ -47,7 +47,7 @@ This project focuses on real-world features such as authentication, role-based a
 - Frontend: Vercel
 - Backend: Render
 
-- ## 🏗 Architecture
+## 🏗 Architecture
 
 Client (React) → API (Express) → Database
 
