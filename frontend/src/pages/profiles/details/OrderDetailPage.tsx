@@ -61,7 +61,8 @@ export default function OrderDetails() {
 
             navigate('/profile/orders')
         } catch (err) {
-
+            console.error(err)
+            alert("Fail to cancel order")
         }
     }
 
@@ -80,7 +81,6 @@ export default function OrderDetails() {
                     <h2 className="text-xl font-semibold mb-4">
                         {order.order_number}
                     </h2>
-
 
                     <BackBtn
                         to={routes.user.orders}>
