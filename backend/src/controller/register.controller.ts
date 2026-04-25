@@ -17,8 +17,8 @@ export const createUsers = async (req: Request<{}, {}, CreateUsersInput>, res: R
             throw new AppError("Missing required field", 400)
         }
 
-        // username 3-40 char alphanumeric + underscore only
-        if (!/^[a-zA-Z0-9_]{3,40}&/.test(username)) {
+        // username 4-40 char alphanumeric
+        if (!/^[a-zA-Z0-9]{4,40}$/.test(username)) {
             throw new AppError("Username must be 3 to 40 characters (letter , number , underscore only", 400)
         }
 
@@ -37,8 +37,8 @@ export const createUsers = async (req: Request<{}, {}, CreateUsersInput>, res: R
             throw new AppError("Password must contain at least one letter and one number", 400)
         }
 
-        // phone number length
-        if (!/^\d{10}$/.test(phone_num)) {
+        const cleanPhone = phone_num.replace(/-/g, "")
+        if (!/^\d{10}$/.test(cleanPhone)) {
             throw new AppError("Phone number must be 10 digits", 400)
         }
 
