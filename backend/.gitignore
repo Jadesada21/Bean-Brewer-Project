@@ -33,3 +33,6 @@ prisma/.env
 
 # Other
 *.tgz
+
+# testing
+coverage/

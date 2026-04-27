@@ -37,7 +37,22 @@ const invalidBodies = [
     { case: 'username to short', body: { ...baseBody, username: 'asd' } },
     { case: 'username to long', body: { ...baseBody, username: 'a'.repeat(50) } },
     { case: 'username special characters', body: { ...baseBody, username: 'test@test' } },
-    { case: 'missing password', body: { ...baseBody, password: '' } }
+    { case: 'email invalid format', body: { ...baseBody, email: 'dawdawdawda.com' } },
+    { case: 'missing password', body: { ...baseBody, password: '' } },
+    { case: 'password to short', body: { ...baseBody, password: '1234a' } },
+    { case: 'password no characters', body: { ...baseBody, password: '123456789' } },
+    { case: 'phone number have characters', body: { ...baseBody, phone_num: '231awe252' } },
+    { case: 'firstname have number', body: { ...baseBody, first_name: 'test1' } },
+    { case: 'lastname have number', body: { ...baseBody, last_name: 'user1' } }
+]
+
+const validBodies = [
+    { case: 'valid username', body: { ...baseBody, username: 'testuser' } },
+    { case: 'valid email', body: { ...baseBody, email: 'test@gmail.com' } },
+    { case: 'valid password', body: { ...baseBody, password: '12345678a' } },
+    { case: 'valid firstname', body: { ...baseBody, first_name: 'test' } },
+    { case: 'valid lastname', body: { ...baseBody, last_name: 'user' } },
+    { case: 'valid phone number', body: { ...baseBody, phone_num: '052-252-6262' } }
 ]
 
 describe('register controller', () => {
@@ -50,6 +65,17 @@ describe('register controller', () => {
 
         expect(mockNext).toHaveBeenCalledWith(
             expect.objectContaining({ statusCode: 400 })
+        )
+    })
+
+    it.each(validBodies)('should return 201 when $case', async ({ body }) => {
+        const req = { body } as Request
+        const res = mockRes()
+        await createUsers(req, res, mockNext)
+
+        expect(res.status).toHaveBeenCalledWith(201)
+        expect(res.json).toHaveBeenCalledWith(
+            expect.objectContaining({ newCustomer: expect.any(Object) })
         )
     })
 })
