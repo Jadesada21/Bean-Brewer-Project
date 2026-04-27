@@ -4,14 +4,13 @@ import bcrypt from 'bcrypt'
 
 
 import {
-    CreateUsersInput,
     UsersResponse
 } from "../types/users.type"
 
-import { DB_CONSTRAINT_EXISTING } from "../constants/statusCode"
+import { RegisterInput } from "../Schemas/register.schema"
 
 export const createUsersService = async (
-    body: CreateUsersInput
+    body: RegisterInput
 ): Promise<UsersResponse> => {
 
     const { username, password, email, first_name, last_name, phone_num } = body

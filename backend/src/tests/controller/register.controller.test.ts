@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import { Request, Response, NextFunction } from "express"
-import { createUsers } from "../controller/register.controller"
+import { createUsers } from "../../controller/register.controller"
 
-vi.mock('../service/register.service', () => ({
+vi.mock('../../service/register.service', () => ({
     createUsersService: vi.fn().mockResolvedValue({
         id: 1,
         username: 'test',
@@ -32,20 +32,6 @@ const baseBody = {
     phone_num: '052-252-5251'
 }
 
-const invalidBodies = [
-    { case: 'missing username', body: { ...baseBody, username: '' } },
-    { case: 'username to short', body: { ...baseBody, username: 'asd' } },
-    { case: 'username to long', body: { ...baseBody, username: 'a'.repeat(50) } },
-    { case: 'username special characters', body: { ...baseBody, username: 'test@test' } },
-    { case: 'email invalid format', body: { ...baseBody, email: 'dawdawdawda.com' } },
-    { case: 'missing password', body: { ...baseBody, password: '' } },
-    { case: 'password to short', body: { ...baseBody, password: '1234a' } },
-    { case: 'password no characters', body: { ...baseBody, password: '123456789' } },
-    { case: 'phone number have characters', body: { ...baseBody, phone_num: '231awe252' } },
-    { case: 'firstname have number', body: { ...baseBody, first_name: 'test1' } },
-    { case: 'lastname have number', body: { ...baseBody, last_name: 'user1' } }
-]
-
 const validBodies = [
     { case: 'valid username', body: { ...baseBody, username: 'testuser' } },
     { case: 'valid email', body: { ...baseBody, email: 'test@gmail.com' } },
@@ -58,16 +44,6 @@ const validBodies = [
 describe('register controller', () => {
     beforeEach(() => vi.clearAllMocks())
 
-    it.each(invalidBodies)('should return 400 when $case', async ({ body }) => {
-        const req = { body } as Request
-        const res = mockRes()
-        await createUsers(req, res, mockNext)
-
-        expect(mockNext).toHaveBeenCalledWith(
-            expect.objectContaining({ statusCode: 400 })
-        )
-    })
-
     it.each(validBodies)('should return 201 when $case', async ({ body }) => {
         const req = { body } as Request
         const res = mockRes()
@@ -77,5 +53,16 @@ describe('register controller', () => {
         expect(res.json).toHaveBeenCalledWith(
             expect.objectContaining({ newCustomer: expect.any(Object) })
         )
+    })
+
+    it('should call next with error when services throws', async () => {
+        const { createUsersService } = await import('../../service/register.service.js')
+        vi.mocked(createUsersService).mockRejectedValueOnce(new Error('DB Error'))
+
+        const req = { body: baseBody } as Request
+        const res = mockRes()
+        await createUsers(req, res, mockNext)
+
+        expect(mockNext).toHaveBeenCalledWith(expect.any(Error))
     })
 })
